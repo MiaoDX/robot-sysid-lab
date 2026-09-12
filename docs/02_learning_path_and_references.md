@@ -44,7 +44,7 @@ Primary project references:
 - BAM (Better Actuator Models): https://github.com/rhoban/bam
 - PACE sim-to-real: https://github.com/leggedrobotics/pace-sim2real
 - Microduck RL: search the Pollen Robotics / Hugging Face Microduck repositories
-- MJLab: https://github.com/mit-han-lab/mujoco_playground or the current official MJLab repository used by the team
+- mjlab: https://github.com/mujocolab/mjlab
 - MuJoCo: https://github.com/google-deepmind/mujoco
 
 Advanced references:
