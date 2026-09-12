@@ -6,6 +6,8 @@ The project intentionally does **not** try to solve every possible SysID problem
 
 The first implementation should therefore optimize for clarity and observability rather than completeness.
 
+> **Scope rule:** Sections 2 and 17 define the first L0 delivery. The larger model ladders, diagnostic catalogs, and visualization suites in the roadmap are references for later lessons, not additional prerequisites for L0. Work status, sequencing, and completion evidence live in [STATUS.md](../STATUS.md); keep the README focused on the project and navigation.
+
 ## 1. The happy path
 
 The initial end-to-end path should be:
@@ -13,7 +15,7 @@ The initial end-to-end path should be:
 ```text
 choose a simple Oracle
   -> define one explicit identification boundary
-  -> expose a realistic but sufficient observation set
+  -> expose a declared observation set (ideal measurements in L0)
   -> design one informative excitation
   -> fit one Student model family
   -> validate on held-out conditions
@@ -40,104 +42,66 @@ fixed-base leg
 
 The first implementation should prefer one good example over a large matrix of incomplete variants.
 
-## 2. First happy-path benchmark
+## 2. First happy-path benchmark: one default experiment
 
-A useful first benchmark can be intentionally constrained.
+The first lesson asks one question:
 
-### Oracle
+> Can input and motion data recover unknown inertia and viscous damping, and then predict a different motion?
 
-Use a simple actuator/plant model with a small number of known effects, for example:
+Start with success in a deliberately well-posed problem. Model mismatch is the next lesson, not a requirement to finish the first one.
 
-```text
-inertia
-+ viscous friction
-+ Coulomb friction
-+ command delay
-```
+### Fixed scope
 
-The Oracle may expose additional privileged internal signals for debugging and visualization, but those signals should not automatically be available to the Student estimator.
+| Decision | L0 default |
+|---|---|
+| Oracle | `J*qdd + b*qd = u`, with positive inertia `J` and viscous damping `b` |
+| Input boundary | Known, actually applied joint torque `u` in N m; unit torque scale is fixed |
+| Outputs | Joint position `q` and velocity `qd`, with units and sample times |
+| Initial state | Known `q(0)` and `qd(0)`; use the same declared reset for Oracle and Student |
+| Unknowns | Only `J` and `b`; all other effects are absent rather than silently fitted |
+| Student | Same model structure; deliberately incorrect nominal values for `J` and `b` |
+| Observations | Ideal, noise-free `t, u, q, qd`; explicitly label these as an ideal-observation baseline |
+| Fitting data | One predetermined chirp containing transient and velocity variation |
+| Validation data | One separately generated multisine; no parameter refitting on this trajectory |
+| Backend | A small CPU analytical/Python reference; no GPU, RL, or whole-robot dependency |
+| Estimator | One bounded nonlinear least-squares fit of simulated motion to fitting observations |
+| Result | One generated lesson/report comparing Oracle, nominal Student, and identified Student |
 
-### Identification boundary
+There is no gravity term in this teaching system. It is a rotational inertia with viscous drag, not a vertical pendulum with unmodeled gravity. Coulomb friction, delay, saturation, backlash, and contact are explicitly out of L0 scope.
 
-Choose one command interface and keep it explicit.
+Known applied torque is an idealized measurement assumption, not a claim that a servo command is a calibrated torque measurement. The L1 actuator lesson will move the boundary upward and model the command-to-torque chain explicitly.
 
-For the first lab, a good boundary is:
+### Data and truth separation
 
-```text
-Input:
-applied or commanded joint torque
+The estimator receives only fitting observations, the public model definition, bounds, and the declared initial state. It must not receive Oracle parameters or internal acceleration. The evaluation/report stage may reveal `J*` and `b*` after fitting to explain the result.
 
-Plant includes:
-mechanical inertia
-friction
-command delay if placed inside the boundary
+A shared forward-simulation implementation is acceptable for this matched-model baseline. Label it as a self-consistency/recovery exercise, not evidence of robustness to model mismatch or sim-to-real. Keep data generation, fitting, and evaluation interfaces separate even when they reuse numerical code.
 
-Output:
-joint position and velocity
-```
+### Numerical and estimation choices
 
-A later actuator lab can move the boundary upward to position/impedance commands and include the lower-level controller and actuator physics.
+Treat sampled torque as zero-order held and document the sample period and integration convention. Use an analytical constant-input solution as a numerical reference, or demonstrate convergence against that reference; sharing code alone must not count as a correctness test. Check zero-input dissipation and finite, physically valid outputs.
 
-### Observation set
+Fit bounded `J > 0` and `b > 0` from a non-truth initialization. If both position and velocity contribute to the objective, declare fixed scaling for their different units using fitting data only. Freeze that scaling for validation. Do not feed true acceleration to an easier regression while presenting the result as position/velocity-only identification.
 
-Start with a realistic but convenient set:
+Keep the numerical values for truth, nominal error, bounds, excitation amplitude/frequencies, duration, timestep, and acceptance tolerances together in one versioned example configuration. Establish them during implementation checks, then freeze the released example. Do not keep retuning them against held-out error merely to make the lesson look successful.
 
-```text
-command
-joint position
-joint velocity
-timestamps
-```
+### Minimal evidence, not a benchmark matrix
 
-Do not begin by simultaneously modeling sensor quantization, packet loss, unknown filters, and timestamp jitter.
+The delivered default run must include:
 
-Those are valuable later experiments, but they should not obscure the first end-to-end pipeline.
+- fitting and held-out `q`/`qd` overlays for Oracle, nominal, and identified models, with the applied torque shown alongside rather than on a misleading shared-unit axis;
+- residual versus time and separate fit/validation error values;
+- nominal, fitted, and Oracle `J`/`b` values with declared units and meaningful recovery errors;
+- one lightweight sensitivity check for `J` and `b` on the fitting data, interpreted as a local diagnostic rather than a proof of structural identifiability;
+- a configuration/metadata record tying the plots and numbers to the same run.
 
-### Excitation
+A full FRF suite, 2-D loss landscape, multiple optimizers, extensive seed sweeps, a 3-D viewer, and an interactive website are not L0 acceptance requirements. A few numerical regression starts may be used to check that the estimator did not merely get lucky; they do not turn L0 into an optimizer comparison.
 
-Use one or two clearly informative signals, such as:
+### The next lesson adds one question
 
-```text
-chirp for fitting
-multisine or different chirp for validation
-```
+After this delivery is accepted, introduce one omitted effect, preferably command delay, and compare a Student without that effect against one that contains it. Update the input boundary, prehistory, and delay resolution before collecting those data. Friction and the richer actuator ladder follow separately.
 
-The goal is to establish the complete workflow before comparing every excitation family.
-
-### Student models
-
-Use a short model ladder rather than many competing implementations:
-
-```text
-H0: inertia only
-H1: inertia + viscous friction
-H2: + Coulomb friction
-H3: + delay
-```
-
-The first benchmark should demonstrate both successful parameter recovery in a matched-model case and predictable residual structure in a deliberately simpler Student model.
-
-### Estimation
-
-Use one estimator that is robust enough for the first problem.
-
-The first benchmark does not need to compare CMA-ES, Gauss-Newton, random search, Bayesian optimization, and gradients all at once.
-
-Optimizer comparison should come only after the model/data contract itself is trusted.
-
-### Validation
-
-At minimum:
-
-```text
-fit condition
-held-out input trajectory
-parameter comparison where meaningful
-residual plots
-prediction error over time
-```
-
-This is enough to establish the benchmark language used by later labs.
+The first lesson demonstrates that SysID works under clear assumptions. The next lesson demonstrates why those assumptions matter.
 
 ## 3. Identification boundary must be explicit
 
@@ -321,17 +285,19 @@ This keeps the ground-truth advantage without turning every unknown parameter in
 
 The first implementation can use practical evidence rather than sophisticated theory.
 
+The catalog below supports later lessons; L0 requires only the lightweight fitting-data sensitivity check in Section 2.
+
 Useful checks include:
 
 ### Repeated fits
 
 Run several estimator initializations or nearby datasets.
 
-If prediction remains similar while fitted parameters move substantially, parameter ambiguity is likely.
+If prediction remains similar while fitted parameters move substantially, investigate parameter ambiguity, model mismatch, and incomplete optimization separately. Variation between optimizer starts alone is not a parameter-confidence estimate.
 
 ### One-parameter sensitivity
 
-Perturb one parameter around the fitted value and measure validation loss.
+Perturb one parameter around the fitted value and measure fitting loss. A separately labeled validation slice may be used for diagnosis, but must not become a hidden model-selection loop over the held-out result.
 
 A nearly flat curve indicates weak practical sensitivity.
 
@@ -353,7 +319,7 @@ Fit with one excitation and repeat with another.
 
 A physically meaningful parameter should not move dramatically without a reason tied to model mismatch or operating-condition dependence.
 
-These diagnostics are sufficient for the first teaching labs.
+These diagnostics can explain the early teaching labs; running every diagnostic is not a condition for delivering L0.
 
 Later work can add sensitivity matrices, singular values, Fisher-information-like metrics, profile likelihoods, posterior approximations, or symbolic analysis.
 
@@ -567,16 +533,17 @@ For the first implementation, use manually designed excitation with clear educat
 Required:
 
 ```text
-one explicit identification boundary
-one Oracle configuration
-one realistic observation set
-one clear excitation protocol
-one Student model ladder
-one estimator
+known applied-torque mechanical boundary
+one J + b Oracle configuration
+ideal t, u, q, qd observations with separate evaluation truth
+one fit chirp + one held-out multisine
+one matched Student structure, shown before and after fitting
+one bounded nonlinear least-squares estimator
+numerical reference and repeatability checks
 fit / validation separation
-parameter truth comparison where identifiable
-basic practical-identifiability diagnostics
-standard visualization/report output
+J / b comparison and local sensitivity evidence
+minimal generated plots + a readable lesson
+independent colleague reproduction and explanation
 ```
 
 ### P1 — after the happy path works
@@ -626,25 +593,46 @@ Everything else can evolve from implementation experience.
 
 The repository should not require agreement on every future simulator, optimizer, storage backend, interactive UI technology, active-learning method, or domain-randomization strategy before the first lab is built.
 
-## 17. Recommended immediate next step
+## 17. Deliver the first lesson end to end
 
-After this architecture PR is merged, the next implementation work should be intentionally narrow:
+The next implementation change should deliver the L0 experiment in Section 2, not a framework skeleton. Its result must be useful both to an engineer inspecting the numerics and to a colleague learning SysID.
 
-```text
-Step 1
-rebuild L0 1-DoF as a clean benchmark
+### Two entrances to the same experiment
 
-Step 2
-verify the experiment/result/report contract
+**See the result.** Provide a checked-in or durably linked example report generated by the implementation. Lead with Oracle / nominal / identified motion curves, then explain parameter recovery and the held-out result. A reader should not need a simulator or GPU installation merely to understand the lesson. Do not publish illustrative curves as measured benchmark results.
 
-Step 3
-build the L1 synthetic actuator benchmark
+**Reproduce and change it.** Document minimal CPU setup and one real command that regenerates data, fits the Student, evaluates held-out motion, and writes the report. Add that command only when it actually exists. Let a learner change one nominal parameter or excitation setting and rerun the same pipeline.
 
-Step 4
-only then extract reusable abstractions from repeated code
-```
+The recorded report and reproduction route must use the same configuration and computation. Do not maintain a separate animation that merely resembles the actual experiment. Interactive sliders and the documentation website can be added later without blocking this delivery.
 
-The first implementation PR should aim to produce one convincing experiment with complete visualization rather than a generic framework skeleton.
+### Engineering acceptance
+
+The implementation PR should provide evidence that:
+
+- a clean CPU environment can reproduce the documented default without private assets, robot hardware, a GPU, or an RL checkpoint;
+- the integrator agrees with the declared reference, zero-input motion dissipates energy, and invalid parameters fail explicitly;
+- fitting cannot read hidden truth or held-out observations, while evaluation can reveal truth only after fitting;
+- the default matched model recovers `J` and `b` within documented, numerically justified tolerances and improves held-out prediction over the nominal model;
+- config, units, timing, initialization, versions, plots, and metrics agree and are retained with the run;
+- a failing fit remains visible as a failure rather than being replaced by a hand-selected or truth-initialized success.
+
+There is no universal numerical threshold set by this design document. Set and justify the first release's tolerances using numerical reference checks; do not adjust them opportunistically after seeing a held-out failure. If the released validation case later influences tuning, keep it as a known regression case and add a fresh held-out case for new generalization claims.
+
+### Learning acceptance
+
+Ask a colleague who did not implement the lab to:
+
+1. identify a mismatch in the nominal model from the plots;
+2. reproduce the default experiment and explain what fitting changed;
+3. distinguish fitting data from the unseen validation motion;
+4. change one exposed setting and explain the resulting behavior;
+5. state why an ideal, matched, two-parameter example does not establish real-robot transfer.
+
+Record the feedback and improve the lesson if it depends on the author's verbal explanation. This small walkthrough is enough; a formal learning analytics system is not required.
+
+### Progression after acceptance
+
+Use [STATUS.md](../STATUS.md) for the live checklist and links to implementation evidence. Once L0 works and is understandable, add one model-mismatch lesson, then build L1 synthetic actuator. Extract shared abstractions only after repeated experiments demonstrate a concrete need. The fixed-base leg, contact, Microduck, and Microban remain the subsequent ladder, not prerequisites for the first lesson.
 
 ## 18. Core principle
 
