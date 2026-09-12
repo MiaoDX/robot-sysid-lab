@@ -1060,15 +1060,14 @@ true parameters
 
 ### 18.2 Realistic Student observation configurations
 
-Then create benchmark variants such as:
+Use the observation levels defined in the [benchmark contract](07_benchmark_contract.md#7-observation-levels): O0 is privileged, O1 is realistic-rich, and O2 is realistic-minimal. Representative realistic configurations are:
 
 ```text
-O1: command + encoder
-O2: command + encoder + velocity estimate
-O3: command + encoder + current estimate
-O4: proprioception + IMU
-O5: proprioception + IMU + external force/torque
+O1: command + encoder + velocity estimate + current/load estimate + IMU + known controller state/gains
+O2: command + encoder + IMU
 ```
+
+Record the exact signal schema for every experiment. Additional ablations, such as command + encoder only or adding external force/torque measurements, should use descriptive names rather than redefining the O-level numbers.
 
 Add controlled:
 
