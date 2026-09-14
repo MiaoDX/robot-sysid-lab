@@ -9,6 +9,7 @@ def _():
     from dataclasses import replace
     from pathlib import Path
     import sys
+    import time
 
     import marimo as mo
     import matplotlib.pyplot as plt
@@ -24,7 +25,7 @@ def _():
         simulate,
     )
 
-    return Params, load_config, mo, np, plt, replace, repo_root, run_l0, simulate
+    return Params, load_config, mo, np, plt, replace, repo_root, run_l0, simulate, time
 
 
 @app.cell
@@ -124,6 +125,7 @@ def _(
     run_l0,
     simulate,
     split_control,
+    time,
 ):
     preview_config = replace(
         base_config,
@@ -132,7 +134,9 @@ def _(
             damping=float(damping_control.value),
         ),
     )
+    started_at = time.perf_counter()
     preview_run = run_l0(preview_config)
+    fit_elapsed_s = time.perf_counter() - started_at
     preview_observations = (
         preview_run.data.fit
         if split_control.value == "Fit"
@@ -259,11 +263,11 @@ def _(
     lesson_figure.suptitle(
         f"{split_control.value}: Oracle vs Student models", fontsize=15
     )
-    return lesson_figure, preview_metrics, preview_run
+    return fit_elapsed_s, lesson_figure, preview_metrics, preview_run
 
 
 @app.cell
-def _(lesson_figure, mo, preview_metrics, preview_run, split_control):
+def _(fit_elapsed_s, lesson_figure, mo, preview_metrics, preview_run, split_control):
     nominal_metrics, identified_metrics = preview_metrics
     metric_strip = mo.Html(
         f"""
@@ -279,6 +283,11 @@ def _(lesson_figure, mo, preview_metrics, preview_run, split_control):
         [
             mo.md("### 3. Read the result"),
             metric_strip,
+            mo.md(
+                f"`Recomputed from current controls` · fit completed in "
+                f"`{fit_elapsed_s * 1000:.0f} ms` · optimizer evaluations: "
+                f"`{preview_run.fit.nfev}`"
+            ),
             lesson_figure,
             mo.callout(
                 mo.md(
