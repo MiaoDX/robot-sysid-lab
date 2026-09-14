@@ -20,6 +20,11 @@ Robot SysID Lab learning experience
 
 The website or notebook technology is an implementation detail. The important design decision is that **visual explanation and interaction are first-class teaching tools rather than decorative additions**.
 
+The first concrete course surface is the [L0 lesson set](lessons/l0/README.md).
+Its repeated experiment and artifact stages are captured in the [Lesson /
+Experiment Pipeline](lesson_pipeline.md), which is the working contract for
+future lessons.
+
 ## 1. Three layers of presentation
 
 The project should eventually expose three complementary surfaces.

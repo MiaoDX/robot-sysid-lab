@@ -10,7 +10,8 @@ This file tracks changing delivery status, immediate work, and completion eviden
 |---|---|---|
 | Knowledge and synthetic-lab direction | Documented in the design PR | [Overview](docs/00_overview.md), [roadmap](docs/03_synthetic_lab_roadmap.md) |
 | Oracle, whole-robot, and RL protocols | Documented; not implemented | [Experiment design](docs/04_oracle_sim_experiment_design.md) |
-| Visualization and learning experience | Specified; L0 will be notebook-first, with the site and viewer later | [Reporting](docs/05_visualization_and_reporting.md), [learning experience](docs/06_learning_experience.md) |
+| Visualization and learning experience | L0 lesson set delivered; Jupyter is the current visual surface | [L0 lessons](docs/lessons/l0/README.md), [reporting](docs/05_visualization_and_reporting.md), [learning experience](docs/06_learning_experience.md) |
+| Reusable lesson workflow | Documented as a contract; code extraction waits for a second lesson | [Lesson / Experiment Pipeline](docs/lesson_pipeline.md) |
 | Benchmark rules | Documented reference | [Benchmark contract](docs/07_benchmark_contract.md) |
 | L0 happy-path scope | Implemented; learner walkthrough remains open | [First-lab contract](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) |
 | Original 1-DoF prototype | Removed in the design PR | No replacement runnable lab is claimed here |
@@ -29,7 +30,7 @@ No additional architecture chapter is needed before implementation. Resolve samp
 
 The deliverable is one CPU-only lesson around `J*qdd + b*qd = u`: known applied torque, ideal `t/u/q/qd` observations, only `J` and `b` unknown, one matched Student with incorrect nominal parameters, one fit chirp, one held-out multisine, and one bounded nonlinear least-squares estimator.
 
-The required output is **Oracle / nominal / identified curves + parameters + fit/validation metrics + a readable explanation**. Coulomb friction, delay, sensors, RL, contact, and extra backends are deliberately absent. The [first-lab specification](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) is authoritative for the detailed assumptions.
+The required output is **Oracle / nominal / identified curves + parameters + fit/validation metrics + a readable explanation**. The explanation now lives in the [L0 lesson set](docs/lessons/l0/README.md) and the generated report links back to it. Coulomb friction, delay, sensors, RL, contact, and extra backends are deliberately absent. The [first-lab specification](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) is authoritative for the detailed assumptions.
 
 ### Work in this order
 
@@ -37,7 +38,7 @@ The required output is **Oracle / nominal / identified curves + parameters + fit
 - [x] **2. Implement and check the numerical baseline.** Build the small CPU forward model and compare with the constant-input analytical reference. Include finite-output, invalid-input, zero-input dissipation, and numerical repeatability checks.
 - [x] **3. Generate separated fitting and validation data.** Give the estimator only fitting observations and public metadata. Keep Oracle parameters in the generator/evaluator path. Record provenance; no hidden acceleration or validation-based retuning.
 - [x] **4. Fit and evaluate.** Use one estimator, report its convergence/failure, compare `J` and `b` after fitting, and score the untouched validation motion. Add one lightweight fitting-data sensitivity diagnostic.
-- [x] **5. Generate the visual lesson from that run.** Make a Jupyter notebook the primary learner entry point. Produce before/after position and velocity overlays, applied input, time residuals, parameter comparison, and separate fit/validation metrics. Keep plots and numbers tied to one configuration.
+- [x] **5. Generate the visual lesson from that run.** Make a Jupyter notebook the primary learner entry point and add a Markdown lesson set around it. Produce before/after position and velocity overlays, applied input, time residuals, parameter comparison, and separate fit/validation metrics. Keep plots and numbers tied to one configuration.
 - [x] **6. Provide two entry points.** Check in the notebook for interactive reading and changing one exposed setting, and provide a headless CPU execution path for CI and reproducibility. Both must use the same implementation and configuration; do not add placeholder commands or invented results.
 - [ ] **7. Ask an independent colleague to try it.** Check that they can spot the nominal mismatch, reproduce it, explain the held-out result, change one setting, and state the assumptions. Capture feedback and fix confusing material.
 - [ ] **8. Close L0 with evidence.** Link the implementation commit, exact example configuration, generated report, check output, and learner feedback here. Only then start the next lesson.
@@ -69,6 +70,7 @@ Package layout, storage format, tracking service, and web framework should be ch
 
 The L0 implementation and generated lesson are delivered in commit `86db325`;
 the notebook, report, configuration, and check output are linked above. The
-independent learner walkthrough is the only remaining acceptance item.
+reusable workflow contract and course-facing L0 lesson set are now documented;
+the independent learner walkthrough is the only remaining acceptance item.
 
 Keep task state and completion evidence here. Keep the reusable lesson assumptions and acceptance criteria in the happy-path document, and long-term options in the roadmap. Update the snapshot when work changes; leave the README free of dates, percentages, implementation checklists, and claims of capabilities that only exist in the plan.

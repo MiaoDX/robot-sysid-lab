@@ -1,5 +1,24 @@
 # L0 inertia and damping identification
 
+This is the result of the first lesson in the [L0 lesson set](../../docs/lessons/l0/README.md).
+The lesson asks a small question: can we use observed motion to estimate the
+inertia and viscous damping of a one-degree-of-freedom plant?
+
+## How to read this report
+
+The plant follows `J*qdd + b*qd = u`. `u` is the applied torque, `q` is
+position, and `qd` is velocity. **Oracle** is the hidden teacher system that
+generated the observations. **Nominal** is the student's pre-identification
+model: a plausible but deliberately wrong starting model. **Identified** is
+the same model after fitting `J` and `b` on the fit trajectory. The nominal
+model is a baseline for seeing why identification is needed; it is not another
+ground-truth system.
+
+The fit trajectory is used by the estimator. The validation trajectory uses a
+different multisine input and is kept untouched until after fitting. Improvement
+on validation is the useful evidence that the fitted model learned dynamics
+rather than only matching one motion.
+
 Configuration: `l0-inertia-damping-v1`<br>
 Plant boundary: known applied torque `u` in N m -> observed `q`, `qd`<br>
 Fit excitation: chirp<br>
@@ -18,6 +37,26 @@ Validation excitation: held-out multisine
 | fit / identified | 1.5607874e-14 | 1.2252942e-14 |
 | validation / nominal | 2.7396426 | 0.87716149 |
 | validation / identified | 1.8251542e-14 | 2.0286828e-14 |
+
+## What this result does and does not show
+
+The identified parameters recover this matched analytical teacher and predict
+the held-out excitation. This is a controlled first success, not a claim that
+a real servo can be represented by these two terms. The experiment omits
+torque calibration and controller dynamics, delay, saturation, friction beyond
+viscous damping, compliance, contact, and sensor noise. The [lesson notes](../../docs/lessons/l0/03-assumptions-and-next-step.md)
+explain how those omissions shape the next experiment.
+
+## Try it
+
+Read the [L0 lessons](../../docs/lessons/l0/README.md), then change one nominal
+value in the [notebook](../../notebooks/l0_inertia_damping.ipynb). The orange
+baseline should change while a successful fit should still recover the Oracle
+parameters. Regenerate this report headlessly with:
+
+```bash
+python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping
+```
 
 The estimator saw only fitting `t`, `u`, `q`, and `qd`, plus public bounds and
 the non-truth nominal initialization. Oracle parameters are shown only in this

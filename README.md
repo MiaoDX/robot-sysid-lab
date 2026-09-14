@@ -16,12 +16,13 @@ The Oracle knows its full state and parameters; the estimator receives only the 
 
 | Start here | Go deeper |
 |---|---|
-| [Learn the fundamentals](docs/01_sysid_101.md) | [Project overview](docs/00_overview.md) |
-| [Follow the first lab](docs/08_happy_path_and_identifiability.md) | [Learning and lab roadmap](docs/03_synthetic_lab_roadmap.md) |
+| [Start the L0 lesson set](docs/lessons/l0/README.md) | [Project overview](docs/00_overview.md) |
+| [Learn the fundamentals](docs/01_sysid_101.md) | [Learning and lab roadmap](docs/03_synthetic_lab_roadmap.md) |
 | [Design Oracle experiments](docs/04_oracle_sim_experiment_design.md) | [Benchmark contract](docs/07_benchmark_contract.md) |
-| [Understand the visual reports](docs/05_visualization_and_reporting.md) | [Learning experience](docs/06_learning_experience.md) |
+| [Understand the visual reports](docs/05_visualization_and_reporting.md) | [Lesson / Experiment Pipeline](docs/lesson_pipeline.md) |
 
-The first runnable lesson is [the L0 Jupyter notebook](notebooks/l0_inertia_damping.ipynb).
+The first runnable lab is [the L0 Jupyter notebook](notebooks/l0_inertia_damping.ipynb),
+introduced by the [L0 lesson set](docs/lessons/l0/README.md).
 Its headless equivalent is `python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping`.
 The generated [L0 report](reports/l0_inertia_damping/report.md) is available without running a notebook.
 

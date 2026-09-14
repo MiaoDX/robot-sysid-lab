@@ -89,7 +89,20 @@ def test_report_contains_one_run_metadata_and_visual(tmp_path):
     metrics = json.loads((tmp_path / "metrics.json").read_text(encoding="utf-8"))
     assert metrics["config_version"] == "l0-inertia-damping-v1"
     assert metrics["metadata"]["observations"] == ["t", "u", "q", "qd"]
-    assert "Oracle" in report_path.read_text(encoding="utf-8")
+    report = report_path.read_text(encoding="utf-8")
+    assert "Oracle" in report
+    assert "pre-identification" in report
+    assert "held-out multisine" in report
+    assert "How to read this report" in report
+
+
+def test_l0_lesson_set_and_pipeline_contract_exist():
+    lesson_root = Path("docs/lessons/l0")
+    assert (lesson_root / "README.md").is_file()
+    assert len(list(lesson_root.glob("*.md"))) == 5
+    pipeline = Path("docs/lesson_pipeline.md").read_text(encoding="utf-8")
+    assert "The shared flow" in pipeline
+    assert "Artifact contract" in pipeline
 
 
 def test_sensitivity_is_finite_for_default_fit():
