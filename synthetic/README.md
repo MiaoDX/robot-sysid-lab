@@ -7,8 +7,9 @@ the analytical plant `J*qdd + b*qd = u`. It uses known applied torque and
 ideal `t`, `u`, `q`, and `qd` observations. A chirp is used for fitting and a
 separate multisine is held out for validation.
 
-Install the CPU dependencies with `python -m pip install -r requirements.txt`,
-then generate the visual report with:
+From the repository root, install the CPU dependencies with
+`python -m pip install -r requirements.txt`, then generate the visual report
+with:
 
 ```text
 python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping
