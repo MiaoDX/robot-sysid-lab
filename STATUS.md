@@ -10,11 +10,12 @@ This file tracks changing delivery status, immediate work, and completion eviden
 |---|---|---|
 | Knowledge and synthetic-lab direction | Documented in the design PR | [Overview](docs/00_overview.md), [roadmap](docs/03_synthetic_lab_roadmap.md) |
 | Oracle, whole-robot, and RL protocols | Documented; not implemented | [Experiment design](docs/04_oracle_sim_experiment_design.md) |
-| Visualization and learning experience | Specified; not delivered as a site or viewer | [Reporting](docs/05_visualization_and_reporting.md), [learning experience](docs/06_learning_experience.md) |
+| Visualization and learning experience | Specified; L0 will be notebook-first, with the site and viewer later | [Reporting](docs/05_visualization_and_reporting.md), [learning experience](docs/06_learning_experience.md) |
 | Benchmark rules | Documented reference | [Benchmark contract](docs/07_benchmark_contract.md) |
-| L0 happy-path scope | Defined; implementation is the next deliverable | [First-lab contract](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) |
+| L0 happy-path scope | Implemented; learner walkthrough remains open | [First-lab contract](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) |
 | Original 1-DoF prototype | Removed in the design PR | No replacement runnable lab is claimed here |
-| Example results, reproduction command, and learner walkthrough | Not delivered | Add real artifact and implementation links when available |
+| Example results and reproduction command | Delivered | [Generated report](reports/l0_inertia_damping/report.md), [notebook](notebooks/l0_inertia_damping.ipynb), and [reproduction instructions](synthetic/README.md) |
+| Independent learner walkthrough | Pending | Run the notebook with a colleague who did not implement it and record feedback |
 
 ## Delivery rule
 
@@ -32,18 +33,20 @@ The required output is **Oracle / nominal / identified curves + parameters + fit
 
 ### Work in this order
 
-- [ ] **1. Freeze one runnable example configuration.** Set physical units, truth/nominal values, public bounds, initial state, excitation, timing, objective scaling, and expected tolerances. Explain the input boundary; do not add an unknown torque scale.
-- [ ] **2. Implement and check the numerical baseline.** Build the small CPU forward model and compare with the constant-input analytical reference. Include finite-output, invalid-input, zero-input dissipation, and numerical repeatability checks.
-- [ ] **3. Generate separated fitting and validation data.** Give the estimator only fitting observations and public metadata. Keep Oracle parameters in the generator/evaluator path. Record provenance; no hidden acceleration or validation-based retuning.
-- [ ] **4. Fit and evaluate.** Use one estimator, report its convergence/failure, compare `J` and `b` after fitting, and score the untouched validation motion. Add one lightweight fitting-data sensitivity diagnostic.
-- [ ] **5. Generate the visual lesson from that run.** Produce before/after position and velocity overlays, applied input, time residuals, parameter comparison, and separate fit/validation metrics. Keep plots and numbers tied to one configuration.
-- [ ] **6. Provide two entry points.** Publish a real generated report for reading without setup, and document a working CPU reproduction command. Both must use the same implementation and configuration; do not add placeholder commands or invented results.
+- [x] **1. Freeze one runnable example configuration.** Set physical units, truth/nominal values, public bounds, initial state, excitation, timing, objective scaling, and expected tolerances. Explain the input boundary; do not add an unknown torque scale.
+- [x] **2. Implement and check the numerical baseline.** Build the small CPU forward model and compare with the constant-input analytical reference. Include finite-output, invalid-input, zero-input dissipation, and numerical repeatability checks.
+- [x] **3. Generate separated fitting and validation data.** Give the estimator only fitting observations and public metadata. Keep Oracle parameters in the generator/evaluator path. Record provenance; no hidden acceleration or validation-based retuning.
+- [x] **4. Fit and evaluate.** Use one estimator, report its convergence/failure, compare `J` and `b` after fitting, and score the untouched validation motion. Add one lightweight fitting-data sensitivity diagnostic.
+- [x] **5. Generate the visual lesson from that run.** Make a Jupyter notebook the primary learner entry point. Produce before/after position and velocity overlays, applied input, time residuals, parameter comparison, and separate fit/validation metrics. Keep plots and numbers tied to one configuration.
+- [x] **6. Provide two entry points.** Check in the notebook for interactive reading and changing one exposed setting, and provide a headless CPU execution path for CI and reproducibility. Both must use the same implementation and configuration; do not add placeholder commands or invented results.
 - [ ] **7. Ask an independent colleague to try it.** Check that they can spot the nominal mismatch, reproduce it, explain the held-out result, change one setting, and state the assumptions. Capture feedback and fix confusing material.
-- [ ] **8. Close L0 with evidence.** Link the implementation PR, exact example configuration, generated report, check output, and learner feedback here. Only then start the next lesson.
+- [ ] **8. Close L0 with evidence.** Link the implementation commit, exact example configuration, generated report, check output, and learner feedback here. Only then start the next lesson.
 
-The checklist follows the [engineering and learning acceptance criteria](docs/08_happy_path_and_identifiability.md#17-deliver-the-first-lesson-end-to-end). A complete report need not be an interactive website. Do not block L0 on the renderer, deployment framework, or every future diagnostic.
+The checklist follows the [engineering and learning acceptance criteria](docs/08_happy_path_and_identifiability.md#17-deliver-the-first-lesson-end-to-end). The notebook is the L0 visual surface; a complete report need not be an interactive website. Do not block L0 on the renderer, deployment framework, or every future diagnostic.
 
 ## Then, not in parallel by default
+
+The knowledge and synthetic-lab tracks advance together: each lesson explains a concept and demonstrates it against declared Oracle/Student data. Hardware and robot-derived experiments converge with that track after the synthetic L0/L1 contracts are working; they are application stages, not prerequisites for the first lesson.
 
 | Order | Next step | Trigger |
 |---|---|---|

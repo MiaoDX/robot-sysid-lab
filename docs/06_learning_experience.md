@@ -64,9 +64,7 @@ change Student model class
   -> observe compensation and validation failure
 ```
 
-A reactive Python notebook environment such as Marimo is a strong candidate for these labs because parameter controls can trigger simulation and plot updates while remaining close to normal Python source. Jupyter remains a valid alternative where ecosystem compatibility is more important.
-
-Again, the requirement is the interactive experience, not a specific notebook product.
+For the first executable lab, use a Jupyter notebook as the learner-facing surface because it gives the project immediate plots, editable parameters, and a familiar CPU-only workflow. Keep the notebook backed by importable Python code so the same computation can run headlessly in CI and generate the recorded report. A reactive environment such as Marimo can be evaluated later if the labs need richer reactive controls; it is not an L0 dependency.
 
 ### Layer 3 — Experiment reports
 
@@ -554,17 +552,7 @@ This should be treated as a pragmatic starting point rather than a permanent arc
 
 ### Interactive labs
 
-Initial candidates:
-
-```text
-Marimo
-or
-Jupyter
-```
-
-Marimo is particularly attractive for parameter-slider -> simulation -> plot workflows and source-code-friendly review. Jupyter remains useful for interoperability and exploratory analysis.
-
-The project should select one after the first executable lab clarifies the actual requirements.
+The initial interactive surface is Jupyter, with plots generated from the same importable implementation used by headless checks. This keeps visualization available in the first lesson without committing the project to a custom web application. Marimo remains a later option if the first labs demonstrate that reactive controls materially improve learning.
 
 ### Robot visualization
 
@@ -660,4 +648,4 @@ Robot SysID Lab
 |   +-- Experiment design
 |   +-- Identifiability
 |   +-- Estimation
-|  
+|
