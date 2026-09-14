@@ -25,7 +25,7 @@ For the first delivery, Sections 2 and 17 of the happy-path document define the 
 
 No additional architecture chapter is needed before implementation. Resolve sample values, numerical tolerances, and small API choices in the implementation PR and record the decision with the example.
 
-## Next deliverable: L0 inertia and damping
+## Current delivery: L0 inertia and damping
 
 The deliverable is one CPU-only lesson around `J*qdd + b*qd = u`: known applied torque, ideal `t/u/q/qd` observations, only `J` and `b` unknown, one matched Student with incorrect nominal parameters, one fit chirp, one held-out multisine, and one bounded nonlinear least-squares estimator.
 
@@ -67,6 +67,8 @@ Package layout, storage format, tracking service, and web framework should be ch
 
 ## Evidence and maintenance
 
-No L0 implementation, numerical result, generated lesson, or learner walkthrough has been accepted in this snapshot. Replace this statement with links when those artifacts exist; do not mark delivery complete based on this document.
+The L0 implementation and generated lesson are delivered in commit `86db325`;
+the notebook, report, configuration, and check output are linked above. The
+independent learner walkthrough is the only remaining acceptance item.
 
 Keep task state and completion evidence here. Keep the reusable lesson assumptions and acceptance criteria in the happy-path document, and long-term options in the roadmap. Update the snapshot when work changes; leave the README free of dates, percentages, implementation checklists, and claims of capabilities that only exist in the plan.
