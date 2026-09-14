@@ -25,6 +25,8 @@ The first runnable lab is [the L0 Jupyter notebook](notebooks/l0_inertia_damping
 introduced by the [L0 lesson set](docs/lessons/l0/README.md).
 Its headless equivalent is `python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping`.
 The generated [L0 report](reports/l0_inertia_damping/report.md) is available without running a notebook.
+An application-style [Marimo preview](apps/l0_inertia_damping.py) is also
+available for reviewing reactive lesson controls.
 
 [Project status and next steps](STATUS.md)
 

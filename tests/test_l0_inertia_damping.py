@@ -105,6 +105,13 @@ def test_l0_lesson_set_and_pipeline_contract_exist():
     assert "Artifact contract" in pipeline
 
 
+def test_marimo_preview_reuses_shared_l0_runner():
+    preview = Path("apps/l0_inertia_damping.py").read_text(encoding="utf-8")
+    assert "from synthetic.l0_inertia_damping import" in preview
+    assert "run_l0(preview_config)" in preview
+    assert "fit_student" not in preview
+
+
 def test_sensitivity_is_finite_for_default_fit():
     config = load_config()
     data = build_benchmark(config)

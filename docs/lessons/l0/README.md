@@ -15,6 +15,20 @@ The [static report](../../../reports/l0_inertia_damping/report.md) is the
 recorded result for the default configuration. The [Jupyter lab](../../../notebooks/l0_inertia_damping.ipynb)
 lets you change one nominal value and see the same pipeline run again.
 
+For review, the [Marimo interactive preview](../../../apps/l0_inertia_damping.py)
+offers a more application-like lesson: constrained sliders update the model,
+plots, metrics, and explanation reactively without manually rerunning cells.
+Install and launch it from the repository root with:
+
+```bash
+python -m pip install -r requirements-interactive.txt
+marimo run apps/l0_inertia_damping.py
+```
+
+This is a candidate presentation surface for comparison with Jupyter. Both
+call the same numerical implementation; choosing one does not change the
+experiment contract.
+
 ## Before you start
 
 You need basic Python and the ability to read a curve over time. No robot
