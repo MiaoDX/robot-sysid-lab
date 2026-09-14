@@ -1,5 +1,27 @@
 # Synthetic SysID Lab
 
+## L0 runnable lesson
+
+The first delivered lesson identifies inertia `J` and viscous damping `b` in
+the analytical plant `J*qdd + b*qd = u`. It uses known applied torque and
+ideal `t`, `u`, `q`, and `qd` observations. A chirp is used for fitting and a
+separate multisine is held out for validation.
+
+Install the CPU dependencies with `python -m pip install -r requirements.txt`,
+then generate the visual report with:
+
+```text
+python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping
+```
+
+Open [the Jupyter lesson](../notebooks/l0_inertia_damping.ipynb) to inspect the
+curves and change the nominal starting values. The notebook and headless
+command call the same importable implementation. The generated report contains
+the static figure, metrics, and configuration metadata.
+
+Run the focused checks with `python -m pip install -r requirements-dev.txt`
+followed by `python -m pytest -q`.
+
 The synthetic track is a first-class part of this repository, not just a preliminary sanity check before hardware.
 
 Its purpose is to create controlled robot-identification problems where the complete hidden ground truth is available to the lab author while the identification pipeline only receives realistic commands and observations.
