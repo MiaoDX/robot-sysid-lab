@@ -40,8 +40,8 @@ frame question
 ```
 
 The computation has one source of truth: an importable Python module. The
-lesson text explains the reasoning, the notebook or a future Marimo app is a
-learner-facing adapter, and the static report records one reproducible run.
+lesson text explains the reasoning, Marimo and Jupyter are learner-facing
+adapters, and the static report records one reproducible run.
 None of those presentation surfaces should reimplement simulation or fitting.
 
 ## Execution policy
@@ -115,7 +115,7 @@ An experiment can move to the next lesson only when it has:
 
 ## Presentation surfaces
 
-Jupyter remains an inspectable L0 surface. The current Marimo preview demonstrates
+Jupyter remains an inspectable L0 surface. The current guided Marimo course uses
 reactive controls while calling the same numerical implementation: changing a
 nominal parameter performs an instant fit, while switching fit/validation only
 selects another view from the completed run. Quarto or MkDocs can host the lesson

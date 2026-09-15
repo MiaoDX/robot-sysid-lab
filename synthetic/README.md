@@ -15,10 +15,11 @@ with:
 python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping
 ```
 
-Open [the Jupyter lesson](../notebooks/l0_inertia_damping.ipynb) to inspect the
-curves and change the nominal starting values. The notebook and headless
-command call the same importable implementation. The generated report contains
-the static figure, metrics, and configuration metadata.
+Open [the guided Marimo course](../apps/l0_inertia_damping.py) for the knowledge
+introduction and reactive experiment. Use [the Jupyter lesson](../notebooks/l0_inertia_damping.ipynb)
+to inspect the computation cell by cell. Both surfaces and the headless command
+call the same importable implementation. The generated report contains the
+static figure, metrics, and configuration metadata.
 
 Run the focused checks with `python -m pip install -r requirements-dev.txt`
 followed by `python -m pytest -q`.

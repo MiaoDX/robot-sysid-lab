@@ -45,30 +45,166 @@ def _():
 
 @app.cell
 def _(mo):
-    mo.Html(
+    lesson_header = mo.Html(
         """
         <style>
-          :root { --lesson-ink: #17211b; --lesson-muted: #59645d; --lesson-green: #1f6b45; }
-          .lesson-hero { padding: 1.4rem 0 .7rem; border-bottom: 1px solid #d9dedb; margin-bottom: 1rem; }
-          .lesson-kicker { color: var(--lesson-green); font: 700 .78rem/1.2 sans-serif; text-transform: uppercase; }
-          .lesson-hero h1 { color: var(--lesson-ink); font: 650 2rem/1.15 sans-serif; margin: .35rem 0 .5rem; letter-spacing: 0; }
-          .lesson-hero p { color: var(--lesson-muted); font: 1rem/1.55 sans-serif; max-width: 72ch; }
-          .lesson-step { border-left: 3px solid var(--lesson-green); padding-left: .9rem; margin: 1rem 0; }
-          .metric-strip { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: .6rem; margin: .7rem 0 1rem; }
-          .metric { border: 1px solid #d9dedb; border-radius: 6px; padding: .65rem .75rem; background: #fff; }
-          .metric b { display: block; color: var(--lesson-ink); font: 650 1.05rem/1.2 monospace; }
-          .metric span { color: var(--lesson-muted); font: .76rem/1.3 sans-serif; }
-          @media (max-width: 700px) { .metric-strip { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+          /* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 */
+          :root {
+            --lesson-ink: #17211b;
+            --lesson-muted: #59645d;
+            --lesson-green: #1f6b45;
+            --lesson-blue: #1677a3;
+            --lesson-warm: #d97706;
+            --lesson-paper: #ffffff;
+            --lesson-soft: #f3f6f4;
+            --lesson-line: #d9dedb;
+            --lesson-font-display: ui-sans-serif, system-ui, sans-serif;
+            --lesson-font-body: ui-sans-serif, system-ui, sans-serif;
+            --lesson-font-mono: ui-monospace, monospace;
+          }
+          html, body { overflow-x: clip; }
+          .lesson-hero { padding: 1.4rem 0 .7rem; border-bottom: 1px solid var(--lesson-line); margin-bottom: 1rem; }
+          .lesson-kicker { color: var(--lesson-green); font: 700 .78rem/1.2 var(--lesson-font-body); text-transform: uppercase; }
+          .lesson-hero h1 { color: var(--lesson-ink); font: 650 2rem/1.15 var(--lesson-font-display); margin: .35rem 0 .5rem; letter-spacing: 0; overflow-wrap: anywhere; }
+          .lesson-hero p { color: var(--lesson-muted); font: 1rem/1.55 var(--lesson-font-body); max-width: 72ch; }
         </style>
         <section class="lesson-hero">
-          <div class="lesson-kicker">Robot SysID Lab / Lesson L0</div>
-          <h1>Can motion reveal inertia and damping?</h1>
-          <p>Change the Student's starting model, fit it against observed motion,
-          then test it on an excitation the estimator never saw.</p>
+          <div class="lesson-kicker">Robot SysID Lab / Course entry</div>
+          <h1>From model mismatch to evidence</h1>
+          <p>Learn why robot models drift from physical systems, what system
+          identification can recover, and how held-out experiments tell us
+          whether a fitted model is useful.</p>
         </section>
         """
     )
-    return
+    return lesson_header
+
+
+@app.cell
+def _(mo):
+    introduction = mo.Html(
+        """
+        <style>
+          :root {
+            --lesson-ink: #17211b;
+            --lesson-muted: #59645d;
+            --lesson-green: #1f6b45;
+            --lesson-blue: #1677a3;
+            --lesson-warm: #d97706;
+            --lesson-paper: #ffffff;
+            --lesson-soft: #f3f6f4;
+            --lesson-line: #d9dedb;
+            --lesson-font-display: ui-sans-serif, system-ui, sans-serif;
+            --lesson-font-body: ui-sans-serif, system-ui, sans-serif;
+            --lesson-font-mono: ui-monospace, monospace;
+          }
+          :host { overflow-x: clip; }
+          .intro-wrap { color: var(--lesson-ink); font-family: var(--lesson-font-body); padding: .8rem 0 1.5rem; }
+          .intro-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 2.5rem; align-items: start; padding: 1.4rem 0 2rem; }
+          .intro-label { color: var(--lesson-green); font-size: .75rem; font-weight: 750; text-transform: uppercase; margin-bottom: .55rem; }
+          .intro-wrap h2 { font: 650 1.7rem/1.22 var(--lesson-font-display); letter-spacing: 0; margin: 0 0 .8rem; overflow-wrap: anywhere; }
+          .intro-wrap h3 { font: 650 1.08rem/1.3 var(--lesson-font-display); letter-spacing: 0; margin: 0 0 .4rem; }
+          .intro-wrap p { color: var(--lesson-muted); font-size: .98rem; line-height: 1.58; margin: 0; }
+          .mismatch { border-top: 3px solid var(--lesson-warm); background: var(--lesson-soft); padding: 1rem; }
+          .mismatch-flow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: .65rem; margin-bottom: .85rem; }
+          .flow-node { border: 1px solid var(--lesson-line); background: var(--lesson-paper); padding: .75rem; font-size: .88rem; font-weight: 650; text-align: center; }
+          .flow-arrow { color: var(--lesson-warm); font-size: 1.25rem; font-weight: 800; }
+          .mismatch-note { color: var(--lesson-ink); font-size: .84rem; line-height: 1.45; }
+          .outcomes { border-top: 1px solid var(--lesson-line); border-bottom: 1px solid var(--lesson-line); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+          .outcome { padding: 1.15rem 1.1rem 1.2rem 0; }
+          .outcome + .outcome { border-left: 1px solid var(--lesson-line); padding-left: 1.1rem; }
+          .outcome-index { color: var(--lesson-green); font: 700 .75rem/1 var(--lesson-font-mono); margin-bottom: .55rem; }
+          .workflow { padding: 2rem 0; }
+          .workflow-line { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; margin-top: 1rem; }
+          .workflow-step { border-top: 2px solid var(--lesson-green); padding: .7rem .7rem .2rem 0; min-width: 0; }
+          .workflow-step + .workflow-step { margin-left: .55rem; }
+          .workflow-step b { display: block; color: var(--lesson-ink); font-size: .86rem; margin-bottom: .25rem; }
+          .workflow-step span { color: var(--lesson-muted); font-size: .75rem; line-height: 1.35; }
+          .scope-row { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 2rem; padding: 1.2rem 0; border-top: 1px solid var(--lesson-line); }
+          .scope-tag { color: var(--lesson-blue); font: 700 .76rem/1.3 var(--lesson-font-mono); }
+          .scope-copy { color: var(--lesson-muted); font-size: .9rem; line-height: 1.55; }
+          @media (max-width: 700px) {
+            .intro-grid, .scope-row { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+            .outcomes { grid-template-columns: minmax(0, 1fr); }
+            .outcome + .outcome { border-left: 0; border-top: 1px solid var(--lesson-line); padding-left: 0; }
+            .workflow-line { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+            .workflow-step + .workflow-step { margin-left: 0; }
+          }
+        </style>
+        <section class="intro-wrap">
+          <div class="intro-grid">
+            <div>
+              <div class="intro-label">Why system identification?</div>
+              <h2>Your controller acts on a model. The robot acts on physics.</h2>
+              <p>A simulator, controller, or policy begins with assumed masses,
+              actuator response, friction, delay, and contact. Manufacturing
+              variation, payload, temperature, wear, wiring, and unmodeled
+              dynamics make the observed robot move differently. SysID turns
+              that mismatch into an experiment we can measure and explain.</p>
+            </div>
+            <div class="mismatch">
+              <div class="mismatch-flow">
+                <div class="flow-node">Expected motion<br>from a model</div>
+                <div class="flow-arrow">&ne;</div>
+                <div class="flow-node">Observed motion<br>from the plant</div>
+              </div>
+              <div class="mismatch-note"><strong>Model mismatch</strong> appears
+              as prediction error, tracking error, unstable tuning, or a policy
+              that works in simulation and fails on hardware.</div>
+            </div>
+          </div>
+
+          <div class="intro-label">What SysID gives us</div>
+          <div class="outcomes">
+            <div class="outcome">
+              <div class="outcome-index">01</div>
+              <h3>A useful plant model</h3>
+              <p>Estimate physical or effective parameters inside a declared
+              boundary, such as inertia, damping, delay, or torque response.</p>
+            </div>
+            <div class="outcome">
+              <div class="outcome-index">02</div>
+              <h3>Predictive evidence</h3>
+              <p>Test the fitted Student on motions and conditions that were not
+              used during fitting. A low fit loss alone is not enough.</p>
+            </div>
+            <div class="outcome">
+              <div class="outcome-index">03</div>
+              <h3>A map of what is missing</h3>
+              <p>Use residual patterns and sensitivity to decide whether the
+              experiment, observations, optimizer, or model structure must change.</p>
+            </div>
+          </div>
+
+          <div class="workflow">
+            <div class="intro-label">What we actually do</div>
+            <h2>One loop, repeated at increasing scale</h2>
+            <div class="workflow-line">
+              <div class="workflow-step"><b>1. Boundary</b><span>Name the plant, input, output, and unknowns.</span></div>
+              <div class="workflow-step"><b>2. Excite</b><span>Apply motion that reveals the target dynamics.</span></div>
+              <div class="workflow-step"><b>3. Observe</b><span>Record only signals available to the estimator.</span></div>
+              <div class="workflow-step"><b>4. Fit</b><span>Estimate parameters inside the Student model.</span></div>
+              <div class="workflow-step"><b>5. Validate</b><span>Predict a held-out motion or condition.</span></div>
+              <div class="workflow-step"><b>6. Diagnose</b><span>Read residuals and add complexity only as needed.</span></div>
+            </div>
+          </div>
+
+          <div class="scope-row">
+            <div>
+              <div class="intro-label">Why begin with L0?</div>
+              <div class="scope-tag">J * qdd + b * qd = u</div>
+            </div>
+            <div class="scope-copy">L0 uses one rotational joint, known torque,
+            ideal observations, and only two unknown parameters. This removes
+            hardware and model-structure ambiguity so you can first learn the
+            meaning of Oracle, Nominal, Student, fitting, held-out validation,
+            and residuals. Later lessons add delay, friction, actuators, legs,
+            contact, and whole robots one uncertainty class at a time.</div>
+          </div>
+        </section>
+        """
+    )
+    return introduction
 
 
 @app.cell
@@ -125,8 +261,7 @@ def _(damping_control, inertia_control, mo, split_control):
         ],
         gap=1.0,
     )
-    controls
-    return
+    return controls
 
 
 @app.cell
@@ -296,6 +431,7 @@ def _(
     lesson_figure.suptitle(
         f"{split_control.value}: Oracle vs Student models", fontsize=15
     )
+    plt.close(lesson_figure)
     return lesson_figure
 
 
@@ -313,6 +449,21 @@ def _(
     nominal_metrics, identified_metrics = preview_metrics
     metric_strip = mo.Html(
         f"""
+        <style>
+          :root {{
+            --lesson-ink: #17211b;
+            --lesson-muted: #59645d;
+            --lesson-paper: #ffffff;
+            --lesson-line: #d9dedb;
+            --lesson-font-body: ui-sans-serif, system-ui, sans-serif;
+            --lesson-font-mono: ui-monospace, monospace;
+          }}
+          .metric-strip {{ display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: .6rem; margin: .7rem 0 1rem; }}
+          .metric {{ border: 1px solid var(--lesson-line); border-radius: 6px; padding: .65rem .75rem; background: var(--lesson-paper); }}
+          .metric b {{ display: block; color: var(--lesson-ink); font: 650 1.05rem/1.2 var(--lesson-font-mono); }}
+          .metric span {{ color: var(--lesson-muted); font: .76rem/1.3 var(--lesson-font-body); }}
+          @media (max-width: 700px) {{ .metric-strip {{ grid-template-columns: repeat(2,minmax(0,1fr)); }} }}
+        </style>
         <div class="metric-strip">
           <div class="metric"><b>{nominal_metrics.q_mae:.3g}</b><span>{split_control.value} nominal q MAE</span></div>
           <div class="metric"><b>{identified_metrics.q_mae:.3g}</b><span>{split_control.value} identified q MAE</span></div>
@@ -357,7 +508,27 @@ lesson adds one mismatch at a time so its residual signature remains visible.
         ],
         gap=1.0,
     )
-    result_view
+    return result_view
+
+
+@app.cell
+def _(controls, introduction, lesson_header, mo, result_view):
+    course = mo.vstack(
+        [
+            lesson_header,
+            mo.ui.tabs(
+                {
+                    "01 Why SysID": introduction,
+                    "02 Run L0": mo.vstack([controls, result_view], gap=1.2),
+                },
+                value="01 Why SysID",
+                lazy=True,
+                label="Lesson stage",
+            ),
+        ],
+        gap=0.5,
+    )
+    course
     return
 
 

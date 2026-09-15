@@ -69,7 +69,11 @@ change Student model class
   -> observe compensation and validation failure
 ```
 
-For the first executable lab, use a Jupyter notebook as the learner-facing surface because it gives the project immediate plots, editable parameters, and a familiar CPU-only workflow. Keep the notebook backed by importable Python code so the same computation can run headlessly in CI and generate the recorded report. A reactive environment such as Marimo can be evaluated later if the labs need richer reactive controls; it is not an L0 dependency.
+The first executable lab now uses Marimo as its guided learner surface. It
+opens with the motivation and SysID workflow, then exposes constrained reactive
+controls for the experiment. Jupyter remains available for cell-by-cell code
+inspection. Both call importable Python code so the same computation can run
+headlessly in CI and generate the recorded report.
 
 ### Layer 3 — Experiment reports
 
@@ -557,7 +561,11 @@ This should be treated as a pragmatic starting point rather than a permanent arc
 
 ### Interactive labs
 
-The initial interactive surface is Jupyter, with plots generated from the same importable implementation used by headless checks. This keeps visualization available in the first lesson without committing the project to a custom web application. Marimo remains a later option if the first labs demonstrate that reactive controls materially improve learning.
+The initial guided surface is Marimo, with plots generated from the same
+importable implementation used by Jupyter and headless checks. The L0 course
+uses separate Introduction and Experiment stages, reactive parameter controls,
+and explicit compute status. Jupyter remains the inspectable research surface;
+Marimo does not own a second implementation of the experiment.
 
 ### Robot visualization
 

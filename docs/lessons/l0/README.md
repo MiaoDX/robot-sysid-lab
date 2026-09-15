@@ -1,33 +1,37 @@
 # L0: A first system identification experiment
 
-This lesson set starts with a deliberately small plant so the reasoning is
-visible. We identify inertia `J` and viscous damping `b` from known applied
-torque and ideal position/velocity observations.
+This lesson set begins with why robot system identification is useful, what it
+produces, and the engineering loop it follows. It then uses a deliberately
+small plant so every part of that loop is visible. We identify inertia `J` and
+viscous damping `b` from known applied torque and ideal position/velocity
+observations.
 
 ## Learning path
 
-1. [Orientation: what is being identified?](00-orientation.md)
-2. [From physics to data: why inertia and damping matter](01-physics-to-data.md)
-3. [From fit to held-out validation](02-fit-to-validation.md)
-4. [Assumptions, limits, and the next lesson](03-assumptions-and-next-step.md)
+1. Open the Marimo course and read `01 Why SysID`.
+2. [Orientation: what is being identified?](00-orientation.md)
+3. [From physics to data: why inertia and damping matter](01-physics-to-data.md)
+4. [From fit to held-out validation](02-fit-to-validation.md)
+5. [Assumptions, limits, and the next lesson](03-assumptions-and-next-step.md)
 
 The [static report](../../../reports/l0_inertia_damping/report.md) is the
 recorded result for the default configuration. The [Jupyter lab](../../../notebooks/l0_inertia_damping.ipynb)
 lets you change one nominal value and see the same pipeline run again.
 
-For review, the [Marimo interactive preview](../../../apps/l0_inertia_damping.py)
-offers a more application-like lesson: constrained sliders update the model,
-plots, metrics, and explanation reactively without manually rerunning cells.
-Install and launch it from the repository root with:
+The [Marimo interactive course](../../../apps/l0_inertia_damping.py) is the
+guided entry point. Its Introduction stage explains why SysID matters, what it
+produces, and the engineering loop before the Experiment stage exposes the
+model. Constrained sliders update the model, plots, metrics, and explanation
+reactively without manually rerunning cells. Install and launch it from the
+repository root with:
 
 ```bash
 python -m pip install -r requirements-interactive.txt
 marimo run apps/l0_inertia_damping.py
 ```
 
-This is a candidate presentation surface for comparison with Jupyter. Both
-call the same numerical implementation; choosing one does not change the
-experiment contract.
+Marimo and Jupyter call the same numerical implementation. They provide guided
+and inspectable views of one experiment contract rather than separate labs.
 
 ## Before you start
 

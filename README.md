@@ -21,12 +21,12 @@ The Oracle knows its full state and parameters; the estimator receives only the 
 | [Design Oracle experiments](docs/04_oracle_sim_experiment_design.md) | [Benchmark contract](docs/07_benchmark_contract.md) |
 | [Understand the visual reports](docs/05_visualization_and_reporting.md) | [Lesson / Experiment Pipeline](docs/lesson_pipeline.md) |
 
-The first runnable lab is [the L0 Jupyter notebook](notebooks/l0_inertia_damping.ipynb),
-introduced by the [L0 lesson set](docs/lessons/l0/README.md).
+The first guided course is the [interactive L0 Marimo app](apps/l0_inertia_damping.py),
+introduced by the [L0 lesson set](docs/lessons/l0/README.md). The
+[Jupyter notebook](notebooks/l0_inertia_damping.ipynb) remains available for
+cell-by-cell inspection.
 Its headless equivalent is `python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping`.
 The generated [L0 report](reports/l0_inertia_damping/report.md) is available without running a notebook.
-An application-style [Marimo preview](apps/l0_inertia_damping.py) is also
-available for reviewing reactive lesson controls.
 
 [Project status and next steps](STATUS.md)
 
