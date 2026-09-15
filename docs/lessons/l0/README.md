@@ -8,7 +8,7 @@ observations.
 
 ## Learning path
 
-1. Open the Marimo course and read `01 Why SysID`.
+1. Open the Marimo course and follow its continuous path from Why to Limits.
 2. [Orientation: what is being identified?](00-orientation.md)
 3. [From physics to data: why inertia and damping matter](01-physics-to-data.md)
 4. [From fit to held-out validation](02-fit-to-validation.md)
@@ -19,11 +19,12 @@ recorded result for the default configuration. The [Jupyter lab](../../../notebo
 lets you change one nominal value and see the same pipeline run again.
 
 The [Marimo interactive course](../../../apps/l0_inertia_damping.py) is the
-guided entry point. Its Introduction stage explains why SysID matters, what it
-produces, and the engineering loop before the Experiment stage exposes the
-model. Constrained sliders update the model, plots, metrics, and explanation
-reactively without manually rerunning cells. Install and launch it from the
-repository root with:
+guided entry point. It explains why SysID matters, declares the model boundary,
+and embeds the experiment and its evidence in one vertically scrolling lesson.
+The chapter rail is for orientation; the Fit / Validation control compares two
+views of one result. Constrained sliders update the model, plots, metrics, and
+explanation reactively without manually rerunning cells. Install and launch it
+from the repository root with:
 
 ```bash
 python -m pip install -r requirements-interactive.txt

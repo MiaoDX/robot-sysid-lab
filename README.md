@@ -22,6 +22,7 @@ The Oracle knows its full state and parameters; the estimator receives only the 
 | [Understand the visual reports](docs/05_visualization_and_reporting.md) | [Lesson / Experiment Pipeline](docs/lesson_pipeline.md) |
 
 The first guided course is the [interactive L0 Marimo app](apps/l0_inertia_damping.py),
+a continuous lesson from motivation through experiment evidence and limits,
 introduced by the [L0 lesson set](docs/lessons/l0/README.md). The
 [Jupyter notebook](notebooks/l0_inertia_damping.ipynb) remains available for
 cell-by-cell inspection.

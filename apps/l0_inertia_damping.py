@@ -48,33 +48,351 @@ def _(mo):
     lesson_header = mo.Html(
         """
         <style>
-          /* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 */
+          /* Hallmark · genre: editorial · macrostructure: Long Document + Workbench
+           * pre-emit critique: P5 H5 E4 S5 R5 V4
+           * responsive: pass · honest: pass · chrome: pass · tokens: pass
+           */
           :root {
-            --lesson-ink: #17211b;
-            --lesson-muted: #59645d;
-            --lesson-green: #1f6b45;
-            --lesson-blue: #1677a3;
-            --lesson-warm: #d97706;
-            --lesson-paper: #ffffff;
-            --lesson-soft: #f3f6f4;
-            --lesson-line: #d9dedb;
-            --lesson-font-display: ui-sans-serif, system-ui, sans-serif;
+            --lesson-ink: oklch(29% 0.025 151);
+            --lesson-muted: oklch(48% 0.018 151);
+            --lesson-green: oklch(47% 0.105 151);
+            --lesson-blue: oklch(50% 0.105 230);
+            --lesson-warm: oklch(59% 0.145 57);
+            --lesson-paper: oklch(99% 0.006 151);
+            --lesson-paper-glass: oklch(99% 0.006 151 / .82);
+            --lesson-soft: oklch(96% 0.012 151);
+            --lesson-line: oklch(85% 0.014 151);
+            --lesson-wash-cool: oklch(92% 0.035 225);
+            --lesson-wash-warm: oklch(94% 0.045 62);
+            --lesson-focus: oklch(43% 0.12 230);
+            --lesson-shadow: oklch(29% 0.025 151 / .08);
+            --lesson-font-display: Charter, "Bitstream Charter", Georgia, serif;
             --lesson-font-body: ui-sans-serif, system-ui, sans-serif;
             --lesson-font-mono: ui-monospace, monospace;
+            --lesson-space-3xs: .25rem;
+            --lesson-space-2xs: .5rem;
+            --lesson-space-xs: .75rem;
+            --lesson-space-sm: 1rem;
+            --lesson-space-md: 1.5rem;
+            --lesson-space-lg: 2rem;
+            --lesson-space-xl: 3rem;
+            --lesson-space-2xl: 4.5rem;
           }
           html, body { overflow-x: clip; }
-          .lesson-hero { padding: 1.4rem 0 .7rem; border-bottom: 1px solid var(--lesson-line); margin-bottom: 1rem; }
-          .lesson-kicker { color: var(--lesson-green); font: 700 .78rem/1.2 var(--lesson-font-body); text-transform: uppercase; }
-          .lesson-hero h1 { color: var(--lesson-ink); font: 650 2rem/1.15 var(--lesson-font-display); margin: .35rem 0 .5rem; letter-spacing: 0; overflow-wrap: anywhere; }
-          .lesson-hero p { color: var(--lesson-muted); font: 1rem/1.55 var(--lesson-font-body); max-width: 72ch; }
+          body {
+            color: var(--lesson-ink);
+            background-color: var(--lesson-paper);
+            background-image: linear-gradient(
+              145deg,
+              var(--lesson-wash-cool),
+              var(--lesson-paper) 42%,
+              var(--lesson-paper) 68%,
+              var(--lesson-wash-warm)
+            );
+            background-attachment: fixed;
+          }
+          body::before {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            content: "";
+            pointer-events: none;
+            opacity: .22;
+            background-image: repeating-linear-gradient(
+              115deg,
+              transparent 0,
+              transparent 3px,
+              var(--lesson-line) 4px
+            );
+          }
+          .lesson-hero {
+            padding: var(--lesson-space-xl) var(--lesson-space-lg) var(--lesson-space-lg);
+            border-bottom: 1px solid var(--lesson-line);
+            margin-bottom: var(--lesson-space-sm);
+            background-color: var(--lesson-paper);
+            background-image:
+              repeating-linear-gradient(
+                115deg,
+                transparent 0,
+                transparent 4px,
+                var(--lesson-line) 5px
+              ),
+              linear-gradient(
+                135deg,
+                var(--lesson-wash-cool),
+                var(--lesson-paper) 48%,
+                var(--lesson-wash-warm)
+              );
+          }
+          .lesson-kicker {
+            color: var(--lesson-green);
+            font: 700 .78rem/1.2 var(--lesson-font-body);
+            text-transform: uppercase;
+          }
+          .lesson-hero h1 {
+            color: var(--lesson-ink);
+            font: 650 clamp(2.15rem, 5vw, 4.4rem)/1.02 var(--lesson-font-display);
+            margin: var(--lesson-space-xs) 0 var(--lesson-space-sm);
+            letter-spacing: 0;
+            overflow-wrap: anywhere;
+            min-width: 0;
+            max-width: 15ch;
+          }
+          .lesson-hero p {
+            color: var(--lesson-muted);
+            font: 1.05rem/1.62 var(--lesson-font-body);
+            max-width: 65ch;
+            margin: 0;
+          }
+          .lesson-progress {
+            position: sticky;
+            top: var(--lesson-space-2xs);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--lesson-space-3xs) var(--lesson-space-xs);
+            padding: var(--lesson-space-xs) var(--lesson-space-sm);
+            margin: 0 0 var(--lesson-space-xl);
+            border: 1px solid var(--lesson-line);
+            border-radius: 6px;
+            background-color: var(--lesson-paper-glass);
+            background-image: linear-gradient(
+              100deg,
+              var(--lesson-wash-cool),
+              var(--lesson-paper-glass) 42%,
+              var(--lesson-wash-warm)
+            );
+            color: var(--lesson-muted);
+            box-shadow: 0 8px 28px var(--lesson-shadow);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+          }
+          .lesson-progress strong {
+            color: var(--lesson-ink);
+            font: 700 .76rem/1 var(--lesson-font-mono);
+            margin-inline-end: var(--lesson-space-2xs);
+          }
+          .lesson-progress a {
+            color: var(--lesson-muted);
+            font: 650 .78rem/1 var(--lesson-font-body);
+            text-decoration: none;
+            white-space: nowrap;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            border-bottom: 2px solid transparent;
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+          }
+          @media (hover: hover) and (pointer: fine) {
+            .lesson-progress a:hover {
+              color: var(--lesson-green);
+              border-bottom-color: var(--lesson-green);
+            }
+          }
+          .lesson-progress a:focus-visible {
+            color: var(--lesson-ink);
+            outline-color: var(--lesson-focus);
+          }
+          .lesson-progress a:active { color: var(--lesson-blue); }
+          .lesson-chapter {
+            scroll-margin-top: 6rem;
+            padding: var(--lesson-space-xl) 0 var(--lesson-space-lg);
+            border-top: 1px solid var(--lesson-line);
+            color: var(--lesson-ink);
+            font-family: var(--lesson-font-body);
+          }
+          .lesson-chapter:first-of-type { border-top: 0; }
+          .chapter-label {
+            display: block;
+            color: var(--lesson-green);
+            font: 700 .75rem/1.2 var(--lesson-font-mono);
+            margin-bottom: var(--lesson-space-xs);
+          }
+          .lesson-chapter h2 {
+            color: var(--lesson-ink);
+            font: 650 clamp(1.65rem, 3vw, 2.45rem)/1.12 var(--lesson-font-display);
+            letter-spacing: 0;
+            margin: 0 0 var(--lesson-space-sm);
+            overflow-wrap: anywhere;
+            min-width: 0;
+          }
+          .chapter-lede {
+            color: var(--lesson-muted);
+            font: 1rem/1.6 var(--lesson-font-body);
+            max-width: 68ch;
+            margin: 0;
+          }
+          .intro-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+            gap: var(--lesson-space-xl);
+            align-items: start;
+            padding: var(--lesson-space-md) 0 var(--lesson-space-xl);
+          }
+          .intro-grid h3,
+          .outcome h3,
+          .role h3 {
+            color: var(--lesson-ink);
+            font: 650 1.08rem/1.3 var(--lesson-font-display);
+            letter-spacing: 0;
+            margin: 0 0 var(--lesson-space-2xs);
+          }
+          .intro-grid p,
+          .outcome p,
+          .role p {
+            color: var(--lesson-muted);
+            font: .96rem/1.58 var(--lesson-font-body);
+            margin: 0;
+          }
+          .mismatch {
+            border-top: 3px solid var(--lesson-warm);
+            background-color: var(--lesson-soft);
+            color: var(--lesson-ink);
+            padding: var(--lesson-space-sm);
+          }
+          .mismatch-flow {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            align-items: center;
+            gap: var(--lesson-space-xs);
+            margin-bottom: var(--lesson-space-xs);
+          }
+          .flow-node {
+            border: 1px solid var(--lesson-line);
+            background-color: var(--lesson-paper);
+            color: var(--lesson-ink);
+            padding: var(--lesson-space-xs);
+            font: 650 .86rem/1.35 var(--lesson-font-body);
+            text-align: center;
+          }
+          .flow-arrow {
+            color: var(--lesson-warm);
+            font: 800 1.25rem/1 var(--lesson-font-body);
+          }
+          .mismatch-note {
+            color: var(--lesson-ink);
+            font: .84rem/1.45 var(--lesson-font-body);
+          }
+          .outcomes {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            border-top: 1px solid var(--lesson-line);
+            border-bottom: 1px solid var(--lesson-line);
+          }
+          .outcome { padding: var(--lesson-space-sm) var(--lesson-space-sm) var(--lesson-space-md) 0; }
+          .outcome + .outcome {
+            border-left: 1px solid var(--lesson-line);
+            padding-left: var(--lesson-space-sm);
+          }
+          .outcome-index {
+            color: var(--lesson-green);
+            font: 700 .75rem/1 var(--lesson-font-mono);
+            margin-bottom: var(--lesson-space-xs);
+          }
+          .workflow { padding: var(--lesson-space-xl) 0; }
+          .workflow-line {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: var(--lesson-space-xs);
+            margin-top: var(--lesson-space-sm);
+          }
+          .workflow-step {
+            border-top: 2px solid var(--lesson-green);
+            padding-top: var(--lesson-space-xs);
+            min-width: 0;
+          }
+          .workflow-step b {
+            display: block;
+            color: var(--lesson-ink);
+            font: 650 .85rem/1.3 var(--lesson-font-body);
+            margin-bottom: var(--lesson-space-3xs);
+          }
+          .workflow-step span {
+            color: var(--lesson-muted);
+            font: .75rem/1.4 var(--lesson-font-body);
+          }
+          .equation-band {
+            display: grid;
+            grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr);
+            gap: var(--lesson-space-xl);
+            align-items: center;
+            padding: var(--lesson-space-lg) 0;
+            border-top: 1px solid var(--lesson-line);
+            border-bottom: 1px solid var(--lesson-line);
+          }
+          .equation {
+            color: var(--lesson-blue);
+            font: 700 clamp(1.15rem, 3vw, 1.7rem)/1.25 var(--lesson-font-mono);
+          }
+          .equation-copy {
+            color: var(--lesson-muted);
+            font: .95rem/1.58 var(--lesson-font-body);
+          }
+          .roles {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: var(--lesson-space-md);
+            padding-top: var(--lesson-space-lg);
+          }
+          .role { border-top: 2px solid var(--lesson-line); padding-top: var(--lesson-space-sm); }
+          .role:nth-child(1) { border-top-color: var(--lesson-ink); }
+          .role:nth-child(2) { border-top-color: var(--lesson-warm); }
+          .role:nth-child(3) { border-top-color: var(--lesson-blue); }
+          .metric-strip {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: var(--lesson-space-xs);
+            margin: var(--lesson-space-sm) 0;
+          }
+          .metric {
+            border: 1px solid var(--lesson-line);
+            border-radius: 6px;
+            padding: var(--lesson-space-xs);
+            background-color: var(--lesson-paper);
+            color: var(--lesson-ink);
+          }
+          .metric b {
+            display: block;
+            color: var(--lesson-ink);
+            font: 650 1.05rem/1.2 var(--lesson-font-mono);
+          }
+          .metric span {
+            color: var(--lesson-muted);
+            font: .76rem/1.35 var(--lesson-font-body);
+          }
+          @media (max-width: 40rem) {
+            .lesson-hero {
+              padding: var(--lesson-space-lg) var(--lesson-space-sm);
+            }
+            .lesson-progress { position: static; padding: var(--lesson-space-2xs) var(--lesson-space-xs); }
+            .lesson-progress strong { flex-basis: 100%; margin-bottom: var(--lesson-space-3xs); }
+            .lesson-chapter { padding: var(--lesson-space-lg) 0; }
+            .intro-grid,
+            .equation-band { grid-template-columns: minmax(0, 1fr); gap: var(--lesson-space-sm); }
+            .outcomes,
+            .roles { grid-template-columns: minmax(0, 1fr); }
+            .metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .outcome + .outcome { border-left: 0; border-top: 1px solid var(--lesson-line); padding-left: 0; }
+            .workflow-line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          }
         </style>
         <section class="lesson-hero">
-          <div class="lesson-kicker">Robot SysID Lab / Course entry</div>
-          <h1>From model mismatch to evidence</h1>
-          <p>Learn why robot models drift from physical systems, what system
-          identification can recover, and how held-out experiments tell us
-          whether a fitted model is useful.</p>
+          <div class="lesson-kicker">Robot SysID Lab / L0</div>
+          <h1>Make a model answer to evidence</h1>
+          <p>Begin with the reason robot models drift, reduce the problem to one
+          joint, then identify inertia and damping and test the result on motion
+          the estimator never saw.</p>
         </section>
+        <nav class="lesson-progress" aria-label="Lesson chapters">
+          <strong>L0 PATH</strong>
+          <a href="#why">Why</a>
+          <a href="#boundary">Boundary</a>
+          <a href="#experiment">Experiment</a>
+          <a href="#evidence">Evidence</a>
+          <a href="#limits">Limits</a>
+        </nav>
         """
     )
     return lesson_header
@@ -84,58 +402,15 @@ def _(mo):
 def _(mo):
     introduction = mo.Html(
         """
-        <style>
-          :root {
-            --lesson-ink: #17211b;
-            --lesson-muted: #59645d;
-            --lesson-green: #1f6b45;
-            --lesson-blue: #1677a3;
-            --lesson-warm: #d97706;
-            --lesson-paper: #ffffff;
-            --lesson-soft: #f3f6f4;
-            --lesson-line: #d9dedb;
-            --lesson-font-display: ui-sans-serif, system-ui, sans-serif;
-            --lesson-font-body: ui-sans-serif, system-ui, sans-serif;
-            --lesson-font-mono: ui-monospace, monospace;
-          }
-          :host { overflow-x: clip; }
-          .intro-wrap { color: var(--lesson-ink); font-family: var(--lesson-font-body); padding: .8rem 0 1.5rem; }
-          .intro-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 2.5rem; align-items: start; padding: 1.4rem 0 2rem; }
-          .intro-label { color: var(--lesson-green); font-size: .75rem; font-weight: 750; text-transform: uppercase; margin-bottom: .55rem; }
-          .intro-wrap h2 { font: 650 1.7rem/1.22 var(--lesson-font-display); letter-spacing: 0; margin: 0 0 .8rem; overflow-wrap: anywhere; }
-          .intro-wrap h3 { font: 650 1.08rem/1.3 var(--lesson-font-display); letter-spacing: 0; margin: 0 0 .4rem; }
-          .intro-wrap p { color: var(--lesson-muted); font-size: .98rem; line-height: 1.58; margin: 0; }
-          .mismatch { border-top: 3px solid var(--lesson-warm); background: var(--lesson-soft); padding: 1rem; }
-          .mismatch-flow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: .65rem; margin-bottom: .85rem; }
-          .flow-node { border: 1px solid var(--lesson-line); background: var(--lesson-paper); padding: .75rem; font-size: .88rem; font-weight: 650; text-align: center; }
-          .flow-arrow { color: var(--lesson-warm); font-size: 1.25rem; font-weight: 800; }
-          .mismatch-note { color: var(--lesson-ink); font-size: .84rem; line-height: 1.45; }
-          .outcomes { border-top: 1px solid var(--lesson-line); border-bottom: 1px solid var(--lesson-line); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-          .outcome { padding: 1.15rem 1.1rem 1.2rem 0; }
-          .outcome + .outcome { border-left: 1px solid var(--lesson-line); padding-left: 1.1rem; }
-          .outcome-index { color: var(--lesson-green); font: 700 .75rem/1 var(--lesson-font-mono); margin-bottom: .55rem; }
-          .workflow { padding: 2rem 0; }
-          .workflow-line { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; margin-top: 1rem; }
-          .workflow-step { border-top: 2px solid var(--lesson-green); padding: .7rem .7rem .2rem 0; min-width: 0; }
-          .workflow-step + .workflow-step { margin-left: .55rem; }
-          .workflow-step b { display: block; color: var(--lesson-ink); font-size: .86rem; margin-bottom: .25rem; }
-          .workflow-step span { color: var(--lesson-muted); font-size: .75rem; line-height: 1.35; }
-          .scope-row { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 2rem; padding: 1.2rem 0; border-top: 1px solid var(--lesson-line); }
-          .scope-tag { color: var(--lesson-blue); font: 700 .76rem/1.3 var(--lesson-font-mono); }
-          .scope-copy { color: var(--lesson-muted); font-size: .9rem; line-height: 1.55; }
-          @media (max-width: 700px) {
-            .intro-grid, .scope-row { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
-            .outcomes { grid-template-columns: minmax(0, 1fr); }
-            .outcome + .outcome { border-left: 0; border-top: 1px solid var(--lesson-line); padding-left: 0; }
-            .workflow-line { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
-            .workflow-step + .workflow-step { margin-left: 0; }
-          }
-        </style>
-        <section class="intro-wrap">
+        <section class="lesson-chapter" id="why">
+          <span class="chapter-label">01 / WHY SYSID</span>
+          <h2>Your controller acts on a model. The robot acts on physics.</h2>
+          <p class="chapter-lede">System identification turns the gap between
+          expected and observed motion into an experiment we can measure,
+          explain, and use to improve prediction.</p>
           <div class="intro-grid">
             <div>
-              <div class="intro-label">Why system identification?</div>
-              <h2>Your controller acts on a model. The robot acts on physics.</h2>
+              <h3>Models begin as assumptions</h3>
               <p>A simulator, controller, or policy begins with assumed masses,
               actuator response, friction, delay, and contact. Manufacturing
               variation, payload, temperature, wear, wiring, and unmodeled
@@ -154,7 +429,7 @@ def _(mo):
             </div>
           </div>
 
-          <div class="intro-label">What SysID gives us</div>
+          <span class="chapter-label">WHAT SYSID GIVES US</span>
           <div class="outcomes">
             <div class="outcome">
               <div class="outcome-index">01</div>
@@ -177,8 +452,8 @@ def _(mo):
           </div>
 
           <div class="workflow">
-            <div class="intro-label">What we actually do</div>
-            <h2>One loop, repeated at increasing scale</h2>
+            <span class="chapter-label">THE REPEATED LOOP</span>
+            <h2>Six steps, repeated at increasing scale</h2>
             <div class="workflow-line">
               <div class="workflow-step"><b>1. Boundary</b><span>Name the plant, input, output, and unknowns.</span></div>
               <div class="workflow-step"><b>2. Excite</b><span>Apply motion that reveals the target dynamics.</span></div>
@@ -189,17 +464,27 @@ def _(mo):
             </div>
           </div>
 
-          <div class="scope-row">
-            <div>
-              <div class="intro-label">Why begin with L0?</div>
-              <div class="scope-tag">J * qdd + b * qd = u</div>
-            </div>
-            <div class="scope-copy">L0 uses one rotational joint, known torque,
-            ideal observations, and only two unknown parameters. This removes
-            hardware and model-structure ambiguity so you can first learn the
-            meaning of Oracle, Nominal, Student, fitting, held-out validation,
-            and residuals. Later lessons add delay, friction, actuators, legs,
-            contact, and whole robots one uncertainty class at a time.</div>
+        </section>
+
+        <section class="lesson-chapter" id="boundary">
+          <span class="chapter-label">02 / DECLARE THE BOUNDARY</span>
+          <h2>Begin with one joint and two unknowns</h2>
+          <p class="chapter-lede">L0 removes hardware and model-structure
+          ambiguity so the full identification loop stays visible.</p>
+          <div class="equation-band">
+            <div class="equation">J * qdd + b * qd = u</div>
+            <div class="equation-copy"><strong>Known:</strong> time, applied
+            torque, position, and velocity. <strong>Unknown:</strong> inertia J
+            and viscous damping b. Larger J resists acceleration; larger b
+            removes more energy while the joint moves.</div>
+          </div>
+          <div class="roles">
+            <div class="role"><h3>Oracle</h3><p>The hidden plant that generates
+            observations. Its true parameters are reserved for evaluation.</p></div>
+            <div class="role"><h3>Nominal Student</h3><p>The plausible but wrong
+            model available before identification. It is the orange baseline.</p></div>
+            <div class="role"><h3>Identified Student</h3><p>The same model after
+            fitting J and b from the declared fit observations.</p></div>
           </div>
         </section>
         """
@@ -239,17 +524,34 @@ def _(build_benchmark, load_config, mo, repo_root):
 
 
 @app.cell
+def _(mo):
+    experiment_intro = mo.Html(
+        """
+        <section class="lesson-chapter" id="experiment">
+          <span class="chapter-label">03 / RUN THE EXPERIMENT</span>
+          <h2>Move the wrong model, then let the data answer</h2>
+          <p class="chapter-lede">First predict what higher inertia or damping
+          will do to the orange trajectory. Each slider change fits the Student
+          again against the same Oracle dataset; switching Fit and Validation
+          only changes which completed result you inspect.</p>
+        </section>
+        """
+    )
+    return experiment_intro
+
+
+@app.cell
 def _(damping_control, inertia_control, mo, split_control):
     controls = mo.vstack(
         [
-            mo.md("### 1. Start with a model you know is imperfect"),
+            mo.md("### Set the pre-identification Student"),
             mo.md(
                 "The orange **Nominal** model is the Student before SysID. "
-                "Move either control and predict how its motion will change."
+                "Move one control at a time and predict how its motion will change."
             ),
             inertia_control,
             damping_control,
-            mo.md("### 2. Choose the evidence"),
+            mo.md("### Select the evidence view"),
             split_control,
             mo.callout(
                 mo.md(
@@ -449,21 +751,6 @@ def _(
     nominal_metrics, identified_metrics = preview_metrics
     metric_strip = mo.Html(
         f"""
-        <style>
-          :root {{
-            --lesson-ink: #17211b;
-            --lesson-muted: #59645d;
-            --lesson-paper: #ffffff;
-            --lesson-line: #d9dedb;
-            --lesson-font-body: ui-sans-serif, system-ui, sans-serif;
-            --lesson-font-mono: ui-monospace, monospace;
-          }}
-          .metric-strip {{ display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: .6rem; margin: .7rem 0 1rem; }}
-          .metric {{ border: 1px solid var(--lesson-line); border-radius: 6px; padding: .65rem .75rem; background: var(--lesson-paper); }}
-          .metric b {{ display: block; color: var(--lesson-ink); font: 650 1.05rem/1.2 var(--lesson-font-mono); }}
-          .metric span {{ color: var(--lesson-muted); font: .76rem/1.3 var(--lesson-font-body); }}
-          @media (max-width: 700px) {{ .metric-strip {{ grid-template-columns: repeat(2,minmax(0,1fr)); }} }}
-        </style>
         <div class="metric-strip">
           <div class="metric"><b>{nominal_metrics.q_mae:.3g}</b><span>{split_control.value} nominal q MAE</span></div>
           <div class="metric"><b>{identified_metrics.q_mae:.3g}</b><span>{split_control.value} identified q MAE</span></div>
@@ -474,7 +761,17 @@ def _(
     )
     result_view = mo.vstack(
         [
-            mo.md("### 3. Read the result"),
+            mo.Html(
+                """
+                <section class="lesson-chapter" id="evidence">
+                  <span class="chapter-label">04 / READ THE EVIDENCE</span>
+                  <h2>Fit explains the estimate. Validation tests its use.</h2>
+                  <p class="chapter-lede">The blue Identified curve should
+                  follow the hidden Oracle on the chirp used for fitting and
+                  on the held-out multisine used only for evaluation.</p>
+                </section>
+                """
+            ),
             metric_strip,
             mo.md(
                 f"`Oracle dataset reused` · fit completed at "
@@ -492,9 +789,20 @@ def _(
                 ),
                 kind="success",
             ),
+            mo.Html(
+                """
+                <section class="lesson-chapter" id="limits">
+                  <span class="chapter-label">05 / NAME THE LIMITS</span>
+                  <h2>A successful fit is a bounded claim</h2>
+                  <p class="chapter-lede">L0 proves the loop under a matched,
+                  noise-free model. It does not prove that two parameters can
+                  explain an actuator, a leg, or a complete robot.</p>
+                </section>
+                """
+            ),
             mo.md(
                 """
-### 4. Explain before moving on
+### Explain before moving on
 
 1. Where does the orange curve first reveal the wrong model?
 2. Why is improvement on **Validation** stronger evidence than fit error alone?
@@ -512,21 +820,16 @@ lesson adds one mismatch at a time so its residual signature remains visible.
 
 
 @app.cell
-def _(controls, introduction, lesson_header, mo, result_view):
+def _(controls, experiment_intro, introduction, lesson_header, mo, result_view):
     course = mo.vstack(
         [
             lesson_header,
-            mo.ui.tabs(
-                {
-                    "01 Why SysID": introduction,
-                    "02 Run L0": mo.vstack([controls, result_view], gap=1.2),
-                },
-                value="01 Why SysID",
-                lazy=True,
-                label="Lesson stage",
-            ),
+            introduction,
+            experiment_intro,
+            controls,
+            result_view,
         ],
-        gap=0.5,
+        gap=0.8,
     )
     course
     return

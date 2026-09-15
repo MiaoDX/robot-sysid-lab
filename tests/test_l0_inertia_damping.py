@@ -142,10 +142,14 @@ def test_marimo_preview_reuses_shared_l0_runner():
     assert "fit completed at" in preview
     assert 'fit_state = "succeeded"' in preview
     assert "Oracle dataset reused" in preview
-    assert '"01 Why SysID"' in preview
-    assert '"02 Run L0"' in preview
-    assert "What SysID gives us" in preview
-    assert "What we actually do" in preview
+    assert "mo.ui.tabs" not in preview
+    assert 'id="why"' in preview
+    assert 'id="boundary"' in preview
+    assert 'id="experiment"' in preview
+    assert 'id="evidence"' in preview
+    assert 'id="limits"' in preview
+    assert "WHAT SYSID GIVES US" in preview
+    assert "THE REPEATED LOOP" in preview
     assert "fit_student" not in preview
 
 

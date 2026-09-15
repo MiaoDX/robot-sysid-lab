@@ -563,9 +563,62 @@ This should be treated as a pragmatic starting point rather than a permanent arc
 
 The initial guided surface is Marimo, with plots generated from the same
 importable implementation used by Jupyter and headless checks. The L0 course
-uses separate Introduction and Experiment stages, reactive parameter controls,
-and explicit compute status. Jupyter remains the inspectable research surface;
-Marimo does not own a second implementation of the experiment.
+uses one continuous lesson, reactive parameter controls, and explicit compute
+status. Jupyter remains the inspectable research surface; Marimo does not own a
+second implementation of the experiment.
+
+### Course page contract
+
+Course progression and view selection are different navigation problems. They
+should not share the same tab bar.
+
+Across lessons, use separate pages or Marimo apps:
+
+```text
+Course index
+  -> L0: inertia and damping
+  -> L1: delay and model mismatch
+  -> L2: actuator and friction
+  -> fixed-base leg
+  -> whole robot
+```
+
+Inside one lesson, use a continuous vertical narrative:
+
+```text
+why -> boundary -> physical intuition -> experiment -> evidence -> limits
+```
+
+A compact chapter rail may link to those sections, but scrolling remains the
+primary reading interaction. Use local tabs, radios, or segmented controls only
+for peer views of the same result, such as Fit / Validation or Time / Frequency.
+Do not add one top-level tab per concept or lesson stage.
+
+The Marimo file is the executable page for one lesson, not the entire course.
+When multiple lessons exist, a small MkDocs or Quarto course shell should own
+the index, previous/next navigation, and search while linking or embedding the
+separate Marimo apps. This keeps kernel startup, memory, reactive dependencies,
+and failures isolated as experiments grow from a joint to a leg or whole robot.
+
+### Visual language
+
+The course should feel like a technical field notebook rather than a dashboard
+or marketing page. The L0 page establishes these reusable rules:
+
+- a low-contrast cool-to-warm wash marks the course entry and chapter rail;
+- a fine, quiet texture keeps those orientation surfaces from feeling flat;
+- text and plots remain on clear, nearly opaque surfaces with strong contrast;
+- translucent blur is reserved for navigation and compute-status surfaces;
+- dark ink denotes Oracle evidence, warm orange denotes the pre-identification
+  Student, cool blue denotes the identified Student, and green marks progression;
+- full-width rules and changes in rhythm separate chapters instead of stacks of
+  floating cards;
+- controls stay close to the phenomenon they change, and their effect is stated
+  in domain terms rather than implementation terms.
+
+These are project-owned design choices. Marimo's disconnected screen inspired
+the layered wash and texture, but its error-state images are not application
+assets and must not be copied into the course.
 
 ### Robot visualization
 
