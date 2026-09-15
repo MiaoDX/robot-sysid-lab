@@ -120,10 +120,12 @@ def test_report_contains_one_run_metadata_and_visual(tmp_path):
     assert metrics["config_version"] == "l0-inertia-damping-v1"
     assert metrics["metadata"]["observations"] == ["t", "u", "q", "qd"]
     report = report_path.read_text(encoding="utf-8")
-    assert "Oracle" in report
-    assert "pre-identification" in report
+    assert "True system (Oracle)" in report
+    assert "Initial model" in report
+    assert "Identified model" in report
     assert "held-out multisine" in report
     assert "How to read this report" in report
+    assert "`nominal` for compatibility" in report
 
 
 def test_l0_lesson_set_and_pipeline_contract_exist():
@@ -135,13 +137,31 @@ def test_l0_lesson_set_and_pipeline_contract_exist():
     assert "Artifact contract" in pipeline
 
 
+def test_rendered_course_map_defines_canonical_tracks_and_l0_entry():
+    course_map = Path("docs/course/index.html").read_text(encoding="utf-8")
+
+    assert "K0-K8" in course_map
+    assert "L0-L6" in course_map
+    assert "H0-H2" in course_map
+    assert "L0 means Lab 0" in course_map
+    assert 'id="hero-l0-link"' in course_map
+    assert "window.location.hostname" in course_map
+    assert "architecture.svg" in course_map
+
+
 def test_marimo_preview_reuses_shared_l0_runner():
     preview = Path("apps/l0_inertia_damping.py").read_text(encoding="utf-8")
     assert "from synthetic.l0_inertia_damping import" in preview
-    assert "fit_l0(preview_config, prepared_data)" in preview
-    assert "fit completed at" in preview
+    assert "fit_l0(fitted_config, prepared_data)" in preview
+    assert "Completed at" in preview
     assert 'fit_state = "succeeded"' in preview
-    assert "Oracle dataset reused" in preview
+    assert "Run identification" in preview
+    assert "Fit and validation side by side" in preview
+    assert "Known observations:" in preview
+    assert "Unknown parameters:" in preview
+    assert "Initial model" in preview
+    assert "Nominal Student" not in preview
+    assert "3, 2, figsize" in preview
     assert "mo.ui.tabs" not in preview
     assert 'id="why"' in preview
     assert 'id="boundary"' in preview
@@ -155,8 +175,9 @@ def test_marimo_preview_reuses_shared_l0_runner():
     assert "fit_student" not in preview
 
 
-def test_marimo_view_selection_does_not_trigger_refit():
-    tree = ast.parse(Path("apps/l0_inertia_damping.py").read_text(encoding="utf-8"))
+def test_marimo_slider_changes_do_not_trigger_refit():
+    preview_source = Path("apps/l0_inertia_damping.py").read_text(encoding="utf-8")
+    tree = ast.parse(preview_source)
     cells = [node for node in tree.body if isinstance(node, ast.FunctionDef)]
     fit_cell = next(
         cell
@@ -170,8 +191,9 @@ def test_marimo_view_selection_does_not_trigger_refit():
     )
     dependencies = {argument.arg for argument in fit_cell.args.args}
 
-    assert "split_control" not in dependencies
-    assert {"inertia_control", "damping_control"} <= dependencies
+    assert "split_control" not in preview_source
+    assert {"inertia_control", "damping_control"}.isdisjoint(dependencies)
+    assert "run_identification" in dependencies
 
 
 def test_sensitivity_is_finite_for_default_fit():

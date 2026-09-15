@@ -115,12 +115,12 @@ An experiment can move to the next lesson only when it has:
 
 ## Presentation surfaces
 
-Jupyter remains an inspectable L0 surface. The current guided Marimo course uses
-reactive controls while calling the same numerical implementation: changing a
-nominal parameter performs an instant fit, while switching fit/validation only
-selects another view from the completed run. Quarto or MkDocs can host the lesson
-prose when the lesson set grows, while generated reports remain useful as
-immutable run artifacts.
+Jupyter remains an inspectable L0 surface. The guided Marimo course calls the
+same numerical implementation but separates two actions: changing an Initial-
+model parameter updates its orange preview immediately, while **Run
+identification** explicitly starts fitting and refreshes the blue result. Fit
+and Validation remain visible side by side. The static course overview owns the
+K/L/H learning map; generated reports remain immutable run artifacts.
 
 ## L0 mapping
 
@@ -129,7 +129,7 @@ The L0 set uses the contract as follows:
 | Lesson | Question | Evidence |
 |---|---|---|
 | Orientation | What are plant, input, output, and parameter? | model boundary and units |
-| Physics to data | How do `J` and `b` shape motion? | Oracle versus nominal curves |
+| Physics to data | How do `J` and `b` shape motion? | True system versus Initial-model curves |
 | Fit to validation | Did fitting recover useful behavior? | parameter recovery and held-out metrics |
 | Assumptions | Where does this result stop applying? | omitted effects and next-step delay lesson |
 

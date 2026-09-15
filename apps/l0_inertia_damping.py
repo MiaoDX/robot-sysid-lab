@@ -14,7 +14,6 @@ def _():
 
     import marimo as mo
     import matplotlib.pyplot as plt
-    import numpy as np
 
     repo_root = Path(__file__).resolve().parents[1]
     sys.path.insert(0, str(repo_root))
@@ -24,6 +23,7 @@ def _():
         build_benchmark,
         fit_l0,
         load_config,
+        score,
         simulate,
     )
 
@@ -34,10 +34,10 @@ def _():
         fit_l0,
         load_config,
         mo,
-        np,
         plt,
         replace,
         repo_root,
+        score,
         simulate,
         time,
     )
@@ -131,7 +131,7 @@ def _(mo):
           }
           .lesson-hero h1 {
             color: var(--lesson-ink);
-            font: 650 clamp(2.15rem, 5vw, 4.4rem)/1.02 var(--lesson-font-display);
+            font: 650 4.4rem/1.02 var(--lesson-font-display);
             margin: var(--lesson-space-xs) 0 var(--lesson-space-sm);
             letter-spacing: 0;
             overflow-wrap: anywhere;
@@ -212,7 +212,7 @@ def _(mo):
           }
           .lesson-chapter h2 {
             color: var(--lesson-ink);
-            font: 650 clamp(1.65rem, 3vw, 2.45rem)/1.12 var(--lesson-font-display);
+            font: 650 2.45rem/1.12 var(--lesson-font-display);
             letter-spacing: 0;
             margin: 0 0 var(--lesson-space-sm);
             overflow-wrap: anywhere;
@@ -325,7 +325,7 @@ def _(mo):
           .role:nth-child(3) { border-top-color: var(--lesson-blue); }
           .metric-strip {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: var(--lesson-space-xs);
             margin: var(--lesson-space-sm) 0;
           }
@@ -352,6 +352,8 @@ def _(mo):
             .lesson-progress { position: static; padding: var(--lesson-space-2xs) var(--lesson-space-xs); }
             .lesson-progress strong { flex-basis: 100%; margin-bottom: var(--lesson-space-3xs); }
             .lesson-chapter { padding: var(--lesson-space-lg) 0; }
+            .lesson-hero h1 { font-size: 2.15rem; }
+            .lesson-chapter h2 { font-size: 1.65rem; }
             .intro-grid { grid-template-columns: minmax(0, 1fr); gap: var(--lesson-space-sm); }
             .outcomes,
             .roles { grid-template-columns: minmax(0, 1fr); }
@@ -478,11 +480,19 @@ def _(mo):
                     "color": "var(--lesson-blue)",
                 }
             ),
-            mo.md(
-                "**Known:** time, applied torque, position, and velocity. "
-                "**Unknown:** inertia $J$ and viscous damping $b$. Larger $J$ "
-                "resists acceleration; larger $b$ removes more energy while "
-                "the joint moves."
+            mo.vstack(
+                [
+                    mo.md(
+                        "**Known observations:** $t$, $u$, $q$, $\\dot{q}$ — "
+                        "time, applied torque, position, and velocity."
+                    ),
+                    mo.md(
+                        "**Unknown parameters:** $J$, $b$ — inertia and viscous "
+                        "damping. Larger $J$ resists acceleration; larger $b$ "
+                        "removes more energy while the joint moves."
+                    ),
+                ],
+                gap=0.25,
             ),
         ],
         gap=0.5,
@@ -496,12 +506,14 @@ def _(mo):
     boundary_roles = mo.Html(
         """
         <div class="roles">
-          <div class="role"><h3>Oracle</h3><p>The hidden plant that generates
-          observations. Its true parameters are reserved for evaluation.</p></div>
-          <div class="role"><h3>Nominal Student</h3><p>The plausible but wrong
-          model available before identification. It is the orange baseline.</p></div>
-          <div class="role"><h3>Identified Student</h3><p>The same model after
-          fitting J and b from the declared fit observations.</p></div>
+          <div class="role"><h3>True system (Oracle)</h3><p>The hidden plant that
+          generates observations. Its true parameters are reserved for
+          evaluation.</p></div>
+          <div class="role"><h3>Initial model</h3><p>The plausible but wrong model
+          available before identification. It is the orange baseline and the
+          optimizer's starting point.</p></div>
+          <div class="role"><h3>Identified model</h3><p>The model after fitting J
+          and b from the declared fit observations.</p></div>
         </div>
         """
     )
@@ -520,7 +532,7 @@ def _(build_benchmark, load_config, mo, repo_root):
         stop=0.14,
         step=0.005,
         value=base_config.nominal.inertia,
-        label="Nominal inertia J (kg m^2)",
+        label="Initial-model inertia J (kg m^2)",
         show_value=True,
         full_width=True,
     )
@@ -529,17 +541,26 @@ def _(build_benchmark, load_config, mo, repo_root):
         stop=0.12,
         step=0.005,
         value=base_config.nominal.damping,
-        label="Nominal damping b (N m s/rad)",
+        label="Initial-model damping b (N m s/rad)",
         show_value=True,
         full_width=True,
     )
-    split_control = mo.ui.radio(
-        options=["Fit", "Validation"],
-        value="Validation",
-        label="Trajectory",
-        inline=True,
+    run_identification = mo.ui.button(
+        value=(base_config.nominal.inertia, base_config.nominal.damping),
+        on_click=lambda _value: (
+            float(inertia_control.value),
+            float(damping_control.value),
+        ),
+        label="Run identification",
+        kind="success",
     )
-    return base_config, damping_control, inertia_control, prepared_data, split_control
+    return (
+        base_config,
+        damping_control,
+        inertia_control,
+        prepared_data,
+        run_identification,
+    )
 
 
 @app.cell
@@ -548,11 +569,11 @@ def _(mo):
         """
         <section class="lesson-chapter" id="experiment">
           <span class="chapter-label">03 / RUN THE EXPERIMENT</span>
-          <h2>Move the wrong model, then let the data answer</h2>
+          <h2>Explore first. Identify when you are ready.</h2>
           <p class="chapter-lede">First predict what higher inertia or damping
-          will do to the orange trajectory. Each slider change fits the Student
-          again against the same Oracle dataset; switching Fit and Validation
-          only changes which completed result you inspect.</p>
+          will do to the orange trajectory. The sliders update the Initial model
+          on both datasets without fitting. Run identification when you want the
+          estimator to start from those values and update the blue result.</p>
         </section>
         """
     )
@@ -560,22 +581,99 @@ def _(mo):
 
 
 @app.cell
-def _(damping_control, inertia_control, mo, split_control):
+def _(Params, base_config, damping_control, inertia_control, replace):
+    preview_config = replace(
+        base_config,
+        nominal=Params(
+            inertia=float(inertia_control.value),
+            damping=float(damping_control.value),
+        ),
+    )
+    return preview_config
+
+
+@app.cell
+def _(
+    Params,
+    base_config,
+    datetime,
+    fit_l0,
+    prepared_data,
+    replace,
+    run_identification,
+    time,
+):
+    _fit_inertia, _fit_damping = run_identification.value
+    fitted_config = replace(
+        base_config,
+        nominal=Params(
+            inertia=float(_fit_inertia),
+            damping=float(_fit_damping),
+        ),
+    )
+    started_at = time.perf_counter()
+    preview_run = fit_l0(fitted_config, prepared_data)
+    fit_elapsed_s = time.perf_counter() - started_at
+    fit_completed_at = datetime.now().astimezone().strftime("%H:%M:%S")
+    fit_state = "succeeded" if preview_run.fit.success else "failed"
+    return fit_completed_at, fit_elapsed_s, fit_state, fitted_config, preview_run
+
+
+@app.cell
+def _(preview_config, run_identification):
+    _submitted_inertia, _submitted_damping = run_identification.value
+    identification_is_current = (
+        preview_config.nominal.inertia == float(_submitted_inertia)
+        and preview_config.nominal.damping == float(_submitted_damping)
+    )
+    return identification_is_current
+
+
+@app.cell
+def _(
+    damping_control,
+    fit_completed_at,
+    fit_elapsed_s,
+    fit_state,
+    identification_is_current,
+    inertia_control,
+    mo,
+    preview_run,
+    run_identification,
+):
+    if identification_is_current:
+        compute_status = mo.callout(
+            mo.md(
+                f"**Identification is current.** Completed at "
+                f"`{fit_completed_at}` in `{fit_elapsed_s * 1000:.0f} ms` "
+                f"with `{preview_run.fit.nfev}` optimizer evaluations."
+            ),
+            kind="success" if fit_state == "succeeded" else "danger",
+        )
+    else:
+        compute_status = mo.callout(
+            mo.md(
+                "**Initial parameters changed.** The orange preview is live; "
+                "the blue Identified model still belongs to the previous run."
+            ),
+            kind="warn",
+        )
     controls = mo.vstack(
         [
-            mo.md("### Set the pre-identification Student"),
+            mo.md("### Set the Initial model"),
             mo.md(
-                "The orange **Nominal** model is the Student before SysID. "
-                "Move one control at a time and predict how its motion will change."
+                "Move one control at a time. Orange updates immediately on both "
+                "datasets; fitting starts only when you run identification."
             ),
             inertia_control,
             damping_control,
-            mo.md("### Select the evidence view"),
-            split_control,
+            run_identification,
+            compute_status,
             mo.callout(
                 mo.md(
-                    "**Fit** data is visible to the estimator. **Validation** "
-                    "uses a different input and is scored only after fitting."
+                    "**Fit** is visible to the estimator. **Validation** uses a "
+                    "different input and is scored only after fitting. Both stay "
+                    "visible below."
                 ),
                 kind="info",
             ),
@@ -587,170 +685,82 @@ def _(damping_control, inertia_control, mo, split_control):
 
 @app.cell
 def _(
-    Params,
-    base_config,
-    datetime,
-    damping_control,
-    fit_l0,
-    inertia_control,
-    prepared_data,
-    replace,
-    time,
-):
-    preview_config = replace(
-        base_config,
-        nominal=Params(
-            inertia=float(inertia_control.value),
-            damping=float(damping_control.value),
-        ),
-    )
-    started_at = time.perf_counter()
-    preview_run = fit_l0(preview_config, prepared_data)
-    fit_elapsed_s = time.perf_counter() - started_at
-    fit_completed_at = datetime.now().astimezone().strftime("%H:%M:%S")
-    fit_state = "succeeded" if preview_run.fit.success else "failed"
-    return fit_completed_at, fit_elapsed_s, fit_state, preview_config, preview_run
-
-
-@app.cell
-def _(preview_run, split_control):
-    preview_observations = (
-        preview_run.data.fit
-        if split_control.value == "Fit"
-        else preview_run.data.validation
-    )
-    preview_metrics = (
-        (
-            preview_run.nominal_fit_metrics,
-            preview_run.identified_fit_metrics,
-        )
-        if split_control.value == "Fit"
-        else (
-            preview_run.nominal_validation_metrics,
-            preview_run.identified_validation_metrics,
-        )
-    )
-    return preview_metrics, preview_observations
-
-
-@app.cell
-def _(
-    np,
+    identification_is_current,
     plt,
     preview_config,
-    preview_observations,
     preview_run,
     simulate,
-    split_control,
 ):
-    nominal_q, nominal_qd = simulate(
-        preview_config.nominal,
-        preview_observations.t,
-        preview_observations.u,
-        q0=preview_config.q0,
-        qd0=preview_config.qd0,
-    )
-    identified_q, identified_qd = simulate(
-        preview_run.fit.params,
-        preview_observations.t,
-        preview_observations.u,
-        q0=preview_config.q0,
-        qd0=preview_config.qd0,
-    )
     lesson_figure, lesson_axes = plt.subplots(
-        2, 2, figsize=(12, 7), constrained_layout=True
+        3, 2, figsize=(13, 9), constrained_layout=True, sharex="col"
     )
     lesson_colors = {
         "oracle": "#17211b",
         "nominal": "#d97706",
         "identified": "#1677a3",
+        "input": "#2f7d4d",
     }
-    for lesson_axis, observed, nominal, identified, ylabel in (
-        (
-            lesson_axes[0, 0],
-            preview_observations.q,
-            nominal_q,
-            identified_q,
-            "position q (rad)",
-        ),
-        (
-            lesson_axes[0, 1],
-            preview_observations.qd,
-            nominal_qd,
-            identified_qd,
-            "velocity qd (rad/s)",
-        ),
-    ):
-        lesson_axis.plot(
-            preview_observations.t,
-            observed,
-            color=lesson_colors["oracle"],
-            label="Oracle",
-            linewidth=1.8,
+    experiment_columns = (
+        ("Fit · chirp", preview_run.data.fit),
+        ("Validation · held-out multisine", preview_run.data.validation),
+    )
+    for column, (title, observations) in enumerate(experiment_columns):
+        initial_q, initial_qd = simulate(
+            preview_config.nominal,
+            observations.t,
+            observations.u,
+            q0=preview_config.q0,
+            qd0=preview_config.qd0,
         )
-        lesson_axis.plot(
-            preview_observations.t,
-            nominal,
-            color=lesson_colors["nominal"],
-            label="Nominal",
-            linewidth=1.3,
+        identified_q, identified_qd = simulate(
+            preview_run.fit.params,
+            observations.t,
+            observations.u,
+            q0=preview_config.q0,
+            qd0=preview_config.qd0,
         )
-        lesson_axis.plot(
-            preview_observations.t,
-            identified,
-            color=lesson_colors["identified"],
-            label="Identified",
-            linewidth=1.3,
+        lesson_axes[0, column].plot(
+            observations.t,
+            observations.u,
+            color=lesson_colors["input"],
+            linewidth=1.35,
         )
-        lesson_axis.set(xlabel="time (s)", ylabel=ylabel)
-        lesson_axis.grid(alpha=0.2)
-        lesson_axis.legend(frameon=False)
+        lesson_axes[0, column].set(title=title, ylabel="torque u (N m)")
+        for row, observed, initial, identified, ylabel in (
+            (1, observations.q, initial_q, identified_q, "position q (rad)"),
+            (2, observations.qd, initial_qd, identified_qd, "velocity qd (rad/s)"),
+        ):
+            lesson_axes[row, column].plot(
+                observations.t,
+                observed,
+                color=lesson_colors["oracle"],
+                label="True system (Oracle)",
+                linewidth=1.8,
+            )
+            lesson_axes[row, column].plot(
+                observations.t,
+                initial,
+                color=lesson_colors["nominal"],
+                label="Initial model",
+                linewidth=1.3,
+            )
+            lesson_axes[row, column].plot(
+                observations.t,
+                identified,
+                color=lesson_colors["identified"],
+                label="Identified model",
+                linewidth=1.3,
+            )
+            lesson_axes[row, column].set(ylabel=ylabel)
+            lesson_axes[row, column].grid(alpha=0.2)
+        lesson_axes[1, column].legend(frameon=False, fontsize=8)
+        lesson_axes[2, column].set(xlabel="time (s)")
+        for row in range(3):
+            lesson_axes[row, column].grid(alpha=0.2)
 
-    lesson_axes[1, 0].plot(
-        preview_observations.t,
-        preview_observations.u,
-        color="#2f7d4d",
-        linewidth=1.5,
-    )
-    lesson_axes[1, 0].set(
-        xlabel="time (s)", ylabel="torque u (N m)", title="Applied excitation"
-    )
-    lesson_axes[1, 0].grid(alpha=0.2)
-
-    parameter_names = ["inertia J", "damping b"]
-    parameter_x = np.arange(2)
-    parameter_width = 0.24
-    lesson_axes[1, 1].bar(
-        parameter_x - parameter_width,
-        [preview_config.truth.inertia, preview_config.truth.damping],
-        parameter_width,
-        label="Oracle",
-        color=lesson_colors["oracle"],
-    )
-    lesson_axes[1, 1].bar(
-        parameter_x,
-        [preview_config.nominal.inertia, preview_config.nominal.damping],
-        parameter_width,
-        label="Nominal",
-        color=lesson_colors["nominal"],
-    )
-    lesson_axes[1, 1].bar(
-        parameter_x + parameter_width,
-        [preview_run.fit.params.inertia, preview_run.fit.params.damping],
-        parameter_width,
-        label="Identified",
-        color=lesson_colors["identified"],
-    )
-    lesson_axes[1, 1].set(
-        xticks=parameter_x,
-        xticklabels=parameter_names,
-        ylabel="parameter value",
-        title="Parameter recovery",
-    )
-    lesson_axes[1, 1].grid(axis="y", alpha=0.2)
-    lesson_axes[1, 1].legend(frameon=False)
+    evidence_state = "current run" if identification_is_current else "blue result pending rerun"
     lesson_figure.suptitle(
-        f"{split_control.value}: Oracle vs Student models", fontsize=15
+        f"Fit and validation side by side · {evidence_state}", fontsize=15
     )
     plt.close(lesson_figure)
     return lesson_figure
@@ -758,26 +768,47 @@ def _(
 
 @app.cell
 def _(
-    fit_completed_at,
-    fit_elapsed_s,
-    fit_state,
+    identification_is_current,
     lesson_figure,
     mo,
-    preview_metrics,
+    preview_config,
     preview_run,
-    split_control,
+    score,
 ):
-    nominal_metrics, identified_metrics = preview_metrics
+    initial_fit_metrics = score(preview_config.nominal, preview_run.data.fit)
+    initial_validation_metrics = score(
+        preview_config.nominal, preview_run.data.validation
+    )
     metric_strip = mo.Html(
         f"""
         <div class="metric-strip">
-          <div class="metric"><b>{nominal_metrics.q_mae:.3g}</b><span>{split_control.value} nominal q MAE</span></div>
-          <div class="metric"><b>{identified_metrics.q_mae:.3g}</b><span>{split_control.value} identified q MAE</span></div>
-          <div class="metric"><b>{preview_run.fit.params.inertia:.5f}</b><span>identified inertia J</span></div>
-          <div class="metric"><b>{preview_run.fit.params.damping:.5f}</b><span>identified damping b</span></div>
+          <div class="metric"><b>{initial_fit_metrics.q_mae:.3g}</b><span>Fit · Initial-model q MAE</span></div>
+          <div class="metric"><b>{preview_run.identified_fit_metrics.q_mae:.3g}</b><span>Fit · Identified-model q MAE</span></div>
+          <div class="metric"><b>{initial_validation_metrics.q_mae:.3g}</b><span>Validation · Initial-model q MAE</span></div>
+          <div class="metric"><b>{preview_run.identified_validation_metrics.q_mae:.3g}</b><span>Validation · Identified-model q MAE</span></div>
+          <div class="metric"><b>{preview_run.fit.params.inertia:.5f}</b><span>Identified inertia J</span></div>
+          <div class="metric"><b>{preview_run.fit.params.damping:.5f}</b><span>Identified damping b</span></div>
         </div>
         """
     )
+    if identification_is_current:
+        evidence_note = mo.callout(
+            mo.md(
+                "The blue Identified model overlaps the black True system on "
+                "both datasets. The validation column is stronger evidence "
+                "because its multisine was not visible during fitting."
+            ),
+            kind="success",
+        )
+    else:
+        evidence_note = mo.callout(
+            mo.md(
+                "The orange Initial model reflects the sliders now. The blue "
+                "Identified model is intentionally held at the previous run; "
+                "run identification to bring the evidence up to date."
+            ),
+            kind="warn",
+        )
     result_view = mo.vstack(
         [
             mo.Html(
@@ -785,29 +816,15 @@ def _(
                 <section class="lesson-chapter" id="evidence">
                   <span class="chapter-label">04 / READ THE EVIDENCE</span>
                   <h2>Fit explains the estimate. Validation tests its use.</h2>
-                  <p class="chapter-lede">The blue Identified curve should
-                  follow the hidden Oracle on the chirp used for fitting and
-                  on the held-out multisine used only for evaluation.</p>
+                  <p class="chapter-lede">Fit and Validation remain side by
+                  side. Read each column from applied input to position and
+                  velocity, then compare the Initial and Identified models.</p>
                 </section>
                 """
             ),
-            metric_strip,
-            mo.md(
-                f"`Oracle dataset reused` · fit completed at "
-                f"`{fit_completed_at}` · `{fit_state}` in "
-                f"`{fit_elapsed_s * 1000:.0f} ms` · optimizer evaluations: "
-                f"`{preview_run.fit.nfev}`"
-            ),
             lesson_figure,
-            mo.callout(
-                mo.md(
-                    "The blue Identified curve should overlap the black Oracle "
-                    "on both splits. Changing the orange baseline does not change "
-                    "the hidden plant. In this matched, noise-free lesson, a "
-                    "successful fit returns to the same physical parameters."
-                ),
-                kind="success",
-            ),
+            metric_strip,
+            evidence_note,
             mo.Html(
                 """
                 <section class="lesson-chapter" id="limits">

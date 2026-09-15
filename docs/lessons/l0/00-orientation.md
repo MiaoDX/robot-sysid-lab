@@ -27,13 +27,15 @@ Three names appear in every plot:
 
 | Name | Role |
 |---|---|
-| Oracle | hidden teacher system that generated the observations |
-| Nominal | pre-identification Student model; intentionally wrong baseline |
-| Identified | Student model after fitting `J` and `b` |
+| True system (Oracle) | hidden teacher system that generated the observations |
+| Initial model | plausible but intentionally wrong model available before identification |
+| Identified model | model after fitting `J` and `b` |
 
-Nominal is not a second truth. It answers the practical question: what happens
-if we use a plausible model before calibration or SysID? Identified answers
-whether the experiment gave enough information to improve it.
+The Initial model is not a second truth. It answers the practical question:
+what happens if we use a plausible model before calibration or SysID? The
+Identified model shows whether the experiment gave enough information to
+improve it. Controls engineers also use *nominal model* for a chosen reference
+model, but the course uses *Initial model* here because its role is clearer.
 
 ## Checkpoint
 

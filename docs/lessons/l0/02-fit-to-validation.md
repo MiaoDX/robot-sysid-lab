@@ -12,7 +12,7 @@ L0 therefore has two explicit splits:
 | Validation | held-out multisine | test prediction on a different motion |
 
 The report gives mean absolute error (MAE) for both position `q` and velocity
-`qd`. Compare the two nominal rows with the two identified rows. The important
+`qd`. Compare the Initial-model rows with the Identified-model rows. The important
 pattern is not that every number is zero; it is that the identified model
 improves on the untouched validation motion as well as on the fit motion.
 

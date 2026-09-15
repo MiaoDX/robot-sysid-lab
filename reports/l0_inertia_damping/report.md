@@ -7,12 +7,13 @@ inertia and viscous damping of a one-degree-of-freedom plant?
 ## How to read this report
 
 The plant follows `J*qdd + b*qd = u`. `u` is the applied torque, `q` is
-position, and `qd` is velocity. **Oracle** is the hidden teacher system that
-generated the observations. **Nominal** is the student's pre-identification
-model: a plausible but deliberately wrong starting model. **Identified** is
-the same model after fitting `J` and `b` on the fit trajectory. The nominal
+position, and `qd` is velocity. **True system (Oracle)** is the hidden teacher
+that generated the observations. **Initial model** is the plausible but
+deliberately wrong model available before identification. **Identified model**
+is the result after fitting `J` and `b` on the fit trajectory. The Initial
 model is a baseline for seeing why identification is needed; it is not another
-ground-truth system.
+ground-truth system. The machine-readable configuration retains the key
+`nominal` for compatibility.
 
 The fit trajectory is used by the estimator. The validation trajectory uses a
 different multisine input and is kept untouched until after fitting. Improvement
@@ -24,19 +25,19 @@ Plant boundary: known applied torque `u` in N m -> observed `q`, `qd`<br>
 Fit excitation: chirp<br>
 Validation excitation: held-out multisine
 
-![Oracle, nominal, and identified trajectories](report.png)
+![True-system, Initial-model, and Identified-model trajectories](report.png)
 
-| quantity | Oracle | Nominal | Identified |
+| quantity | True system | Initial model | Identified model |
 |---|---:|---:|---:|
 | inertia `J` (kg m^2) | 0.06500000 | 0.09500000 | 0.06500000 |
 | damping `b` (N m s/rad) | 0.05500000 | 0.01800000 | 0.05500000 |
 
 | split/model | q MAE (rad) | qd MAE (rad/s) |
 |---|---:|---:|
-| fit / nominal | 4.3107227 | 1.4136074 |
-| fit / identified | 1.5607874e-14 | 1.2252942e-14 |
-| validation / nominal | 2.7396426 | 0.87716149 |
-| validation / identified | 1.8251542e-14 | 2.0286828e-14 |
+| fit / Initial model | 4.3107227 | 1.4136074 |
+| fit / Identified model | 1.5607874e-14 | 1.2252942e-14 |
+| validation / Initial model | 2.7396426 | 0.87716149 |
+| validation / Identified model | 1.8251542e-14 | 2.0286828e-14 |
 
 ## What this result does and does not show
 
@@ -49,10 +50,11 @@ explain how those omissions shape the next experiment.
 
 ## Try it
 
-Read the [L0 lessons](../../docs/lessons/l0/README.md), then change one nominal
-value in the [notebook](../../notebooks/l0_inertia_damping.ipynb). The orange
-baseline should change while a successful fit should still recover the Oracle
-parameters. Regenerate this report headlessly with:
+Read the [L0 lessons](../../docs/lessons/l0/README.md), then change one Initial-
+model value in the [interactive Marimo lesson](../../apps/l0_inertia_damping.py).
+The orange preview changes immediately; press **Run identification** to refresh
+the blue result. A successful fit should still recover the Oracle parameters.
+Regenerate this report headlessly with:
 
 ```bash
 python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping

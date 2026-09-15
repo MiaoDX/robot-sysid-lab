@@ -12,7 +12,7 @@ Later benchmark levels remain design work unless explicitly marked delivered.
 |---|---|---|
 | Knowledge and synthetic-lab direction | Documented in the design PR | [Overview](docs/00_overview.md), [roadmap](docs/03_synthetic_lab_roadmap.md) |
 | Oracle, whole-robot, and RL protocols | Documented; not implemented | [Experiment design](docs/04_oracle_sim_experiment_design.md) |
-| Visualization and learning experience | L0 guided Marimo course delivered; Jupyter remains an inspectable lab surface | [L0 lessons](docs/lessons/l0/README.md), [reporting](docs/05_visualization_and_reporting.md), [learning experience](docs/06_learning_experience.md) |
+| Visualization and learning experience | K/L/H course map and guided L0 Marimo course delivered; Jupyter remains an inspectable lab surface | [course map](docs/course/index.html), [L0 lessons](docs/lessons/l0/README.md), [reporting](docs/05_visualization_and_reporting.md), [learning experience](docs/06_learning_experience.md) |
 | Reusable lesson workflow | Documented as a contract; code extraction waits for a second lesson | [Lesson / Experiment Pipeline](docs/lesson_pipeline.md) |
 | Benchmark rules | Documented reference | [Benchmark contract](docs/07_benchmark_contract.md) |
 | L0 happy-path scope | Implemented; learner walkthrough remains open | [First-lab contract](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) |
@@ -30,9 +30,9 @@ No additional architecture chapter is needed before implementation. Resolve samp
 
 ## Current delivery: L0 inertia and damping
 
-The deliverable is one CPU-only lesson around `J*qdd + b*qd = u`: known applied torque, ideal `t/u/q/qd` observations, only `J` and `b` unknown, one matched Student with incorrect nominal parameters, one fit chirp, one held-out multisine, and one bounded nonlinear least-squares estimator.
+The deliverable is one CPU-only lesson around `J*qdd + b*qd = u`: known applied torque, ideal `t/u/q/qd` observations, only `J` and `b` unknown, one matched Student with incorrect Initial-model parameters, one fit chirp, one held-out multisine, and one bounded nonlinear least-squares estimator.
 
-The required output is **Oracle / nominal / identified curves + parameters + fit/validation metrics + a readable explanation**. The explanation now lives in the [L0 lesson set](docs/lessons/l0/README.md) and the generated report links back to it. Coulomb friction, delay, sensors, RL, contact, and extra backends are deliberately absent. The [first-lab specification](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) is authoritative for the detailed assumptions.
+The required output is **True system / Initial model / Identified model curves + parameters + fit/validation metrics + a readable explanation**. The explanation now lives in the [L0 lesson set](docs/lessons/l0/README.md) and the generated report links back to it. Coulomb friction, delay, sensors, RL, contact, and extra backends are deliberately absent. The [first-lab specification](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) is authoritative for the detailed assumptions.
 
 ### Work in this order
 

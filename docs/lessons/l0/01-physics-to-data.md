@@ -20,18 +20,20 @@ trajectory panels from left to right:
 1. fit position and validation position;
 2. fit velocity and validation velocity.
 
-The black Oracle curve is the observation target. The orange Nominal curve is
-the uncalibrated baseline. The blue Identified curve is the fitted Student.
+The black True-system curve is the observation target. The orange Initial-model
+curve is the uncalibrated baseline. The blue Identified-model curve is the
+fitted result.
 Look for acceleration differences in the velocity panels and accumulated
 position differences in the position panels. A small residual means the
 identified model reproduces that observed quantity for that experiment.
 
 ## Try one change
 
-In the notebook, change `nominal_damping` while leaving the truth and input
-unchanged. Rerun the experiment cell and the plot cell. The orange curve and
-its metrics should change; the blue fitted parameters should still converge to
-the same Oracle values when optimization succeeds.
+In the Marimo lesson, change Initial-model damping while leaving the truth and
+input unchanged. The orange curve changes immediately; the blue result stays
+fixed and is marked stale. Press **Run identification** to fit again from the
+new starting values. A successful fit should still converge to the same Oracle
+values.
 
 This separates a learner-visible baseline from the hidden system. It also
 reveals why a starting guess is an implementation detail, while the baseline

@@ -1,5 +1,9 @@
 # L0: A first system identification experiment
 
+`L0` means **Lab 0**: the smallest complete SysID loop in the synthetic-lab
+track. The [course overview](../../course/index.html) shows how this lab relates
+to the `K0-K8` knowledge track and the later `L1-L6` and `H0-H2` stages.
+
 This lesson set begins with why robot system identification is useful, what it
 produces, and the engineering loop it follows. It then uses a deliberately
 small plant so every part of that loop is visible. We identify inertia `J` and
@@ -16,14 +20,15 @@ observations.
 
 The [static report](../../../reports/l0_inertia_damping/report.md) is the
 recorded result for the default configuration. The [Jupyter lab](../../../notebooks/l0_inertia_damping.ipynb)
-lets you change one nominal value and see the same pipeline run again.
+lets you inspect and change the same pipeline cell by cell.
 
 The [Marimo interactive course](../../../apps/l0_inertia_damping.py) is the
 guided entry point. It explains why SysID matters, declares the model boundary,
 and embeds the experiment and its evidence in one vertically scrolling lesson.
-The chapter rail is for orientation; the Fit / Validation control compares two
-views of one result. Constrained sliders update the model, plots, metrics, and
-explanation reactively without manually rerunning cells. Install and launch it
+The chapter rail is for orientation. Fit and Validation stay visible side by
+side. Constrained sliders update the orange Initial model immediately; fitting
+runs only when you press **Run identification**, which updates the blue result.
+Install and launch it
 from the repository root with:
 
 ```bash

@@ -85,7 +85,7 @@ Reports should combine:
 - Student model and identified parameters;
 - scalar metrics;
 - diagnostic plots;
-- synchronized Oracle / nominal / identified rollouts;
+- synchronized True-system / Initial-model / Identified-model rollouts;
 - contact and gait visualization;
 - prediction-horizon analysis;
 - failure cases;
@@ -216,10 +216,10 @@ Oracle:
 Stribeck + load dependence + delay + backlash
 
 Students:
-H1 viscous
-H2 viscous + Coulomb
-H3 richer friction + delay
-H4 + backlash
+M1 viscous
+M2 viscous + Coulomb
+M3 richer friction + delay
+M4 + backlash
 ```
 
 For each Student, show:
@@ -278,12 +278,12 @@ rich actuator
 
 Do not reveal every numeric truth parameter to the Student pipeline, but the teaching/report surface may reveal them when explaining results.
 
-### Step 2 — Show the nominal Student failure
+### Step 2 — Show the Initial-model failure
 
 Use synchronized replay:
 
 ```text
-Oracle                 nominal Student
+True system            Initial model
 [robot]                 [robot]
 ```
 
@@ -300,12 +300,12 @@ Present selected information such as:
 
 Avoid implying that optimizer convergence alone proves model correctness.
 
-### Step 4 — Show the identified Student
+### Step 4 — Show the Identified model
 
 Prefer a three-way synchronized view where practical:
 
 ```text
-Oracle        nominal        identified
+True system   Initial model  Identified model
 ```
 
 The important visual question is:
@@ -430,7 +430,7 @@ command ------> [ ORACLE ]
              +-------+-------+
              |               |
              v               v
-        Student H1       Student H2
+        Student M1       Student M2
              |               |
              +-------+-------+
                      |
@@ -480,7 +480,7 @@ For whole-robot results, prefer an immediate visual comparison such as:
 ```text
 Before SysID                 After SysID
 
-[Oracle vs nominal]          [Oracle vs identified]
+[True vs Initial]            [True vs Identified]
 ```
 
 Short loops are useful for documentation landing pages. Full synchronized videos belong in benchmark reports.
@@ -490,7 +490,7 @@ Videos should be accompanied by quantitative plots so visual similarity is not m
 Recommended dynamic artifacts include:
 
 - side-by-side synchronized replay;
-- Oracle / nominal / identified three-way replay;
+- True system / Initial model / Identified model three-way replay;
 - ghost overlay where technically practical;
 - contact-vector overlay;
 - dynamic residual annotations;
@@ -563,9 +563,10 @@ This should be treated as a pragmatic starting point rather than a permanent arc
 
 The initial guided surface is Marimo, with plots generated from the same
 importable implementation used by Jupyter and headless checks. The L0 course
-uses one continuous lesson, reactive parameter controls, and explicit compute
-status. Jupyter remains the inspectable research surface; Marimo does not own a
-second implementation of the experiment.
+uses one continuous lesson, reactive Initial-model previews, an explicit
+identification action, and visible compute status. Jupyter remains the
+inspectable research surface; Marimo does not own a second implementation of
+the experiment.
 
 ### Course page contract
 
@@ -575,7 +576,7 @@ should not share the same tab bar.
 Across lessons, use separate pages or Marimo apps:
 
 ```text
-Course index
+Course index (K0-K8 knowledge / L0-L6 labs / H0-H2 hardware)
   -> L0: inertia and damping
   -> L1: delay and model mismatch
   -> L2: actuator and friction
@@ -591,7 +592,8 @@ why -> boundary -> physical intuition -> experiment -> evidence -> limits
 
 A compact chapter rail may link to those sections, but scrolling remains the
 primary reading interaction. Use local tabs, radios, or segmented controls only
-for peer views of the same result, such as Fit / Validation or Time / Frequency.
+when simultaneous comparison is impractical. In L0, Fit and Validation are
+shown as adjacent columns because direct comparison is the teaching point.
 Do not add one top-level tab per concept or lesson stage.
 
 The Marimo file is the executable page for one lesson, not the entire course.
@@ -609,8 +611,8 @@ or marketing page. The L0 page establishes these reusable rules:
 - a fine, quiet texture keeps those orientation surfaces from feeling flat;
 - text and plots remain on clear, nearly opaque surfaces with strong contrast;
 - translucent blur is reserved for navigation and compute-status surfaces;
-- dark ink denotes Oracle evidence, warm orange denotes the pre-identification
-  Student, cool blue denotes the identified Student, and green marks progression;
+- dark ink denotes True-system evidence, warm orange denotes the Initial model,
+  cool blue denotes the Identified model, and green marks progression;
 - full-width rules and changes in rhythm separate chapters instead of stacks of
   floating cards;
 - controls stay close to the phenomenon they change, and their effect is stated
