@@ -66,20 +66,21 @@ Participants should be able to answer:
 7. Does the model predict held-out trajectories?
 8. What pattern remains in the residual?
 9. Is the next step more optimization or a richer model structure?
-10. How does the identified nominal model connect to domain randomization and RL?
+10. How does the identified reference model connect to domain randomization and RL?
 
-## Practical ladder
+## Course tracks
 
-| Level | System | Main lesson |
+The [rendered course map](course/index.html) is the canonical overview. Its
+prefixes separate three kinds of progression:
+
+| Track | Range | Purpose |
 |---|---|---|
-| 0 | analytical 1-DoF | dynamics, parameter sensitivity |
-| 1 | synthetic actuator | friction, delay, saturation, model mismatch |
-| 2 | fixed-base articulated leg | coupling, gravity, rigid-body vs actuator parameters |
-| 3 | leg + contact | contact model and environment uncertainty |
-| 4 | synthetic Microduck | whole-robot trajectory matching |
-| 5 | synthetic small humanoid | high-dimensional identifiability and hierarchy |
-| 6 | real actuator bench | unknown unknowns and measurement reality |
-| 7 | real Microduck/Microban | complete sim-to-real loop |
-| 8 | full humanoid | scalable engineering pipeline |
+| Knowledge | `K0-K8` | concepts from motivation through sim-to-real |
+| Synthetic labs | `L0-L6` | controlled experiments from one joint through cross-simulator mismatch |
+| Hardware transfer | `H0-H2` | actuator bench, small robot, then full humanoid |
 
-The progression is intentional: each level introduces only one or two new classes of uncertainty.
+`L0` therefore means **Lab 0**, not the first item in one mixed nine-step
+ladder. The progression inside each track is intentional: each stage introduces
+only one or two new classes of uncertainty. Knowledge and labs can advance
+together; hardware stages begin when their prerequisite experiment and safety
+contracts are ready.

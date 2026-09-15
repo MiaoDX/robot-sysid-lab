@@ -2,7 +2,7 @@
 
 This repository treats robot system identification as both a **team-learning discipline** and a **modeling/validation workflow**. The near-term focus is deliberately simulation-first: build synthetic worlds whose complete ground truth is known, then restrict what the identification algorithm can observe and test which models, experiments, and estimators recover useful behavior.
 
-## Two first-class tracks
+## Three connected tracks
 
 ### Knowledge track
 
@@ -53,6 +53,17 @@ Simulation is especially valuable here because we can:
 - and scale the same methodology from one degree of freedom to a humanoid.
 
 Synthetic experiments remain a first-class part of the project even after real-hardware work begins.
+
+### Hardware transfer track
+
+The hardware track reuses the same boundary, observation, fitting, validation,
+and reporting contract on an actuator bench, a small robot, and eventually a
+full humanoid. It does not replace the synthetic track: controlled Oracle
+experiments remain the place to isolate failure causes before hardware adds
+calibration, safety, and operating-condition constraints.
+
+The [rendered course map](course/index.html) names these tracks `K0-K8`,
+`L0-L6`, and `H0-H2` and links to the material currently available.
 
 ## The core loop
 

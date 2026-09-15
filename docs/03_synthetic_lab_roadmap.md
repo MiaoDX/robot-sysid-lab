@@ -339,11 +339,28 @@ Possible comparisons:
 
 This level approximates an essential sim-to-real property: the student model class never exactly contains reality.
 
-### Later — hardware validation
+## 4. Hardware transfer track
 
-Real actuator benches and robots remain important, but they are not required to justify the simulation-first track.
+Hardware follows the same experiment and evidence contract developed in the
+synthetic labs. It is a separate `H` track because hardware readiness and
+synthetic-lab progression are related but not interchangeable.
 
-Hardware work should reuse the same concepts and reporting contracts developed in synthetic labs:
+### H0 — real actuator bench
+
+Purpose: confront torque calibration, timing, measurement noise, temperature,
+voltage, safety limits, and repeatability on one controlled physical subsystem.
+
+### H1 — real Microduck / Microban
+
+Purpose: combine component evidence with whole-robot motions and validate the
+complete sim-to-real loop at small scale.
+
+### H2 — full humanoid
+
+Purpose: scale data collection, parameter sharing, fitting, validation, and
+deployment evidence to a complete platform.
+
+All hardware stages reuse:
 
 - explicit plant boundary;
 - experiment and observation schema;
@@ -352,7 +369,7 @@ Hardware work should reuse the same concepts and reporting contracts developed i
 - residual diagnostics;
 - uncertainty reporting.
 
-## 4. Benchmark families that cut across labs
+## 5. Benchmark families that cut across labs
 
 ### B1 — model mismatch
 
@@ -404,19 +421,19 @@ Compare estimators only under a fixed model/data contract. Report compute budget
 
 Every serious benchmark should reserve conditions that were not used for fitting. The held-out axis should match the expected deployment variation.
 
-## 5. Truth difficulty levels
+## 6. Truth difficulty scale
 
 Use a common difficulty vocabulary across labs:
 
-| Level | Teacher/student relationship | Purpose |
+| Difficulty | Teacher/student relationship | Purpose |
 |---|---|---|
-| 0 | same structure | implementation and basic recovery |
-| 1 | teacher slightly richer | model selection and residual diagnosis |
-| 2 | strong structural mismatch | effective parameters and compensation |
-| 3 | hidden condition dependence | dataset shift and missing context |
-| 4 | different implementation/backend | sim-to-sim approximation of real model mismatch |
+| `D0` | same structure | implementation and basic recovery |
+| `D1` | teacher slightly richer | model selection and residual diagnosis |
+| `D2` | strong structural mismatch | effective parameters and compensation |
+| `D3` | hidden condition dependence | dataset shift and missing context |
+| `D4` | different implementation/backend | sim-to-sim approximation of real model mismatch |
 
-## 6. Supporting software modules
+## 7. Supporting software modules
 
 The lab needs should drive the reusable code. The likely modules are:
 
@@ -460,7 +477,7 @@ Keeps optimizer choice replaceable and thin.
 
 Makes held-out performance, residuals, sensitivity, parameter stability, and ground-truth comparison first-class outputs.
 
-## 7. Implementation sequence
+## 8. Implementation sequence
 
 The implementation should proceed from benchmark contracts rather than from a generic framework skeleton.
 
@@ -504,7 +521,7 @@ Study parameter sharing, hierarchy, and high-dimensional identifiability on a sm
 
 Use different numerical/model implementations, then reuse the same methodology on real systems.
 
-## 8. Design principles
+## 9. Design principles
 
 1. **Synthetic is a first-class research environment.** Do not treat it only as a temporary stepping stone to hardware.
 2. **Knowledge and executable labs should map to each other.** Every important concept should have a concrete experiment where possible.
