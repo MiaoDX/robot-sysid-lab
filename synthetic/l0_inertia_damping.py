@@ -549,7 +549,7 @@ def plot_run(run: L0Run, output_path: str | Path) -> Path:
         qd0=run.config.qd0,
     )
 
-    colors = {"oracle": "black", "nominal": "tab:orange", "identified": "tab:blue"}
+    colors = {"oracle": "#17211b", "nominal": "#d97706", "identified": "#1677a3"}
     figure, axes = plt.subplots(5, 2, figsize=(14, 17), constrained_layout=True)
     plots = [
         (axes[0, 0], fit.t, fit.q, nominal_fit_q, identified_fit_q, "q (rad)", "Fit: position"),
@@ -558,9 +558,30 @@ def plot_run(run: L0Run, output_path: str | Path) -> Path:
         (axes[1, 1], validation.t, validation.qd, nominal_val_qd, identified_val_qd, "qd (rad/s)", "Validation: velocity"),
     ]
     for axis, time, oracle, nominal, identified, ylabel, title in plots:
-        axis.plot(time, oracle, color=colors["oracle"], label="True system (Oracle)", linewidth=1.5)
+        axis.plot(
+            time,
+            oracle,
+            color=colors["oracle"],
+            label="True system (Oracle) · solid",
+            linewidth=2.4,
+            alpha=0.82,
+            zorder=2,
+        )
         axis.plot(time, nominal, color=colors["nominal"], label="Initial model", linewidth=1.0)
-        axis.plot(time, identified, color=colors["identified"], label="Identified model", linewidth=1.0)
+        axis.plot(
+            time,
+            identified,
+            color=colors["identified"],
+            label="Identified model · dashed + markers",
+            linewidth=1.8,
+            linestyle=(0, (5, 3)),
+            marker="o",
+            markersize=2.8,
+            markerfacecolor="white",
+            markeredgewidth=0.8,
+            markevery=max(len(time) // 14, 1),
+            zorder=3,
+        )
         axis.set(title=title, xlabel="time (s)", ylabel=ylabel)
         axis.grid(alpha=0.25)
         axis.legend()
@@ -595,6 +616,8 @@ def plot_run(run: L0Run, output_path: str | Path) -> Path:
     axes[4, 1].text(
         0.02,
         0.95,
+        "Curve key: Oracle = solid black; Identified = blue dashed + markers\n"
+        "When they overlap, that is evidence of a successful match.\n\n"
         "Sensitivity diagnostic\n"
         f"singular values: {run.sensitivity.singular_values[0]:.3g}, {run.sensitivity.singular_values[1]:.3g}\n"
         f"condition number: {run.sensitivity.condition_number:.3g}\n\n"
@@ -643,12 +666,22 @@ different multisine input and is kept untouched until after fitting. Improvement
 on validation is the useful evidence that the fitted model learned dynamics
 rather than only matching one motion.
 
+A **chirp** is one sinusoid whose frequency sweeps from low to high. A
+**multisine** adds several fixed-frequency sinusoids. **Held-out** means that
+the multisine observations are not used to estimate `J` or `b`; they are used
+only after fitting to test prediction on a different motion.
+
 Configuration: `{run.config.version}`<br>
 Plant boundary: known applied torque `u` in N m -> observed `q`, `qd`<br>
 Fit excitation: chirp<br>
 Validation excitation: held-out multisine
 
 ![True-system, Initial-model, and Identified-model trajectories](report.png)
+
+**Curve key:** True system (Oracle) is the solid dark line. Identified model is
+the blue dashed line with open markers. When they overlap, the markers still
+show that both curves are present; the overlap is evidence of a successful
+match. Initial model is orange.
 
 | quantity | True system | Initial model | Identified model |
 |---|---:|---:|---:|

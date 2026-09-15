@@ -23,6 +23,11 @@ Every lesson declares these items before implementation:
 | Evidence | Which curves, metrics, and diagnostics answer the question? |
 | Limits | Which real effects are intentionally absent? |
 
+When Oracle and Student parameter spaces differ, the lesson contract must also
+declare which parameters are shared, Oracle-only, or Student-only. Shared
+parameters can support recovery claims; unmatched parameters require behavior
+and residual evidence instead.
+
 The contract prevents a lesson from silently changing its model, data boundary,
 or validation meaning while its narrative remains the same.
 

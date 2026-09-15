@@ -104,6 +104,24 @@ rather than mixing quantities with incompatible physical units in one raw-error 
 
 A 2-D loss landscape is particularly useful when two parameters compensate for one another. Long flat valleys should be treated as visual evidence of practical non-identifiability, not as an optimizer problem alone.
 
+### Different Oracle and Student parameter spaces
+
+Later teachers may contain parameters that the Student intentionally omits. Do
+not force those vectors into one bar chart or imply that an absent Student
+parameter was recovered as zero. Reports should use a parameter-role matrix:
+
+| Oracle parameter | Student parameter | Evidence |
+|---|---|---|
+| shared and semantically comparable | present | recovery error and estimate |
+| present only in Oracle | absent | residual or behavior attributed to omitted structure |
+| absent in Oracle | present only in Student | effective or nuisance parameter, with a clear label |
+
+The visual companion is a split parameter view: a shared-parameter comparison,
+an Oracle-only list, and a Student-only list. For whole robots, use the same
+schema per joint or subsystem and add a residual heatmap showing where omitted
+Oracle effects appear. This keeps parameter recovery, effective compensation,
+and predictive behavior as separate claims.
+
 ### V4 — robot behavior visualization
 
 Question:

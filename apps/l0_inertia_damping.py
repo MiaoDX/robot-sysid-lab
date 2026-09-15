@@ -275,6 +275,27 @@ def _(mo):
             color: var(--lesson-ink);
             font: .84rem/1.45 var(--lesson-font-body);
           }
+          .excitation-notes {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--lesson-space-sm);
+            margin-top: var(--lesson-space-md);
+          }
+          .excitation-note {
+            border-top: 2px solid var(--lesson-blue);
+            padding-top: var(--lesson-space-xs);
+          }
+          .excitation-note.validation { border-top-color: var(--lesson-warm); }
+          .excitation-note h3 {
+            color: var(--lesson-ink);
+            font: 650 1rem/1.25 var(--lesson-font-display);
+            margin: 0 0 var(--lesson-space-3xs);
+          }
+          .excitation-note p {
+            color: var(--lesson-muted);
+            font: .84rem/1.45 var(--lesson-font-body);
+            margin: 0;
+          }
           .outcomes {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -355,6 +376,7 @@ def _(mo):
             .lesson-hero h1 { font-size: 2.15rem; }
             .lesson-chapter h2 { font-size: 1.65rem; }
             .intro-grid { grid-template-columns: minmax(0, 1fr); gap: var(--lesson-space-sm); }
+            .excitation-notes { grid-template-columns: minmax(0, 1fr); }
             .outcomes,
             .roles { grid-template-columns: minmax(0, 1fr); }
             .metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -574,6 +596,20 @@ def _(mo):
           will do to the orange trajectory. The sliders update the Initial model
           on both datasets without fitting. Run identification when you want the
           estimator to start from those values and update the blue result.</p>
+          <div class="excitation-notes">
+            <div class="excitation-note">
+              <h3>Fit / chirp</h3>
+              <p>A chirp sweeps from low to high frequency. It gives the
+              estimator changing acceleration and velocity so it can learn how
+              <code>J</code> and <code>b</code> shape one motion.</p>
+            </div>
+            <div class="excitation-note validation">
+              <h3>Validation / held-out multisine</h3>
+              <p>A multisine adds several fixed frequencies at once. This input
+              is generated separately and hidden from fitting, so it tests
+              whether the Identified model predicts a new motion.</p>
+            </div>
+          </div>
         </section>
         """
     )
@@ -631,6 +667,7 @@ def _(preview_config, run_identification):
 
 @app.cell
 def _(
+    base_config,
     damping_control,
     fit_completed_at,
     fit_elapsed_s,
@@ -665,15 +702,25 @@ def _(
                 "Move one control at a time. Orange updates immediately on both "
                 "datasets; fitting starts only when you run identification."
             ),
+            mo.callout(
+                mo.md(
+                    f"**True system (Oracle), evaluation only:** `J = "
+                    f"{base_config.truth.inertia:.5f} kg m^2`, `b = "
+                    f"{base_config.truth.damping:.5f} N m s/rad`. Here `J` and `b` "
+                    "are the Oracle parameters; `q` is the observed position "
+                    "trajectory, not an additional parameter."
+                ),
+                kind="info",
+            ),
             inertia_control,
             damping_control,
             run_identification,
             compute_status,
             mo.callout(
                 mo.md(
-                    "**Fit** is visible to the estimator. **Validation** uses a "
-                    "different input and is scored only after fitting. Both stay "
-                    "visible below."
+                    "**Fit / chirp** is visible to the estimator. **Validation / "
+                    "held-out multisine** uses a different input and is scored "
+                    "only after fitting. Both stay visible below."
                 ),
                 kind="info",
             ),
@@ -734,22 +781,32 @@ def _(
                 observations.t,
                 observed,
                 color=lesson_colors["oracle"],
-                label="True system (Oracle)",
-                linewidth=1.8,
+                label="True system (Oracle) · solid",
+                linewidth=2.4,
+                alpha=0.82,
+                zorder=2,
             )
             lesson_axes[row, column].plot(
                 observations.t,
                 initial,
                 color=lesson_colors["nominal"],
                 label="Initial model",
-                linewidth=1.3,
+                linewidth=1.5,
+                zorder=1,
             )
             lesson_axes[row, column].plot(
                 observations.t,
                 identified,
                 color=lesson_colors["identified"],
-                label="Identified model",
-                linewidth=1.3,
+                label="Identified model · dashed + markers",
+                linewidth=1.8,
+                linestyle=(0, (5, 3)),
+                marker="o",
+                markersize=2.8,
+                markerfacecolor="white",
+                markeredgewidth=0.8,
+                markevery=max(len(observations.t) // 14, 1),
+                zorder=3,
             )
             lesson_axes[row, column].set(ylabel=ylabel)
             lesson_axes[row, column].grid(alpha=0.2)
@@ -794,9 +851,10 @@ def _(
     if identification_is_current:
         evidence_note = mo.callout(
             mo.md(
-                "The blue Identified model overlaps the black True system on "
-                "both datasets. The validation column is stronger evidence "
-                "because its multisine was not visible during fitting."
+                "The blue dashed Identified model may overlap the black solid True "
+                "system. That overlap is the result: markers and line styles keep "
+                "both curves visible. Validation is stronger evidence because its "
+                "multisine was not visible during fitting."
             ),
             kind="success",
         )
@@ -817,8 +875,10 @@ def _(
                   <span class="chapter-label">04 / READ THE EVIDENCE</span>
                   <h2>Fit explains the estimate. Validation tests its use.</h2>
                   <p class="chapter-lede">Fit and Validation remain side by
-                  side. Read each column from applied input to position and
-                  velocity, then compare the Initial and Identified models.</p>
+                  side. In each column, read applied torque on top, position in
+                  the middle, and velocity below. Orange shows the Initial-model
+                  error; black and blue show whether identification recovered
+                  the observed motion.</p>
                 </section>
                 """
             ),

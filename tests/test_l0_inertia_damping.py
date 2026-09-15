@@ -124,8 +124,10 @@ def test_report_contains_one_run_metadata_and_visual(tmp_path):
     assert "Initial model" in report
     assert "Identified model" in report
     assert "held-out multisine" in report
+    assert "frequency sweeps from low to high" in report
     assert "How to read this report" in report
     assert "`nominal` for compatibility" in report
+    assert "Curve key" in report
 
 
 def test_l0_lesson_set_and_pipeline_contract_exist():
@@ -173,6 +175,10 @@ def test_marimo_preview_reuses_shared_l0_runner():
     assert "WHAT SYSID GIVES US" in preview
     assert "THE REPEATED LOOP" in preview
     assert "fit_student" not in preview
+    assert "dashed + markers" in preview
+    assert "True system (Oracle), evaluation only" in preview
+    assert "Fit / chirp" in preview
+    assert "held-out multisine" in preview
 
 
 def test_marimo_slider_changes_do_not_trigger_refit():

@@ -20,12 +20,22 @@ different multisine input and is kept untouched until after fitting. Improvement
 on validation is the useful evidence that the fitted model learned dynamics
 rather than only matching one motion.
 
+A **chirp** is one sinusoid whose frequency sweeps from low to high. A
+**multisine** adds several fixed-frequency sinusoids. **Held-out** means that
+the multisine observations are not used to estimate `J` or `b`; they are used
+only after fitting to test prediction on a different motion.
+
 Configuration: `l0-inertia-damping-v1`<br>
 Plant boundary: known applied torque `u` in N m -> observed `q`, `qd`<br>
 Fit excitation: chirp<br>
 Validation excitation: held-out multisine
 
 ![True-system, Initial-model, and Identified-model trajectories](report.png)
+
+**Curve key:** True system (Oracle) is the solid dark line. Identified model is
+the blue dashed line with open markers. When they overlap, the markers still
+show that both curves are present; the overlap is evidence of a successful
+match. Initial model is orange.
 
 | quantity | True system | Initial model | Identified model |
 |---|---:|---:|---:|
