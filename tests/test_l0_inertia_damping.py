@@ -1,4 +1,6 @@
+import ast
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -8,6 +10,7 @@ from synthetic.l0_inertia_damping import (
     Params,
     analytical_constant_input,
     build_benchmark,
+    fit_l0,
     fit_student,
     load_config,
     local_sensitivity,
@@ -81,6 +84,33 @@ def test_fit_api_accepts_observations_only():
     assert fitted.params.damping == pytest.approx(config.truth.damping)
 
 
+def test_prepared_oracle_data_can_be_reused_for_another_student_start():
+    config = load_config()
+    prepared_data = build_benchmark(config)
+    changed_config = replace(
+        config,
+        nominal=Params(inertia=0.12, damping=0.08),
+    )
+
+    run = fit_l0(changed_config, prepared_data)
+
+    assert run.data is prepared_data
+    assert run.config.nominal == changed_config.nominal
+    assert run.fit.params.inertia == pytest.approx(config.truth.inertia)
+    assert run.fit.params.damping == pytest.approx(config.truth.damping)
+
+
+def test_prepared_data_rejects_a_different_oracle_contract():
+    config = load_config()
+    prepared_data = build_benchmark(config)
+
+    with pytest.raises(ValueError, match="Oracle truth"):
+        fit_l0(
+            replace(config, truth=Params(inertia=0.07, damping=0.055)),
+            prepared_data,
+        )
+
+
 def test_report_contains_one_run_metadata_and_visual(tmp_path):
     report_path = write_report(run_l0(), tmp_path)
 
@@ -108,9 +138,30 @@ def test_l0_lesson_set_and_pipeline_contract_exist():
 def test_marimo_preview_reuses_shared_l0_runner():
     preview = Path("apps/l0_inertia_damping.py").read_text(encoding="utf-8")
     assert "from synthetic.l0_inertia_damping import" in preview
-    assert "run_l0(preview_config)" in preview
-    assert "Recomputed from current controls" in preview
+    assert "fit_l0(preview_config, prepared_data)" in preview
+    assert "fit completed at" in preview
+    assert 'fit_state = "succeeded"' in preview
+    assert "Oracle dataset reused" in preview
     assert "fit_student" not in preview
+
+
+def test_marimo_view_selection_does_not_trigger_refit():
+    tree = ast.parse(Path("apps/l0_inertia_damping.py").read_text(encoding="utf-8"))
+    cells = [node for node in tree.body if isinstance(node, ast.FunctionDef)]
+    fit_cell = next(
+        cell
+        for cell in cells
+        if any(
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "fit_l0"
+            for node in ast.walk(cell)
+        )
+    )
+    dependencies = {argument.arg for argument in fit_cell.args.args}
+
+    assert "split_control" not in dependencies
+    assert {"inertia_control", "damping_control"} <= dependencies
 
 
 def test_sensitivity_is_finite_for_default_fit():

@@ -18,6 +18,7 @@ Every lesson declares these items before implementation:
 | Observations | Which signals does the estimator receive? |
 | Student model | Which structure and parameters may be fitted? |
 | Experiment split | What is used for fitting, and what is held out? |
+| Execution policy | Is this an instant calculation, interactive wait, or background job? |
 | Learner control | Which one or two safe settings can be changed? |
 | Evidence | Which curves, metrics, and diagnostics answer the question? |
 | Limits | Which real effects are intentionally absent? |
@@ -42,6 +43,42 @@ The computation has one source of truth: an importable Python module. The
 lesson text explains the reasoning, the notebook or a future Marimo app is a
 learner-facing adapter, and the static report records one reproducible run.
 None of those presentation surfaces should reimplement simulation or fitting.
+
+## Execution policy
+
+Lessons keep calculation separate from result exploration. A completed
+`ExperimentRun` is the boundary between them: fitting produces the run, while
+plots, metric selection, joint selection, timelines, and camera controls read
+it without silently fitting again.
+
+Choose one execution policy for every learner control that changes the
+experiment:
+
+| Policy | Expected wait | Interaction |
+|---|---:|---|
+| Instant | under about 200 ms | recompute reactively after a control changes |
+| Interactive | about 0.2-5 s | show running, success, and failure state in the page |
+| Job | longer or remotely scheduled | submit work, return a job ID, show progress and cancellation, then load the completed run |
+
+Controls that only change presentation never submit computation. Changing from
+fit to validation, selecting a joint, scrubbing time, or switching a residual
+view should reuse the same run. A complex Oracle dataset should normally be
+prepared and cached once; fitting jobs consume its reference rather than
+regenerating the Oracle on every page interaction.
+
+For a machine leg or whole robot, the eventual flow is:
+
+```text
+prepare_experiment(spec) -> immutable dataset reference
+submit_fit(dataset reference, Student, estimator) -> job ID
+observe job -> progress / failure / completed ExperimentRun
+select views from ExperimentRun -> plots, rollouts, metrics, report
+```
+
+This is a behavioral contract, not yet a shared queue API. Implement the job
+boundary when a concrete actuator or leg lesson first exceeds the interactive
+budget, so its retry, cancellation, cache, and worker requirements come from a
+real workload.
 
 ## Artifact contract
 
@@ -78,12 +115,12 @@ An experiment can move to the next lesson only when it has:
 
 ## Presentation surfaces
 
-Jupyter is the current L0 surface because it is widely available and supports
-small, inspectable experiments. Marimo is a candidate for a later lesson when
-reactive controls demonstrably improve learning; adopting it is a presentation
-change, not a second numerical implementation. Quarto or MkDocs can host the
-lesson prose when the lesson set grows, while generated reports remain useful
-as immutable run artifacts.
+Jupyter remains an inspectable L0 surface. The current Marimo preview demonstrates
+reactive controls while calling the same numerical implementation: changing a
+nominal parameter performs an instant fit, while switching fit/validation only
+selects another view from the completed run. Quarto or MkDocs can host the lesson
+prose when the lesson set grows, while generated reports remain useful as
+immutable run artifacts.
 
 ## L0 mapping
 

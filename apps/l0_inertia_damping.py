@@ -7,6 +7,7 @@ app = marimo.App(width="full", app_title="L0 - Inertia and Damping")
 @app.cell
 def _():
     from dataclasses import replace
+    from datetime import datetime
     from pathlib import Path
     import sys
     import time
@@ -20,12 +21,26 @@ def _():
 
     from synthetic.l0_inertia_damping import (
         Params,
+        build_benchmark,
+        fit_l0,
         load_config,
-        run_l0,
         simulate,
     )
 
-    return Params, load_config, mo, np, plt, replace, repo_root, run_l0, simulate, time
+    return (
+        Params,
+        build_benchmark,
+        datetime,
+        fit_l0,
+        load_config,
+        mo,
+        np,
+        plt,
+        replace,
+        repo_root,
+        simulate,
+        time,
+    )
 
 
 @app.cell
@@ -57,8 +72,9 @@ def _(mo):
 
 
 @app.cell
-def _(load_config, mo, repo_root):
+def _(build_benchmark, load_config, mo, repo_root):
     base_config = load_config(repo_root / "synthetic" / "l0_config.json")
+    prepared_data = build_benchmark(base_config)
     inertia_control = mo.ui.slider(
         start=0.02,
         stop=0.14,
@@ -83,7 +99,7 @@ def _(load_config, mo, repo_root):
         label="Trajectory",
         inline=True,
     )
-    return base_config, damping_control, inertia_control, split_control
+    return base_config, damping_control, inertia_control, prepared_data, split_control
 
 
 @app.cell
@@ -117,14 +133,12 @@ def _(damping_control, inertia_control, mo, split_control):
 def _(
     Params,
     base_config,
+    datetime,
     damping_control,
+    fit_l0,
     inertia_control,
-    np,
-    plt,
+    prepared_data,
     replace,
-    run_l0,
-    simulate,
-    split_control,
     time,
 ):
     preview_config = replace(
@@ -135,13 +149,44 @@ def _(
         ),
     )
     started_at = time.perf_counter()
-    preview_run = run_l0(preview_config)
+    preview_run = fit_l0(preview_config, prepared_data)
     fit_elapsed_s = time.perf_counter() - started_at
+    fit_completed_at = datetime.now().astimezone().strftime("%H:%M:%S")
+    fit_state = "succeeded" if preview_run.fit.success else "failed"
+    return fit_completed_at, fit_elapsed_s, fit_state, preview_config, preview_run
+
+
+@app.cell
+def _(preview_run, split_control):
     preview_observations = (
         preview_run.data.fit
         if split_control.value == "Fit"
         else preview_run.data.validation
     )
+    preview_metrics = (
+        (
+            preview_run.nominal_fit_metrics,
+            preview_run.identified_fit_metrics,
+        )
+        if split_control.value == "Fit"
+        else (
+            preview_run.nominal_validation_metrics,
+            preview_run.identified_validation_metrics,
+        )
+    )
+    return preview_metrics, preview_observations
+
+
+@app.cell
+def _(
+    np,
+    plt,
+    preview_config,
+    preview_observations,
+    preview_run,
+    simulate,
+    split_control,
+):
     nominal_q, nominal_qd = simulate(
         preview_config.nominal,
         preview_observations.t,
@@ -156,18 +201,6 @@ def _(
         q0=preview_config.q0,
         qd0=preview_config.qd0,
     )
-    preview_metrics = (
-        (
-            preview_run.nominal_fit_metrics,
-            preview_run.identified_fit_metrics,
-        )
-        if split_control.value == "Fit"
-        else (
-            preview_run.nominal_validation_metrics,
-            preview_run.identified_validation_metrics,
-        )
-    )
-
     lesson_figure, lesson_axes = plt.subplots(
         2, 2, figsize=(12, 7), constrained_layout=True
     )
@@ -263,11 +296,20 @@ def _(
     lesson_figure.suptitle(
         f"{split_control.value}: Oracle vs Student models", fontsize=15
     )
-    return fit_elapsed_s, lesson_figure, preview_metrics, preview_run
+    return lesson_figure
 
 
 @app.cell
-def _(fit_elapsed_s, lesson_figure, mo, preview_metrics, preview_run, split_control):
+def _(
+    fit_completed_at,
+    fit_elapsed_s,
+    fit_state,
+    lesson_figure,
+    mo,
+    preview_metrics,
+    preview_run,
+    split_control,
+):
     nominal_metrics, identified_metrics = preview_metrics
     metric_strip = mo.Html(
         f"""
@@ -284,7 +326,8 @@ def _(fit_elapsed_s, lesson_figure, mo, preview_metrics, preview_run, split_cont
             mo.md("### 3. Read the result"),
             metric_strip,
             mo.md(
-                f"`Recomputed from current controls` · fit completed in "
+                f"`Oracle dataset reused` · fit completed at "
+                f"`{fit_completed_at}` · `{fit_state}` in "
                 f"`{fit_elapsed_s * 1000:.0f} ms` · optimizer evaluations: "
                 f"`{preview_run.fit.nfev}`"
             ),

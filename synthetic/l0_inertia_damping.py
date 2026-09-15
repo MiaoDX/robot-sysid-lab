@@ -447,9 +447,13 @@ def local_sensitivity(observations: Observations, params: Params) -> Sensitivity
     return Sensitivity(tuple(float(value) for value in singular_values), condition)
 
 
-def run_l0(config: L0Config | None = None) -> L0Run:
-    config = config or load_config()
-    data = build_benchmark(config)
+def fit_l0(config: L0Config, data: BenchmarkData) -> L0Run:
+    """Fit and evaluate the L0 Student against an already prepared dataset."""
+
+    if data.metadata.get("config_version") != config.version:
+        raise ValueError("prepared data and config versions must match")
+    if data.truth != config.truth:
+        raise ValueError("prepared data and config must use the same Oracle truth")
     fit = fit_student(
         data.fit,
         initial_guess=config.nominal,
@@ -467,6 +471,13 @@ def run_l0(config: L0Config | None = None) -> L0Run:
         identified_validation_metrics=score(identified, data.validation),
         sensitivity=local_sensitivity(data.fit, identified),
     )
+
+
+def run_l0(config: L0Config | None = None) -> L0Run:
+    """Prepare the default Oracle dataset, fit the Student, and evaluate it."""
+
+    config = config or load_config()
+    return fit_l0(config, build_benchmark(config))
 
 
 def _metrics_dict(metrics: Metrics) -> dict[str, float]:
