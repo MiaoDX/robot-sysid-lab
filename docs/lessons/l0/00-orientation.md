@@ -10,13 +10,14 @@ known applied torque u  ->  rotational plant  ->  observed q and qd
 
 The plant follows
 
-```text
-J * qdd + b * qd = u
-```
+$$
+J\ddot{q} + b\dot{q} = u
+$$
 
-Here `q` is position in radians, `qd` is velocity in radians per second, `qdd`
-is acceleration, `u` is applied torque in N m, `J` is inertia in kg m^2, and
-`b` is viscous damping in N m s/rad. The unknowns are only `J` and `b`.
+Here $q$ is position in radians, $\dot{q}$ is velocity in radians per second,
+$\ddot{q}$ is acceleration, $u$ is applied torque in N m, $J$ is inertia in
+kg m^2, and $b$ is viscous damping in N m s/rad. The unknowns are only $J$
+and $b$. In code these signals are named `q`, `qd`, and `qdd`.
 
 The experiment uses an Oracle to generate observations. The Oracle knows the
 truth, but the estimator does not receive it. The estimator sees only `t`,

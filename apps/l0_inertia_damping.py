@@ -313,23 +313,6 @@ def _(mo):
             color: var(--lesson-muted);
             font: .75rem/1.4 var(--lesson-font-body);
           }
-          .equation-band {
-            display: grid;
-            grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr);
-            gap: var(--lesson-space-xl);
-            align-items: center;
-            padding: var(--lesson-space-lg) 0;
-            border-top: 1px solid var(--lesson-line);
-            border-bottom: 1px solid var(--lesson-line);
-          }
-          .equation {
-            color: var(--lesson-blue);
-            font: 700 clamp(1.15rem, 3vw, 1.7rem)/1.25 var(--lesson-font-mono);
-          }
-          .equation-copy {
-            color: var(--lesson-muted);
-            font: .95rem/1.58 var(--lesson-font-body);
-          }
           .roles {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -369,8 +352,7 @@ def _(mo):
             .lesson-progress { position: static; padding: var(--lesson-space-2xs) var(--lesson-space-xs); }
             .lesson-progress strong { flex-basis: 100%; margin-bottom: var(--lesson-space-3xs); }
             .lesson-chapter { padding: var(--lesson-space-lg) 0; }
-            .intro-grid,
-            .equation-band { grid-template-columns: minmax(0, 1fr); gap: var(--lesson-space-sm); }
+            .intro-grid { grid-template-columns: minmax(0, 1fr); gap: var(--lesson-space-sm); }
             .outcomes,
             .roles { grid-template-columns: minmax(0, 1fr); }
             .metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -466,30 +448,67 @@ def _(mo):
 
         </section>
 
+        """
+    )
+    return introduction
+
+
+@app.cell
+def _(mo):
+    boundary_header = mo.Html(
+        """
         <section class="lesson-chapter" id="boundary">
           <span class="chapter-label">02 / DECLARE THE BOUNDARY</span>
           <h2>Begin with one joint and two unknowns</h2>
           <p class="chapter-lede">L0 removes hardware and model-structure
           ambiguity so the full identification loop stays visible.</p>
-          <div class="equation-band">
-            <div class="equation">J * qdd + b * qd = u</div>
-            <div class="equation-copy"><strong>Known:</strong> time, applied
-            torque, position, and velocity. <strong>Unknown:</strong> inertia J
-            and viscous damping b. Larger J resists acceleration; larger b
-            removes more energy while the joint moves.</div>
-          </div>
-          <div class="roles">
-            <div class="role"><h3>Oracle</h3><p>The hidden plant that generates
-            observations. Its true parameters are reserved for evaluation.</p></div>
-            <div class="role"><h3>Nominal Student</h3><p>The plausible but wrong
-            model available before identification. It is the orange baseline.</p></div>
-            <div class="role"><h3>Identified Student</h3><p>The same model after
-            fitting J and b from the declared fit observations.</p></div>
-          </div>
         </section>
         """
     )
-    return introduction
+    boundary_equation = mo.vstack(
+        [
+            mo.md(
+                r"""
+                \[
+                \Large J\ddot{q} + b\dot{q} = u
+                \]
+                """
+            ).style(
+                {
+                    "color": "var(--lesson-blue)",
+                }
+            ),
+            mo.md(
+                "**Known:** time, applied torque, position, and velocity. "
+                "**Unknown:** inertia $J$ and viscous damping $b$. Larger $J$ "
+                "resists acceleration; larger $b$ removes more energy while "
+                "the joint moves."
+            ),
+        ],
+        gap=0.5,
+    ).style(
+        {
+            "border-top": "1px solid var(--lesson-line)",
+            "border-bottom": "1px solid var(--lesson-line)",
+            "padding": "var(--lesson-space-md) 0",
+        }
+    )
+    boundary_roles = mo.Html(
+        """
+        <div class="roles">
+          <div class="role"><h3>Oracle</h3><p>The hidden plant that generates
+          observations. Its true parameters are reserved for evaluation.</p></div>
+          <div class="role"><h3>Nominal Student</h3><p>The plausible but wrong
+          model available before identification. It is the orange baseline.</p></div>
+          <div class="role"><h3>Identified Student</h3><p>The same model after
+          fitting J and b from the declared fit observations.</p></div>
+        </div>
+        """
+    )
+    boundary = mo.vstack(
+        [boundary_header, boundary_equation, boundary_roles], gap=0.0
+    )
+    return boundary
 
 
 @app.cell
@@ -820,11 +839,20 @@ lesson adds one mismatch at a time so its residual signature remains visible.
 
 
 @app.cell
-def _(controls, experiment_intro, introduction, lesson_header, mo, result_view):
+def _(
+    boundary,
+    controls,
+    experiment_intro,
+    introduction,
+    lesson_header,
+    mo,
+    result_view,
+):
     course = mo.vstack(
         [
             lesson_header,
             introduction,
+            boundary,
             experiment_intro,
             controls,
             result_view,

@@ -38,6 +38,6 @@ the second lesson shows which data and report structures are genuinely common.
 
 State the L0 conclusion in one sentence:
 
-> Under a matched `J*qdd + b*qd = u` model with known torque and ideal
+> Under a matched $J\ddot{q} + b\dot{q} = u$ model with known torque and ideal
 > observations, a chirp fit can recover `J` and `b` and predict a held-out
 > multisine; the conclusion is bounded by those assumptions.

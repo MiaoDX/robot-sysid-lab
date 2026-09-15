@@ -148,6 +148,8 @@ def test_marimo_preview_reuses_shared_l0_runner():
     assert 'id="experiment"' in preview
     assert 'id="evidence"' in preview
     assert 'id="limits"' in preview
+    assert r"J\ddot{q} + b\dot{q} = u" in preview
+    assert "J * qdd + b * qd = u" not in preview
     assert "WHAT SYSID GIVES US" in preview
     assert "THE REPEATED LOOP" in preview
     assert "fit_student" not in preview
