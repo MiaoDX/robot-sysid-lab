@@ -40,7 +40,12 @@
     "f1_hz": 1.0
   },
   "validation_excitation": {
-    "amplitude_rad": 0.3
+    "amplitude_rad": 0.3,
+    "frequency_hz": 0.63,
+    "modulation_cycles": 0.11,
+    "modulation_hz": 0.17,
+    "phase_rad": 0.4,
+    "edge_gain": 3.0
   },
   "metadata": {
     "seed": 7,

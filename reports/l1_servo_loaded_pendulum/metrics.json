@@ -2,7 +2,7 @@
   "config_version": "l1-servo-loaded-pendulum-v2",
   "metadata": {
     "config_version": "l1-servo-loaded-pendulum-v2",
-    "config_hash": "2b0cb38eaa16ccad",
+    "config_hash": "5849930293204112",
     "seed": 7,
     "timestamp_utc": "2026-01-01T00:00:00Z",
     "units": {
@@ -30,8 +30,44 @@
     ],
     "delay_semantics": "effective command delay after fixed PD law; fractional linear interpolation; zero prehistory",
     "sensor_velocity": "qd from q: forward difference at initial sample, centered interior, backward final sample",
-    "fit_excitation": "chirp",
-    "validation_excitation": "held-out reversal/multisine",
+    "fit_excitation": {
+      "kind": "linear chirp",
+      "amplitude_rad": 0.35,
+      "f0_hz": 0.08,
+      "f1_hz": 1.0,
+      "phase_rad": 0.0,
+      "duration_s": 8.0
+    },
+    "validation_excitation": {
+      "kind": "phase-modulated clipped-sine reversal",
+      "amplitude_rad": 0.3,
+      "frequency_hz": 0.63,
+      "modulation_cycles": 0.11,
+      "modulation_hz": 0.17,
+      "phase_rad": 0.4,
+      "edge_gain": 3.0
+    },
+    "controller": {
+      "kp": 8.0,
+      "kd": 4.0,
+      "sample_period_s": 0.005,
+      "velocity_feedback": "fixed internal integration velocity",
+      "filtering": "none",
+      "rate_limits": "none"
+    },
+    "model": {
+      "dt": 0.005,
+      "duration_s": 8.0,
+      "q0": 0.0,
+      "qd0": 0.0,
+      "arm_mass": 1.2,
+      "payload_mass": 0.35,
+      "arm_length": 0.6,
+      "gravity": 9.81,
+      "kp": 8.0,
+      "kd": 4.0,
+      "integration_substeps": 1
+    },
     "reset_state": {
       "q": 0.0,
       "qd": 0.0
@@ -82,10 +118,10 @@
       "qd_rmse": 0.4900686979951283
     },
     "identified": {
-      "q_mae": 3.262818740292916e-17,
-      "qd_mae": 3.3341363537774843e-16,
-      "q_rmse": 5.662971868210265e-17,
-      "qd_rmse": 8.827452605355123e-16
+      "q_mae": 3.571100643311781e-17,
+      "qd_mae": 4.974159945661325e-16,
+      "q_rmse": 6.006526891921517e-17,
+      "qd_rmse": 1.101392785228945e-15
     }
   },
   "effective_delay_note": "identified delay is boundary and sampling dependent",
@@ -126,5 +162,12 @@
       "delay_s": 0.09999999999999994,
       "fit_q_rmse": 0.9177877918535824
     }
-  ]
+  ],
+  "acceptance": {
+    "delay_tolerance_s": 0.001,
+    "minimum_validation_rmse_improvement": 0.9,
+    "delay_error_s": 6.938893903907228e-17,
+    "validation_q_improvement": 0.999999999999998,
+    "validation_qd_improvement": 0.9999999999999978
+  }
 }
