@@ -1,9 +1,24 @@
 # L1 Development Plan: Servo-Driven Loaded Pendulum
 
-**Status:** proposed, pending user approval
+**Status:** implemented; engineering gates verified; independent learner acceptance pending
 **Track:** synthetic lab
 **Predecessor:** L0 inertia and damping
-**Plan rule:** implement this plan only after approval; do not broaden the first L1 slice during implementation.
+**Plan rule:** implementation authorized by the user; preserve the four-wave scope below.
+
+## Current evidence
+
+The numerical module, frozen v2 config, report, notebook, four-page lesson and
+Marimo app are implemented. [Verification](../../reports/l1_servo_loaded_pendulum/verification.md)
+records 30 passing tests, clean CPU reproduction, executed notebook, and real
+browser submit/stale/replay checks at 320/768/1440 px (plus 375/414 px).
+Default delay is recovered at 0.080 s; held-out q and qd RMSE improve by at least
+90%. The measured default run is 0.176 s, so Job mode is unnecessary.
+
+Acceptance gates 1–6 and 8 pass. **Gate 7 remains open:** no independent
+reader feedback has been received. The [learner walkthrough](../lessons/l1/README.md#learner-acceptance-walkthrough)
+is ready; do not mark this full plan complete until actual results are recorded.
+Scope and parked alternatives below are unchanged; hardware validation remains
+out of scope, not an outstanding L1 engineering gate.
 
 ## Goal
 
@@ -284,7 +299,8 @@ this milestone.
 
 ## Plan decision
 
-The recommended execution is the full four-wave plan above after user approval.
+The user authorized the full four-wave plan above. Engineering implementation
+and maintainer verification are delivered; the independent learner gate remains.
 The first implementation checkpoint is Wave 1, but later waves remain part of
 the same L1 scope and should not be silently dropped. The only material product
 choice that may need revisiting during implementation is whether delay remains

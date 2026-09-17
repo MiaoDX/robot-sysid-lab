@@ -2,9 +2,9 @@
 
 This file tracks changing delivery status, immediate work, and completion evidence. The [README](README.md) stays focused on the project purpose, architecture, and reading entry points.
 
-**Snapshot: 2026-09-16.** L0 is executable and includes a guided Marimo course,
-an inspectable Jupyter notebook, a headless runner, and a generated report.
-Later benchmark levels remain design work unless explicitly marked delivered.
+**Snapshot: 2026-09-17.** L0 and L1 have executable Marimo lessons, inspectable
+notebooks, CPU runners, and generated reports. L1 engineering gates pass;
+independent learner acceptance remains open. Later levels remain design work.
 
 ## Current checkpoint
 
@@ -88,8 +88,8 @@ Package layout, storage format, tracking service, and web framework should be ch
 
 ## Evidence and maintenance
 
-The L0 implementation and generated lesson are delivered; the notebook, report,
-configuration, and current check output are linked above. The reusable workflow
+L0 and L1 implementations and generated lessons are delivered; notebooks, reports,
+configurations, and check output are linked in their delivery sections. The reusable workflow
 contract and course-facing L0 lesson set are documented. Independent learner
 feedback is the only remaining release-acceptance item.
 
@@ -97,4 +97,33 @@ Keep task state and completion evidence here. Keep the reusable lesson assumptio
 
 ## Current delivery: L1 servo-loaded pendulum
 
-The deterministic L1 delay benchmark is implemented with a fixed-base loaded pendulum, explicit command-boundary delay, separated fit/validation trajectories, estimator namespace metadata, generated report, notebook, and guided Marimo surface. Focused proof: `python -m pytest -q tests/test_l1_servo_loaded_pendulum.py` (3 passed). Reproduce with `python -m synthetic.l1_servo_loaded_pendulum --output-dir reports/l1_servo_loaded_pendulum`. Full pytest collection remains affected by the repository's ROS pytest hook/import-path issue.
+L1 engineering implementation is delivered; **independent learner acceptance is
+still pending**. The [lesson](docs/lessons/l1/README.md), [Marimo app](apps/l1_servo_loaded_pendulum.py),
+[notebook](notebooks/l1_servo_loaded_pendulum.ipynb), and [report](reports/l1_servo_loaded_pendulum/report.md)
+share the [frozen v2 config](synthetic/l1_config.json) and one analytical CPU
+module. The declared hidden effect is torque-command delay after the full PD
+law. The public fitter cannot receive Oracle config or validation observations.
+
+Verification on 2026-09-17: **30 tests passed**, fresh CPU report reproduction and
+notebook execution passed; default delay recovered at **0.080 s**. Held-out q
+RMSE improves from **0.03085465 rad** to floating-point residual, and qd RMSE
+from **0.49007 rad/s** to floating-point residual (both exceed the 90% gate).
+Real browser checks at 320/768/1440 px verified explicit fit, stale controls,
+recorded playback, all signal views, and no application console errors. Default
+run: **0.176 s**. Marimo asset-preload warnings are documented; the earlier
+missing-Marimo/browser and pytest import-path blockers are resolved.
+
+```bash
+python -m pip install -r requirements-dev.txt -r requirements-interactive.txt
+python -m pytest -q
+python -m synthetic.l1_servo_loaded_pendulum --output-dir reports/l1_servo_loaded_pendulum
+python -m marimo run apps/l1_servo_loaded_pendulum.py --port 2719
+```
+
+The [verification record](reports/l1_servo_loaded_pendulum/verification.md)
+contains clean-environment versions, commands, screenshots, and the gate audit.
+Next action: obtain an independent reader's actual answers and feedback using
+the [walkthrough](docs/lessons/l1/README.md#learner-acceptance-walkthrough). Gates
+1–6 and 8 pass; learning gate 7 stays open. Hardware-transfer claims, friction,
+saturation, multibody/contact and framework extraction remain deferred by the
+[plan](docs/plans/l1-servo-loaded-pendulum.md).
