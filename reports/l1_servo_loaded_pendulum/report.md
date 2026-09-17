@@ -1,7 +1,13 @@
 # L1 Servo Driven Loaded Pendulum
 
-Synthetic ideal observation: fixed base, rotary arm, point payload, gravity, and fixed PD servo. Boundary: `q_des -> PD -> effective command delay -> torque -> pendulum`. Oracle delay is hidden; fitted delay is effective and boundary dependent.
+![Recorded machine and trajectories](report.png)
 
-Initial delay: **0.000 s**; identified: **0.080 s**; Oracle: **0.080 s**. Validation q RMSE changes from 0.11588 to 2.0502e-16.
+This synthetic ideal experiment uses a fixed base, a uniform rigid arm (mass 1.2 kg, length 0.6 m), a known point payload (0.35 kg), gravity, and a fixed PD position servo. The declared boundary is `q_des -> PD -> effective command delay -> pendulum torque`; delay is applied after the PD law with fractional interpolation and zero prehistory.
 
-Estimator inputs are only `t`, `q_des`, `q`, and `qd`; torque and delayed state are Oracle diagnostics. Omitted effects include friction, saturation, compliance/backlash, sensor noise, voltage/thermal behavior, contacts, and whole-robot dynamics. This is not a motor electromagnetic model and does not establish hardware transfer.
+The Oracle delay is **0.080 s**. The Initial model fixes delay at **0.000 s**. The Identified Student fits only `t`, `q_des`, `q`, and finite-difference `qd` from fit data, recovering **0.080 s**. On held-out validation, q RMSE changes from **0.0308547** to **5.66297e-17** (100.0% improvement).
+
+Torque, pre-delay command, raw integration velocity, and delayed state are Oracle diagnostics and never estimator inputs. Residuals expose phase/tracking error from the omitted delay; fit and validation use separate reset trajectories. The fitted value is an effective parameter dependent on this command boundary and sampling.
+
+Omitted effects include friction, saturation, compliance/backlash, sensor noise, voltage and thermal behavior, contacts, payload shifts, and whole-robot dynamics. This is not a motor-electromagnetic or hardware-transfer model.
+
+A local loss slice around the fitted delay is recorded in `metrics.json` to show the identification minimum. Run metadata, units, seed, reset state, excitation definitions, configuration hash, and numerical settings are recorded in `metrics.json`.
