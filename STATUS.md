@@ -94,3 +94,7 @@ contract and course-facing L0 lesson set are documented. Independent learner
 feedback is the only remaining release-acceptance item.
 
 Keep task state and completion evidence here. Keep the reusable lesson assumptions and acceptance criteria in the happy-path document, and long-term options in the roadmap. Update the snapshot when work changes; leave the README free of dates, percentages, implementation checklists, and claims of capabilities that only exist in the plan.
+
+## Current delivery: L1 servo-loaded pendulum
+
+The deterministic L1 delay benchmark is implemented with a fixed-base loaded pendulum, explicit command-boundary delay, separated fit/validation trajectories, estimator namespace metadata, generated report, notebook, and guided Marimo surface. Focused proof: `python -m pytest -q tests/test_l1_servo_loaded_pendulum.py` (3 passed). Reproduce with `python -m synthetic.l1_servo_loaded_pendulum --output-dir reports/l1_servo_loaded_pendulum`. Full pytest collection remains affected by the repository's ROS pytest hook/import-path issue.
