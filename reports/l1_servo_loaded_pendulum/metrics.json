@@ -1,0 +1,61 @@
+{
+  "config_version": "l1-servo-loaded-pendulum-v1",
+  "metadata": {
+    "config_version": "l1-servo-loaded-pendulum-v1",
+    "observations": [
+      "t",
+      "q_des",
+      "q",
+      "qd"
+    ],
+    "public_observations": [
+      "t",
+      "q_des",
+      "q",
+      "qd"
+    ],
+    "oracle_only": [
+      "true_torque",
+      "delayed_command_state"
+    ],
+    "delay_semantics": "effective command delay after fixed PD law"
+  },
+  "truth": {
+    "delay_s": 0.08
+  },
+  "initial": {
+    "delay_s": 0.0
+  },
+  "identified": {
+    "delay_s": 0.07999999999999981
+  },
+  "fit": {
+    "initial": {
+      "q_mae": 0.10744883950222199,
+      "qd_mae": 0.7506418819884307,
+      "q_rmse": 0.13196695035984554,
+      "qd_rmse": 1.0344736300606245
+    },
+    "identified": {
+      "q_mae": 5.705379973154498e-17,
+      "qd_mae": 2.2164903610065112e-16,
+      "q_rmse": 1.1802337094597244e-16,
+      "qd_rmse": 5.86421964135296e-16
+    }
+  },
+  "validation": {
+    "initial": {
+      "q_mae": 0.0881587217886695,
+      "qd_mae": 0.5654548506505163,
+      "q_rmse": 0.11587773829946708,
+      "qd_rmse": 0.7071525746026119
+    },
+    "identified": {
+      "q_mae": 8.632255067003713e-17,
+      "qd_mae": 6.624388537712633e-16,
+      "q_rmse": 2.050165555253996e-16,
+      "qd_rmse": 1.4408432324625048e-15
+    }
+  },
+  "effective_delay_note": "identified delay is boundary and sampling dependent"
+}
