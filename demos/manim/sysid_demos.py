@@ -125,6 +125,10 @@ def _velocity_meter(pivot_point: np.ndarray, values: np.ndarray, tracker, color,
     rail = Line(origin - RIGHT * half, origin + RIGHT * half, color=GREY_D, stroke_width=2)
     bar = Line(origin, origin + RIGHT * 0.02, color=color, stroke_width=thickness)
     group = VGroup(rail, bar)
+    for fraction, label in ((-1, f"-{max_value:.1f}"), (0, "0"), (1, f"+{max_value:.1f}")):
+        position = origin + RIGHT * (fraction * half)
+        group.add(Line(position + DOWN * 0.06, position + UP * 0.06, color=GREY_B))
+        group.add(Text(label, font_size=18, color=GREY_B).move_to(position + DOWN * 0.25))
 
     def update(mob):
         frac = float(np.clip(np.interp(tracker.get_value(), grid, values) / max_value, -1.0, 1.0))
@@ -209,8 +213,7 @@ class L0MismatchDemo(Scene):
     """Block question: what does the mismatch actually look like?
 
     The same recorded torque drives the true machine and the assumed one side by
-    side, so the Initial model's runaway is watched rather than asserted. It ends
-    by naming which machine is which and leaves the fit to its own block.
+    side, with persistent model labels and a shared velocity scale.
     """
 
     def construct(self):
@@ -236,8 +239,10 @@ class L0MismatchDemo(Scene):
         torque_label = Text("applied joint torque u", font_size=19, color=YELLOW)
         # Above the sweep circle (radius L0_ARM_LENGTH), so the arm never
         # crosses the label as it turns.
-        torque_label.move_to([left_pivot[0], left_pivot[1] + 2.2, 0.0])
-        self.play(FadeIn(left_dot), ShowCreation(left_torque), FadeIn(torque_label))
+        torque_label.move_to([0.0, 2.35, 0.0])
+        truth_label = Text("True system", font_size=24, color=ROLE_COLORS["oracle"]).move_to([-3.3, 1.9, 0])
+        assumed_label = Text("Initial model", font_size=24, color=ROLE_COLORS["initial"]).move_to([3.3, 1.9, 0])
+        self.play(FadeIn(left_dot), ShowCreation(left_torque), FadeIn(torque_label), FadeIn(truth_label))
 
         # --- the same torque, two machines ----------------------------------
         right_dot = Dot(right_pivot, color=GREEN)
@@ -250,8 +255,8 @@ class L0MismatchDemo(Scene):
         truth_meter = _velocity_meter(left_pivot, truth_qd, tracker, ROLE_COLORS["oracle"], shared_qd)
         initial_meter = _velocity_meter(right_pivot, initial_qd, tracker, ROLE_COLORS["initial"], shared_qd)
         same_push = Text("the same recorded torque u(t) drives both", font_size=20, color=GREY_B)
-        same_push.move_to([0.0, -3.1, 0])
-        meter_note = Text("joint velocity", font_size=17, color=GREY_B).move_to([0.0, -3.75, 0])
+        same_push.move_to([0.0, -3.7, 0])
+        meter_note = Text("joint velocity qd (rad/s) · shared scale", font_size=20, color=GREY_B).move_to([0.0, -3.35, 0])
 
         # The right joint gets its own torque marker: the caption claims the same
         # torque drives both, so both have to show one.
@@ -260,15 +265,13 @@ class L0MismatchDemo(Scene):
             FadeIn(right_dot), ShowCreation(right_torque),
             ShowCreation(truth_arm), ShowCreation(initial_arm),
             FadeIn(truth_meter), FadeIn(initial_meter), FadeIn(same_push), FadeIn(meter_note),
+            FadeIn(assumed_label),
         )
         self.play(tracker.animate.set_value(1.0), run_time=9, rate_func=linear)
         for mob in (truth_arm, initial_arm, truth_meter, initial_meter):
             mob.clear_updaters()
 
-        truth_label = Text("True system", font_size=21, color=ROLE_COLORS["oracle"]).move_to([-3.3, -3.1, 0])
-        assumed_label = Text("Initial model — what we assumed", font_size=21, color=ROLE_COLORS["initial"]).move_to([3.3, -3.1, 0])
-        self.play(FadeOut(same_push), FadeOut(meter_note), FadeIn(truth_label), FadeIn(assumed_label))
-        self.wait(1.2)
+        self.wait(2.0)
 
 
 class L0FitLandsDemo(Scene):
@@ -285,6 +288,13 @@ class L0FitLandsDemo(Scene):
         title = Text("L0 · does the fit land on the truth?", font_size=38)
         title.to_edge(UP, buff=0.3)
         self.play(Write(title))
+
+        metrics = Text(
+            f"Fit q RMSE (rad): Initial {data.run.nominal_fit_metrics.q_rmse:.3f}"
+            f"  →  Identified {data.run.identified_fit_metrics.q_rmse:.2e}",
+            font_size=23,
+        ).move_to([0.0, 2.4, 0.0])
+        self.play(FadeIn(metrics))
 
         left, right, bottom, top = -6.4, 6.4, -2.5, 1.5
         curves = {
@@ -326,7 +336,7 @@ class L0FitLandsDemo(Scene):
             "from here the Initial model runs away", font_size=17, color=GREY_B,
         ).move_to([chart_x(data.t[departure]) + 2.6, top - 0.3, 0.0])
         self.play(ShowCreation(marker_line), FadeIn(marker_note))
-        self.wait(1.8)
+        self.wait(3.0)
 
 
 def _l1_delay_data() -> SimpleNamespace:
@@ -567,9 +577,23 @@ class L1PhaseDemo(Scene):
             Line(np.array([left, lag_low, 0.0]), np.array([left, lag_high, 0.0]), color=WHITE, stroke_width=2),
         )
         playhead = ValueTracker(float(t[0]))
+        frequency = DecimalNumber(f_low, num_decimal_places=2, font_size=25)
+        phase = DecimalNumber(float(lag[0]), num_decimal_places=1, font_size=25, color=BLUE)
+        readout = VGroup(
+            Text(f"delay = {data.truth_delay:.3f} s", font_size=23),
+            Text("f =", font_size=23), frequency, Text("Hz", font_size=23),
+            Text("phase ≈", font_size=23), phase, Text("deg", font_size=23),
+        ).arrange(RIGHT, buff=0.18).move_to([0.0, -2.45, 0.0])
+        explanation = Text("360 × chirp frequency × delay; a local phase estimate", font_size=20, color=GREY_B)
+        explanation.move_to([0.0, -2.95, 0.0])
+        self.play(FadeIn(readout), FadeIn(explanation))
 
         def track(group):
-            x = to_x(float(playhead.get_value()))
+            now = float(playhead.get_value())
+            x = to_x(now)
+            current_frequency = f_low + (f_high - f_low) * (now - t[0]) / span
+            frequency.set_value(current_frequency)
+            phase.set_value(360.0 * current_frequency * data.truth_delay)
             group[0].put_start_and_end_on(np.array([x, sig_low, 0.0]), np.array([x, sig_high, 0.0]))
             group[1].put_start_and_end_on(np.array([x, lag_low, 0.0]), np.array([x, lag_high, 0.0]))
 
@@ -581,9 +605,9 @@ class L1PhaseDemo(Scene):
         caption = Text(
             f"the delay stays {data.truth_delay:.3f} s the whole time — it is the cycle that shortens",
             font_size=19, color=GREY_B,
-        ).move_to([0.0, -2.5, 0.0])
+        ).move_to([0.0, -3.5, 0.0])
         self.play(FadeIn(caption))
-        self.wait(1.6)
+        self.wait(3.0)
 class L1HeldOutDemo(Scene):
     """Block question: did fitting the delay predict motion it never saw?
 
@@ -603,10 +627,16 @@ class L1HeldOutDemo(Scene):
         self.play(Write(title))
 
         verdict = Text(
-            f"Initial τ = {data.initial_delay:.3f} s   ·   Identified τ = {data.identified_delay:.3f} s   ·   True τ = {data.truth_delay:.3f} s",
+            f"Delay (s): Initial {data.initial_delay:.3f}   ·   Identified {data.identified_delay:.3f}   ·   True {data.truth_delay:.3f}",
             font_size=19, color=GREY_B,
         ).move_to([0.0, 2.65, 0.0])
         self.play(FadeIn(verdict))
+        metrics = Text(
+            f"Held-out q RMSE (rad): {data.run.initial_validation.q_rmse:.4f}"
+            f"  →  {data.run.identified_validation.q_rmse:.2e}",
+            font_size=22,
+        ).move_to([0.0, 2.2, 0.0])
+        self.play(FadeIn(metrics))
 
         curves = {
             role: _plot_curve(
@@ -645,7 +675,7 @@ class L1HeldOutDemo(Scene):
             font_size=17, color=GREY_B,
         ).move_to([0.6, -3.05, 0.0])
         self.play(FadeIn(overlapping))
-        self.wait(1.6)
+        self.wait(3.0)
 
 def _l0_journey_data() -> SimpleNamespace:
     """The fitting-journey artifact plus the mappings both journey blocks need.
@@ -706,6 +736,35 @@ def _journey_backdrop(data, plane_frame_width: float = 0.0):
     return backdrop
 
 
+def _journey_legend(data):
+    """Use the landscape's own viridis palette to explain its log-cost scale."""
+    from matplotlib import colormaps
+    from matplotlib.colors import to_hex
+
+    ramp = VGroup(*[
+        Rectangle(width=0.16, height=0.18, stroke_width=0,
+                  fill_color=to_hex(colormaps["viridis"](value)), fill_opacity=1)
+        for value in np.linspace(0, 1, 16)
+    ]).arrange(RIGHT, buff=0)
+    legend = VGroup(
+        Text("low", font_size=20), ramp, Text("high cost", font_size=20),
+    ).arrange(RIGHT, buff=0.14)
+    legend.move_to([(data.plane[0] + data.plane[1]) / 2, -3.35, 0])
+    note = Text("log scale · arrows follow accepted steps", font_size=17, color=GREY_B)
+    note.next_to(legend, DOWN, buff=0.12)
+    return VGroup(legend, note)
+
+
+def _journey_directions(path, on_plane):
+    """Mark visible steps; tiny converged steps need no overlapping arrowheads."""
+    arrows = VGroup()
+    for first, second in zip(path[:-1], path[1:]):
+        start, end = on_plane(first), on_plane(second)
+        if np.linalg.norm(end - start) > 0.25:
+            arrows.add(Arrow(start, end, buff=0.05, color=WHITE, stroke_width=2))
+    return arrows
+
+
 class L0FitWalkDemo(Scene):
     """Block question: how does the fit get from the Initial model to the truth?
 
@@ -750,6 +809,7 @@ class L0FitWalkDemo(Scene):
         self.play(
             FadeIn(backdrop), ShowCreation(plane_frame), ShowCreation(chart_frame),
             FadeIn(plane_caption), FadeIn(axis_j), FadeIn(axis_b),
+            FadeIn(_journey_legend(data)),
         )
 
         truth_ring = Dot(on_plane((truth["inertia"], truth["damping"])), radius=0.15, color=BLACK)
@@ -759,7 +819,7 @@ class L0FitWalkDemo(Scene):
         start_ring = Dot(on_plane(walk[0]), radius=0.15, color=BLACK)
         start_dot = Dot(on_plane(walk[0]), radius=0.1, color=ROLE_COLORS["initial"])
         start_label = Text("Initial model", font_size=18, color=ROLE_COLORS["initial"])
-        start_label.next_to(start_dot, DOWN, buff=0.12)
+        start_label.next_to(start_dot, RIGHT, buff=0.15)
         reference = _plot_curve(
             t, observed.q, left=chart[0], right=chart[1], bottom=chart[2], top=chart[3],
             color=GREY_B, width=2.4, scale=data.shared_q,
@@ -795,7 +855,10 @@ class L0FitWalkDemo(Scene):
             fraction = step / max(len(walk) - 1, 1)
             tint = interpolate_color(ROLE_COLORS["initial"], ROLE_COLORS["identified"], fraction)
             trail.append(on_plane(walk[step]))
-            segment = Line(trail[-2], trail[-1], color=WHITE, stroke_width=3)
+            segment = VGroup(
+                Line(trail[-2], trail[-1], color=WHITE, stroke_width=3),
+                _journey_directions(walk[step - 1:step + 1], on_plane),
+            )
             next_readout = readout(step, walk[step]).move_to([(chart[0] + chart[1]) / 2, -3.35, 0])
             self.play(
                 ShowCreation(segment),
@@ -809,7 +872,7 @@ class L0FitWalkDemo(Scene):
             self.wait(0.35)
 
         self.play(Transform(current_label, key_row("Identified model", ROLE_COLORS["identified"])))
-        self.wait(1.2)
+        self.wait(3.0)
 
 
 class L0FitRobustDemo(Scene):
@@ -840,9 +903,9 @@ class L0FitRobustDemo(Scene):
         axis_b.rotate(PI / 2).next_to(plane_frame, LEFT, buff=0.1)
         start_dot = Dot(on_plane(data.walk[0]), radius=0.1, color=ROLE_COLORS["initial"])
         start_label = Text("Initial model", font_size=18, color=ROLE_COLORS["initial"])
-        start_label.next_to(start_dot, DOWN, buff=0.12)
+        start_label.next_to(start_dot, RIGHT, buff=0.15)
         self.play(FadeIn(backdrop), ShowCreation(plane_frame), FadeIn(axis_j), FadeIn(axis_b),
-                  FadeIn(start_dot), FadeIn(start_label))
+                  FadeIn(start_dot), FadeIn(start_label), FadeIn(_journey_legend(data)))
 
         truth_ring = Dot(on_plane((truth["inertia"], truth["damping"])), radius=0.15, color=BLACK)
         truth_dot = Dot(on_plane((truth["inertia"], truth["damping"])), radius=0.1, color=ROLE_COLORS["oracle"])
@@ -872,7 +935,8 @@ class L0FitRobustDemo(Scene):
             dots = VGroup(*[Dot(on_plane(point), radius=0.055, color=GREY_B) for point in path])
             route = VMobject(color=WHITE, stroke_width=2)
             route.set_points_as_corners([on_plane(point) for point in path])
-            self.play(FadeIn(dots), ShowCreation(route), ShowCreation(start_curve(path[0])), run_time=0.4)
+            self.play(FadeIn(dots), ShowCreation(route), FadeIn(_journey_directions(path, on_plane)),
+                      ShowCreation(start_curve(path[0])), run_time=0.6)
 
         truth_curve = _plot_curve(
             data.t, data.observed.q, left=chart[0], right=chart[1],
@@ -889,8 +953,8 @@ class L0FitRobustDemo(Scene):
         self.play(ShowCreation(truth_curve), FadeIn(landed), FadeIn(clipped))
 
         verdict = Text(
-            f"all {len(data.all_paths)} starts reach the same J and b",
+            f"all {len(data.all_paths)} tested starts reach the same J and b",
             font_size=21, color=ROLE_COLORS["identified"],
         ).next_to(plane_frame, UP, buff=0.12)
         self.play(Write(verdict))
-        self.wait(1.6)
+        self.wait(3.0)
