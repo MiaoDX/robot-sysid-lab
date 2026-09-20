@@ -66,7 +66,7 @@ CLIP_STEMS = (
 )
 
 
-def test_rendered_clips_are_present_and_embedded_in_the_course_map():
+def test_rendered_clips_are_present_and_embedded_in_their_lesson_pages():
     repo = DEMO.parents[2]
     rendered = repo / "demos" / "manim" / "rendered"
 
@@ -76,10 +76,12 @@ def test_rendered_clips_are_present_and_embedded_in_the_course_map():
         assert (rendered / f"{stem}.mp4").stat().st_size > 0
 
     course_map = (repo / "docs" / "course" / "index.html").read_text(encoding="utf-8")
-    assert 'id="clips"' in course_map
+    assert 'id="lessons"' in course_map
+    assert "<video" not in course_map
     for stem in CLIP_STEMS:
-        assert f"rendered/{stem}.mp4" in course_map
-        assert f"rendered/{stem}.png" in course_map
+        lesson = (repo / "docs" / "lessons" / ("l0" if stem.startswith("l0") else "l1") / "index.html").read_text(encoding="utf-8")
+        assert f"rendered/{stem}.mp4" in lesson
+        assert f"rendered/{stem}.png" in lesson
 
 
 def test_fitting_journey_artifact_backs_the_fitting_clip():
@@ -102,4 +104,3 @@ def test_manim_is_not_a_core_runtime_dependency():
     requirements = (DEMO.parents[2] / "requirements.txt").read_text(encoding="utf-8")
     assert "manim" not in requirements.lower()
     assert "manimgl" not in requirements.lower()
-

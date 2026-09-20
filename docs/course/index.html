@@ -182,7 +182,7 @@
       <nav aria-label="Course navigation">
         <a href="#tracks">Course map</a>
         <a href="#method">Method</a>
-        <a href="#clips">Clips</a>
+        <a href="#lessons">Lessons</a>
         <a id="nav-l0-link" href="http://127.0.0.1:2718">Open L0</a>
         <a id="nav-l1-link" href="http://127.0.0.1:2719">Open L1</a>
       </nav>
@@ -198,7 +198,7 @@
         <div class="intro-actions">
           <a class="action primary" id="hero-l0-link" href="http://127.0.0.1:2718">Open the interactive L0 lesson <span aria-hidden="true">-&gt;</span></a>
           <a class="action" id="hero-l1-link" href="http://127.0.0.1:2719">Open the interactive L1 lesson <span aria-hidden="true">-&gt;</span></a>
-          <a class="action" href="../lessons/l0/README.md">Read the L0 notes</a>
+        <a class="action" href="../lessons/l0/index.html">Open the L0 lesson</a>
           <a class="action" href="../../reports/l0_inertia_damping/report.md">Inspect the fixed report</a>
         </div>
         <p class="intro-note"><strong>L0 means Lab 0.</strong> It is the smallest complete SysID loop, not a difficulty score or the whole course.</p>
@@ -236,8 +236,8 @@
             <h3>Synthetic labs</h3>
             <p>Runnable experiments where Oracle truth is known but hidden from the estimator.</p>
             <ol class="level-list">
-              <li class="level"><span class="level-code">L0</span><span><a class="level-link" id="map-l0-link" href="http://127.0.0.1:2718"><strong>1-DoF foundations</strong></a><small>Inertia and damping with declared fit and validation.</small></span><span class="status live">interactive</span></li>
-              <li class="level"><span class="level-code">L1</span><span><a class="level-link" id="map-l1-link" href="http://127.0.0.1:2719"><strong>Servo-loaded pendulum</strong></a><small>Command delay, phase residuals, and held-out prediction. <a href="../lessons/l1/README.md">Read L1 notes</a></small></span><span class="status live">interactive</span></li>
+              <li class="level"><span class="level-code">L0</span><span><a class="level-link" id="map-l0-link" href="../lessons/l0/index.html"><strong>1-DoF foundations</strong></a><small>Inertia and damping with declared fit and validation.</small></span><span class="status live">lesson</span></li>
+              <li class="level"><span class="level-code">L1</span><span><a class="level-link" id="map-l1-link" href="../lessons/l1/index.html"><strong>Servo-loaded pendulum</strong></a><small>Command delay, phase residuals, and held-out prediction.</small></span><span class="status live">lesson</span></li>
               <li class="level"><span class="level-code">L2</span><span><strong>Fixed-base leg</strong><small>Coupling, gravity, parameter compensation</small></span><span class="status planned">planned</span></li>
               <li class="level"><span class="level-code">L3</span><span><strong>Leg with contact</strong><small>Ground and sole uncertainty</small></span><span class="status planned">planned</span></li>
               <li class="level"><span class="level-code">L4</span><span><strong>Whole Microduck</strong><small>Component-first versus global fitting</small></span><span class="status planned">planned</span></li>
@@ -276,94 +276,16 @@
       </div>
     </section>
 
-    <section class="section" id="clips">
+    <section class="section" id="lessons">
       <div class="shell">
         <div class="section-head">
-          <div><div class="eyebrow">Teaching clips</div><h2>One question per clip</h2></div>
-          <p class="section-lede">Short pre-rendered clips for L0 and L1, each answering a single question. They are built from the same numerical runs as the reports and the Marimo lessons, so the curves and numbers stay in step. They are not interactive: they set up the experiment, and the lab stays the place to change a parameter and refit.</p>
+          <div><div class="eyebrow">Synthetic lessons</div><h2>Read each experiment where it is taught</h2></div>
+          <p class="section-lede">The teaching clips live inside their L0 and L1 lesson pages, beside the questions they answer. The course map links to those pages; it does not embed the videos.</p>
         </div>
-
-        <div class="clips">
-          <figure class="clip">
-            <div class="clip-media">
-              <video controls playsinline preload="metadata" poster="../../demos/manim/rendered/l0-mismatch.png">
-                <source src="../../demos/manim/rendered/l0-mismatch.mp4" type="video/mp4">
-                This clip needs a browser that can play MP4 video.
-              </video>
-            </div>
-            <h3>L0 &middot; what does the mismatch look like?</h3>
-            <figcaption>The same recorded torque drives the true machine and the assumed one side by side. The Initial model's damping is a third of the true value, so its joint never comes to rest while the true joint stops.</figcaption>
-            <span class="clip-meta">15 s &middot; no audio</span>
-          </figure>
-          <figure class="clip">
-            <div class="clip-media">
-              <video controls playsinline preload="metadata" poster="../../demos/manim/rendered/l0-fit-lands.png">
-                <source src="../../demos/manim/rendered/l0-fit-lands.mp4" type="video/mp4">
-                This clip needs a browser that can play MP4 video.
-              </video>
-            </div>
-            <h3>L0 &middot; did fitting actually fix it?</h3>
-            <figcaption>The recorded fit motion on one shared vertical axis, so the Initial model's runaway is not flattered away &mdash; and the Identified model visibly lands on the True system.</figcaption>
-            <span class="clip-meta">12 s &middot; no audio</span>
-          </figure>
-          <figure class="clip">
-            <div class="clip-media">
-              <video controls playsinline preload="metadata" poster="../../demos/manim/rendered/l0-fit-walk.png">
-                <source src="../../demos/manim/rendered/l0-fit-walk.mp4" type="video/mp4">
-                This clip needs a browser that can play MP4 video.
-              </video>
-            </div>
-            <h3>L0 &middot; how does the fit get there?</h3>
-            <figcaption>The cost the fitter minimises over <code>(J, b)</code>, with the route it took. On the right, the model's own curve at each recorded iterate collapses onto the truth.</figcaption>
-            <span class="clip-meta">21 s &middot; no audio</span>
-          </figure>
-          <figure class="clip">
-            <div class="clip-media">
-              <video controls playsinline preload="metadata" poster="../../demos/manim/rendered/l0-fit-robust.png">
-                <source src="../../demos/manim/rendered/l0-fit-robust.mp4" type="video/mp4">
-                This clip needs a browser that can play MP4 video.
-              </video>
-            </div>
-            <h3>L0 &middot; was that one lucky start?</h3>
-            <figcaption>Nine different starting guesses drawn on the same cost plane. They all arrive at the same parameters, which is a statement about the problem rather than about luck.</figcaption>
-            <span class="clip-meta">16 s &middot; no audio</span>
-          </figure>
-          <figure class="clip">
-            <div class="clip-media">
-              <video controls playsinline preload="metadata" poster="../../demos/manim/rendered/l1-boundary.png">
-                <source src="../../demos/manim/rendered/l1-boundary.mp4" type="video/mp4">
-                This clip needs a browser that can play MP4 video.
-              </video>
-            </div>
-            <h3>L1 &middot; where does the delay hide?</h3>
-            <figcaption>A static drawing cannot show the command buffer, so this opens it: the torque command goes in, and the connector shows the same sample leaving one delay later.</figcaption>
-            <span class="clip-meta">18 s &middot; no audio</span>
-          </figure>
-          <figure class="clip">
-            <div class="clip-media">
-              <video controls playsinline preload="metadata" poster="../../demos/manim/rendered/l1-phase.png">
-                <source src="../../demos/manim/rendered/l1-phase.mp4" type="video/mp4">
-                This clip needs a browser that can play MP4 video.
-              </video>
-            </div>
-            <h3>L1 &middot; why a chirp makes it visible?</h3>
-            <figcaption>Across the chirp the same 0.080 s grows from 2&deg; of a cycle to 29&deg;, so the phase clue appears in the response rather than in the schematic.</figcaption>
-            <span class="clip-meta">17 s &middot; no audio</span>
-          </figure>
-          <figure class="clip">
-            <div class="clip-media">
-              <video controls playsinline preload="metadata" poster="../../demos/manim/rendered/l1-heldout.png">
-                <source src="../../demos/manim/rendered/l1-heldout.mp4" type="video/mp4">
-                This clip needs a browser that can play MP4 video.
-              </video>
-            </div>
-            <h3>L1 &middot; did the fit predict held-out motion?</h3>
-            <figcaption>Held-out validation only. The zero-delay Initial model leads the Oracle, and the Identified model lands back on it.</figcaption>
-            <span class="clip-meta">13 s &middot; no audio</span>
-          </figure>
+        <div class="tracks">
+          <section class="track labs"><span class="track-tag">L0</span><h3><a href="../lessons/l0/index.html">A first system identification experiment</a></h3><p>Four clips: mismatch, fit result, optimizer path, and robustness to starting guesses.</p></section>
+          <section class="track labs"><span class="track-tag">L1</span><h3><a href="../lessons/l1/index.html">Servo-driven loaded pendulum</a></h3><p>Three clips: delay boundary, chirp phase clue, and held-out prediction.</p></section>
         </div>
-
-        <p class="clips-note">Render commands and the optional graphics dependencies are documented in <a href="../../demos/manim/README.md">demos/manim/README.md</a>.</p>
       </div>
     </section>
 

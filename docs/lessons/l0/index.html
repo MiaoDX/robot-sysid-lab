@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>L0 · A first system identification experiment</title>
+  <link rel="stylesheet" href="../lesson.css">
+</head>
+<body>
+  <header><div class="shell"><a class="brand" href="../../course/index.html">Robot SysID Lab</a><nav><a href="../../course/index.html">Course map</a><a href="../l1/index.html">L1 lesson</a><a href="../../../apps/l0_inertia_damping.py">App source</a></nav></div></header>
+  <main class="shell">
+    <div class="eyebrow">L0 · Synthetic lab</div>
+    <h1>A first system identification experiment</h1>
+    <p class="lead">We can measure how a joint moved. Can we work out the two numbers that made it move that way — and trust the answer on a motion we never fitted?</p>
+    <div class="actions"><a class="button primary" id="interactive-l0" href="http://127.0.0.1:2718">Open the interactive L0 lab</a><a class="button" href="README.md">Read the lesson notes</a><a class="button" href="../../../reports/l0_inertia_damping/report.md">Inspect the report</a></div>
+
+    <section class="lesson-block"><h2>01 · See the mismatch</h2><p>The same recorded torque drives the True system and the Initial model. Watch the wrong damping accumulate into a visible trajectory error.</p>
+      <figure class="clip"><video controls playsinline preload="metadata" poster="../../../demos/manim/rendered/l0-mismatch.png"><source src="../../../demos/manim/rendered/l0-mismatch.mp4" type="video/mp4"></video><figcaption>What does the mismatch look like?</figcaption><div class="checkpoint">Checkpoint: which machine is the True system, and what does the shared velocity scale tell you?</div></figure>
+    </section>
+    <section class="lesson-block"><h2>02 · Fit the parameters</h2><p>The fitter searches over inertia <code>J</code> and damping <code>b</code>. The recovered model should reproduce the recorded fit motion.</p>
+      <figure class="clip"><video controls playsinline preload="metadata" poster="../../../demos/manim/rendered/l0-fit-lands.png"><source src="../../../demos/manim/rendered/l0-fit-lands.mp4" type="video/mp4"></video><figcaption>Did fitting actually fix it?</figcaption><div class="checkpoint">Checkpoint: where does the Initial model first run away, and how much does the fit q RMSE change?</div></figure>
+      <figure class="clip"><video controls playsinline preload="metadata" poster="../../../demos/manim/rendered/l0-fit-walk.png"><source src="../../../demos/manim/rendered/l0-fit-walk.mp4" type="video/mp4"></video><figcaption>How does the fit get there?</figcaption><div class="checkpoint">Checkpoint: follow one arrow on the cost plane and match it to the changing model curve.</div></figure>
+    </section>
+    <section class="lesson-block"><h2>03 · Challenge the starting guess</h2><p>One successful fit can be a lucky optimization run. Nine starts test whether the same declared problem leads to the same answer.</p>
+      <figure class="clip"><video controls playsinline preload="metadata" poster="../../../demos/manim/rendered/l0-fit-robust.png"><source src="../../../demos/manim/rendered/l0-fit-robust.mp4" type="video/mp4"></video><figcaption>Was that one lucky start?</figcaption><div class="checkpoint">Checkpoint: what does convergence from several starts support, and what does it still leave untested?</div></figure>
+    </section>
+    <h2>Continue the lesson</h2>
+    <p class="source-links"><a href="00-orientation.md">Orientation</a><a href="01-physics-to-data.md">Physics to data</a><a href="02-fit-to-validation.md">Fit to validation</a><a href="03-assumptions-and-next-step.md">Assumptions and next step</a></p>
+  </main>
+  <footer><div class="shell">The videos are recorded from the same numerical run as the report and interactive lab.</div></footer>
+  <script>document.getElementById("interactive-l0").href = `${window.location.protocol}//${window.location.hostname}:2718`;</script>
+</body>
+</html>

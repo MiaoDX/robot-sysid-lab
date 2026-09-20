@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>L1 · Servo-driven loaded pendulum</title>
+  <link rel="stylesheet" href="../lesson.css">
+</head>
+<body>
+  <header><div class="shell"><a class="brand" href="../../course/index.html">Robot SysID Lab</a><nav><a href="../../course/index.html">Course map</a><a href="../l0/index.html">L0 lesson</a><a href="../../../apps/l1_servo_loaded_pendulum.py">App source</a></nav></div></header>
+  <main class="shell">
+    <div class="eyebrow">L1 · Synthetic lab</div>
+    <h1>Servo-driven loaded pendulum</h1>
+    <p class="lead">A delay is invisible in a drawing of the machine. Can it still be identified from the motion it causes?</p>
+    <div class="actions"><a class="button primary" id="interactive-l1" href="http://127.0.0.1:2719">Open the interactive L1 lab</a><a class="button" href="README.md">Read the lesson notes</a><a class="button" href="../../../reports/l1_servo_loaded_pendulum/report.md">Inspect the report</a></div>
+
+    <section class="lesson-block"><h2>01 · Locate the hidden boundary</h2><p>The position command goes through a fixed PD law. The hidden delay sits after the torque command and before the actuator input.</p>
+      <figure class="clip"><video controls playsinline preload="metadata" poster="../../../demos/manim/rendered/l1-boundary.png"><source src="../../../demos/manim/rendered/l1-boundary.mp4" type="video/mp4"></video><figcaption>Where does the delay hide?</figcaption><div class="checkpoint">Checkpoint: what does the buffer hold — the position target or the torque command?</div></figure>
+    </section>
+    <section class="lesson-block"><h2>02 · Make the phase clue visible</h2><p>The delay remains 0.080 s, but a chirp's cycles get shorter. The same time delay therefore occupies a larger share of each cycle.</p>
+      <figure class="clip"><video controls playsinline preload="metadata" poster="../../../demos/manim/rendered/l1-phase.png"><source src="../../../demos/manim/rendered/l1-phase.mp4" type="video/mp4"></video><figcaption>Why does a chirp reveal it?</figcaption><div class="checkpoint">Checkpoint: why does the phase readout grow while the delay readout stays fixed?</div></figure>
+    </section>
+    <section class="lesson-block"><h2>03 · Test held-out prediction</h2><p>The delay is fit on one excitation and evaluated on a separate validation motion. The identified model should predict the withheld trajectory.</p>
+      <figure class="clip"><video controls playsinline preload="metadata" poster="../../../demos/manim/rendered/l1-heldout.png"><source src="../../../demos/manim/rendered/l1-heldout.mp4" type="video/mp4"></video><figcaption>Did the fit predict the held-out motion?</figcaption><div class="checkpoint">Checkpoint: what does the q RMSE comparison establish, and what synthetic assumptions remain?</div></figure>
+    </section>
+    <h2>Continue the lesson</h2>
+    <p class="source-links"><a href="00-orientation.md">Meet the machine</a><a href="01-command-to-torque.md">Command to torque</a><a href="02-fit-validation-residuals.md">Fit and residuals</a><a href="03-exercise-and-limits.md">Exercise and limits</a></p>
+  </main>
+  <footer><div class="shell">The videos are recorded from the same numerical run as the report and interactive lab.</div></footer>
+  <script>document.getElementById("interactive-l1").href = `${window.location.protocol}//${window.location.hostname}:2719`;</script>
+</body>
+</html>
