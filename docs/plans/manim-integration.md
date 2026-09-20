@@ -11,10 +11,11 @@ numerical modules remain the only source of experiment data.
 
 The first slice contains two scenes in `demos/manim/sysid_demos.py`:
 
-- `L0InertiaDampingDemo`: loads the L0 run, introduces
+- `L0MismatchDemo`, `L0FitLandsDemo`, `L0FitWalkDemo`, and
+  `L0FitRobustDemo`: load the L0 run and introduce
   `J*qdd + b*qd = u`, animates a one-joint arm, and reveals the fit trajectory
   with the existing Oracle / Initial / Identified color convention.
-- `L1CommandDelayDemo`: loads the L1 run, animates the
+- `L1BoundaryDemo`, `L1PhaseDemo`, and `L1HeldOutDemo`: load the L1 run and animate the
   `q_des -> PD -> delay -> pendulum` boundary, and compares Oracle, zero-delay
   Initial, and Identified validation motion.
 
@@ -67,8 +68,15 @@ use the stable primitives needed for this media slice: `Scene`, `Text`/`Tex`,
   produce a video plus a final-frame image.
 - L0 shows the equation, a moving one-joint body, and the three existing model
   roles over recorded fit data.
-- L1 shows the command boundary, an explicit delay marker, a moving loaded arm,
-  and the three existing model roles over held-out validation data.
+- L1 shows the command boundary, the hidden command buffer made visible, an
+  explicit delay marker, and the three existing model roles over held-out
+  validation data. The machine view appears **once, at the start**, to say which
+  machine the lesson is about, and then leaves the frame. That departure is the
+  argument, not a transition: the lesson's own checkpoint is that the static
+  schematic is a snapshot and does not show the command buffer, so the clip
+  deliberately does not send the viewer looking for the answer in the arm
+  geometry. A machine view is used elsewhere only where the machine *is* the
+  evidence, as in L0's side-by-side mismatch.
 - No scene exposes a fitter, changes configuration, or claims that the clip is
   an interactive simulation.
 
@@ -89,6 +97,6 @@ python -m pytest -q
 
 # Optional media environment (requires FFmpeg/OpenGL/Pango; LaTeX is optional)
 python -m pip install manimgl
-manimgl demos/manim/sysid_demos.py L0InertiaDampingDemo -w -ql
-manimgl demos/manim/sysid_demos.py L1CommandDelayDemo -w -ql
+manimgl demos/manim/sysid_demos.py L0MismatchDemo -w -ql
+manimgl demos/manim/sysid_demos.py L1BoundaryDemo -w -ql
 ```

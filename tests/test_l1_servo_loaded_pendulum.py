@@ -2,6 +2,8 @@
 
 import inspect
 import json
+from pathlib import Path
+
 import numpy as np
 import pytest
 from scipy.integrate import solve_ivp
@@ -58,6 +60,42 @@ def test_full_pd_delay_differs_from_input_only_delay():
     shifted = np.r_[np.zeros(16), qdes[:-16]]
     input_only = simulate_trajectory(m, shifted, delay_s=0)
     assert np.max(abs(delayed.q - input_only.q)) > 1e-3
+
+
+def test_l1_learner_path_does_not_carry_operator_material():
+    """The lesson README is the learner path; verification material lives elsewhere."""
+
+    lesson = Path("docs/lessons/l1/README.md").read_text(encoding="utf-8")
+    verification = Path("reports/l1_servo_loaded_pendulum/verification.md").read_text(encoding="utf-8")
+
+    assert "verification.md" in lesson
+    assert "Learner acceptance walkthrough" not in lesson
+    assert "PYTHONPATH" not in lesson
+    assert "Learner acceptance walkthrough" in verification
+
+
+def test_delayed_torque_is_a_pure_shift_of_the_command():
+    """The delay clip draws the buffer as an exact readback, so guard that.
+
+    `L1BoundaryDemo` overlays `command_torque` with `torque` and marks the
+    horizontal offset with a 0.080 s arrow. That reading is only honest while
+    the actuator input really is the command delayed by whole samples, and while
+    the zero-delay Initial model really does show no offset at all.
+    """
+
+    r = run_l1()
+    truth_delay = r.config.truth.delay_s
+    dt = float(r.data.fit.t[1] - r.data.fit.t[0])
+    steps = int(round(truth_delay / dt))
+    assert steps * dt == pytest.approx(truth_delay)
+
+    for split in ("fit", "validation"):
+        oracle = r.trajectories[split]["oracle"]
+        shifted = np.r_[np.zeros(steps), oracle.command_torque[:-steps]]
+        assert np.max(np.abs(oracle.torque - shifted)) < 1e-12
+
+        initial = r.trajectories[split]["initial"]
+        assert np.max(np.abs(initial.torque - initial.command_torque)) < 1e-12
 
 
 def test_fractional_delay_zero_prehistory_and_no_future_read():

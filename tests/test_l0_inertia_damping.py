@@ -130,6 +130,24 @@ def test_report_contains_one_run_metadata_and_visual(tmp_path):
     assert "Curve key" in report
 
 
+def test_l0_learner_path_does_not_carry_operator_material():
+    """The lesson README is the learner path; verification material lives elsewhere.
+
+    Reproduction commands, the privileged-signal contract, and the acceptance
+    checklist serve the verifier, not the learner, and used to sit in the entry
+    point where they were the first thing a reader met.
+    """
+
+    lesson = Path("docs/lessons/l0/README.md").read_text(encoding="utf-8")
+    verification_path = Path("reports/l0_inertia_damping/verification.md")
+    verification = verification_path.read_text(encoding="utf-8")
+
+    assert "verification.md" in lesson
+    assert "Learner acceptance walkthrough" not in lesson
+    assert "pytest" not in lesson
+    assert "Learner acceptance walkthrough" in verification
+
+
 def test_l0_lesson_set_and_pipeline_contract_exist():
     lesson_root = Path("docs/lessons/l0")
     assert (lesson_root / "README.md").is_file()

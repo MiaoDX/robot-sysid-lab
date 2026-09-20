@@ -90,10 +90,41 @@ Screenshots of the final replay surface:
 - [768 px](browser-768.png)
 - [1440 px](browser-1440.png)
 
-## Required human follow-up
+## Privileged-signal contract
 
-An independent reader must identify the parts and command boundary, distinguish
-fit from validation, explain one residual, change a setting and submit, and name
-three omitted real effects. Use the [walkthrough](../../docs/lessons/l1/README.md#learner-acceptance-walkthrough).
-Record their actual answers and confusing wording here or in STATUS.md. The
-maintainer/browser checks above do not substitute for that evidence.
+The public fitting interface receives only `t`, `q_des`, encoder position `q`,
+and velocity `qd` derived from that ideal encoder. It cannot receive Oracle
+parameters, the hidden delayed-command buffer, true actuator torque, the
+validation observations, or validation metrics. The report labels torque and
+delayed command as Oracle-only diagnostics whenever they are shown.
+
+## Learner acceptance walkthrough
+
+This is the human half of gate 7, and the maintainer/browser checks above do not
+substitute for it. Ask an independent reader to complete these tasks without
+implementation coaching, and record what they actually did — including the exact
+wording that confused them. Do not mark a task complete merely because the
+checklist was printed.
+
+1. Point to the fixed base, servo axis/body, arm, payload, gravity arrow, and
+   angle convention in the machine view. Explain that the geometry is a
+   deterministic 2D teaching view and uses the same recorded `q` state as the
+   plots.
+2. Trace `q_des -> fixed PD -> delayed command -> actuator torque -> pendulum`.
+   State where the delay is inserted and why a CAD or controller model can
+   predict the wrong motion when timing is omitted.
+3. Identify which trajectory is fit data and which is held out. Explain why the
+   zero-delay Initial model can look plausible while accumulating phase error,
+   and what improvement in Identified validation supports the fitted delay.
+4. Change the Initial delay (or the excitation if exposed), predict what the
+   orange baseline and residual should do, and press **Run identification**.
+   Confirm that the prior blue result remains the result until the action runs.
+5. Interpret one residual pattern: repeating signed lobes around reversals are a
+   phase or timing clue; a residual correlated with velocity can arise from a
+   time shift and does not by itself identify friction. Name at least three
+   omitted effects and explain why this lesson does not establish hardware
+   transfer.
+
+If a reader misses a task, record the failed wording, revise the relevant page
+or app copy, and repeat the task with another reader. This is evidence for the
+lesson, not a pre-filled signoff. Record the answers here or in `STATUS.md`.

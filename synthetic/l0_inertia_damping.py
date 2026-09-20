@@ -9,6 +9,7 @@ public bounds, and a non-truth initial guess.
 from __future__ import annotations
 
 import argparse
+import inspect
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -342,16 +343,13 @@ def _vector_to_params(vector: np.ndarray) -> Params:
     return Params(inertia=float(vector[0]), damping=float(vector[1]))
 
 
-def fit_student(
-    observations: Observations,
-    *,
-    initial_guess: Params,
-    lower_bounds: Params,
-    upper_bounds: Params,
-) -> FitResult:
-    """Fit J and b using only observations and public bounds."""
+def _scaled_residual(observations: Observations):
+    """Return the normalized residual and the scales it divides by.
 
-    _validate_bounds(initial_guess, lower_bounds, upper_bounds)
+    Factored out of :func:`fit_student` so the iterate-path and cost-landscape
+    helpers score candidate parameters exactly the way the fitter does.
+    """
+
     t, u, q, qd = observations.t, observations.u, observations.q, observations.qd
     if not (q.shape == qd.shape == np.asarray(t).shape):
         raise ValueError("observations must have matching t, q, and qd shapes")
@@ -367,9 +365,22 @@ def fit_student(
             ((predicted_q - q) / q_scale, (predicted_qd - qd) / qd_scale)
         )
 
-    result = least_squares(
+    return residual, q_scale, qd_scale
+
+
+def _run_least_squares(residual, start, lower_bounds: Params, upper_bounds: Params, callback=None):
+    """Run the bounded fit with the project's fixed optimizer settings."""
+
+    options = {}
+    # ``callback`` was added after the oldest SciPy version accepted by this
+    # CPU lesson (1.12). The fit itself must remain runnable there; only the
+    # optional explanatory path loses intermediate points on those versions.
+    if callback is not None and "callback" in inspect.signature(least_squares).parameters:
+        options["callback"] = callback
+
+    return least_squares(
         residual,
-        x0=np.array([initial_guess.inertia, initial_guess.damping], dtype=float),
+        x0=np.asarray(start, dtype=float),
         bounds=(
             np.array([lower_bounds.inertia, lower_bounds.damping], dtype=float),
             np.array([upper_bounds.inertia, upper_bounds.damping], dtype=float),
@@ -380,6 +391,27 @@ def fit_student(
         xtol=1e-12,
         gtol=1e-12,
         max_nfev=500,
+        **options,
+    )
+
+
+def fit_student(
+    observations: Observations,
+    *,
+    initial_guess: Params,
+    lower_bounds: Params,
+    upper_bounds: Params,
+) -> FitResult:
+    """Fit J and b using only observations and public bounds."""
+
+    _validate_bounds(initial_guess, lower_bounds, upper_bounds)
+    residual, q_scale, qd_scale = _scaled_residual(observations)
+
+    result = _run_least_squares(
+        residual,
+        start=np.array([initial_guess.inertia, initial_guess.damping], dtype=float),
+        lower_bounds=lower_bounds,
+        upper_bounds=upper_bounds,
     )
     return FitResult(
         params=_vector_to_params(result.x),
@@ -390,6 +422,150 @@ def fit_student(
         njev=int(result.njev) if result.njev is not None else 0,
         scales=(q_scale, qd_scale),
     )
+
+
+# Starting guesses for the fitting-journey artifact. The first is the Initial
+# model the lesson actually fits from; the rest exist to show that the outcome
+# does not depend on where the search starts.
+DEFAULT_JOURNEY_STARTS: tuple[tuple[float, float], ...] = (
+    (0.095, 0.018),
+    (0.140, 0.190),
+    (0.020, 0.005),
+    (0.010, 0.150),
+    (0.145, 0.020),
+    (0.050, 0.005),
+    (0.120, 0.120),
+    (0.030, 0.090),
+    (0.100, 0.060),
+)
+
+
+def fit_path(
+    observations: Observations,
+    *,
+    initial_guess: Params,
+    lower_bounds: Params,
+    upper_bounds: Params,
+) -> list[Params]:
+    """Return the optimizer's iterate sequence from one starting guess.
+
+    ``least_squares`` does not report the route it took, so this re-runs the
+    same objective, bounds, and settings with a callback that records every
+    accepted iterate. It exists to *explain* a fit; the reported parameters
+    still come from :func:`fit_student`.
+    """
+
+    _validate_bounds(initial_guess, lower_bounds, upper_bounds)
+    residual, _, _ = _scaled_residual(observations)
+    iterates = [initial_guess]
+
+    def record(vector: np.ndarray) -> None:
+        iterates.append(_vector_to_params(np.asarray(vector, dtype=float)))
+
+    _run_least_squares(
+        residual,
+        start=np.array([initial_guess.inertia, initial_guess.damping], dtype=float),
+        lower_bounds=lower_bounds,
+        upper_bounds=upper_bounds,
+        callback=record,
+    )
+    return iterates
+
+
+def fitting_journey(
+    run: L0Run,
+    *,
+    starts: tuple[tuple[float, float], ...] = DEFAULT_JOURNEY_STARTS,
+    grid_size: int = 56,
+) -> dict[str, Any]:
+    """Build the fitting-journey artifact: a cost landscape plus optimizer paths.
+
+    The landscape is scored with the same normalized residual the fitter uses,
+    so the valley it draws is the objective the optimizer actually descends.
+    """
+
+    observations = run.data.fit
+    lower, upper = run.config.lower_bounds, run.config.upper_bounds
+    residual, _, _ = _scaled_residual(observations)
+
+    def log10_cost(vector: np.ndarray) -> float:
+        residual_vector = residual(vector)
+        return float(np.log10(max(0.5 * float(residual_vector @ residual_vector), 1e-30)))
+
+    inertia_axis = np.linspace(lower.inertia, upper.inertia, grid_size)
+    # Hold the displayed window off the degenerate zero-damping edge, whose cost
+    # dwarfs everything else and would flatten the valley into one colour.
+    damping_axis = np.linspace(max(lower.damping, 1e-3), upper.damping, grid_size)
+    grid = [
+        [log10_cost(np.array([j, b], dtype=float)) for b in damping_axis]
+        for j in inertia_axis
+    ]
+
+    truth = run.config.truth
+    paths = []
+    for inertia, damping in starts:
+        guess = Params(inertia=float(inertia), damping=float(damping))
+        iterates = fit_path(
+            observations, initial_guess=guess, lower_bounds=lower, upper_bounds=upper
+        )
+        final = iterates[-1]
+        paths.append(
+            {
+                "start": _params_dict(guess),
+                "iterates": [_params_dict(p) for p in iterates],
+                "final": _params_dict(final),
+                "converged": bool(
+                    abs(final.inertia - truth.inertia) / truth.inertia < 1e-6
+                    and abs(final.damping - truth.damping) / truth.damping < 1e-6
+                ),
+            }
+        )
+
+    return {
+        "config_version": run.config.version,
+        "truth": _params_dict(truth),
+        "nominal": _params_dict(run.config.nominal),
+        "bounds": {"lower": _params_dict(lower), "upper": _params_dict(upper)},
+        "grid": {
+            "inertia": inertia_axis.tolist(),
+            "damping": damping_axis.tolist(),
+            "log10_cost": grid,
+        },
+        "paths": paths,
+    }
+
+
+def write_fitting_journey(run: L0Run, output_dir: str | Path) -> Path:
+    """Write the fitting-journey JSON and the landscape shading it describes."""
+
+    directory = Path(output_dir)
+    directory.mkdir(parents=True, exist_ok=True)
+    journey = fitting_journey(run)
+    target = directory / "fitting_paths.json"
+    target.write_text(
+        json.dumps(journey, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
+    inertia_axis = journey["grid"]["inertia"]
+    damping_axis = journey["grid"]["damping"]
+    costs = np.asarray(journey["grid"]["log10_cost"], dtype=float)
+    figure = plt.figure(figsize=(5, 5), dpi=200)
+    axis = figure.add_axes((0.0, 0.0, 1.0, 1.0))  # no margins, so the image spans the box exactly
+    axis.imshow(
+        costs.T,  # imshow rows are y: damping must be the row index
+        origin="lower",
+        extent=(inertia_axis[0], inertia_axis[-1], damping_axis[0], damping_axis[-1]),
+        aspect="auto",
+        cmap="viridis",
+        vmin=float(costs.min()),
+        # Cap the top of the range: the degenerate low-damping edge is orders of
+        # magnitude worse than everything else and would wash out the valley.
+        vmax=float(np.percentile(costs, 90)),
+    )
+    axis.set_axis_off()
+    figure.savefig(directory / "fitting_landscape.png")
+    plt.close(figure)
+    return target
 
 
 def score(params: Params, observations: Observations) -> Metrics:
@@ -740,6 +916,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     run = run_l0(load_config(args.config) if args.config else None)
     report_path = write_report(run, args.output_dir)
     print(f"report: {report_path}")
+    journey_path = write_fitting_journey(run, args.output_dir)
+    print(f"fitting journey: {journey_path}")
     print(f"optimizer success: {run.fit.success} ({run.fit.message})")
     print(f"identified: {run.fit.params}")
     print(f"validation nominal: {run.nominal_validation_metrics}")
