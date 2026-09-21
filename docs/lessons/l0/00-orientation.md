@@ -1,4 +1,4 @@
-# 1. Orientation: what is being identified?
+# L0 · Orientation: what is being identified?
 
 System identification (SysID) means learning a useful model of a system from
 experiments. In this lesson the system is one rotational degree of freedom.
@@ -19,23 +19,22 @@ $\ddot{q}$ is acceleration, $u$ is applied torque in N m, $J$ is inertia in
 kg m^2, and $b$ is viscous damping in N m s/rad. The unknowns are only $J$
 and $b$. In code these signals are named `q`, `qd`, and `qdd`.
 
-The experiment uses an Oracle to generate observations. The Oracle knows the
-truth, but the estimator does not receive it. The estimator sees only `t`,
-`u`, `q`, `qd`, public parameter bounds, and a starting model.
+A simulator with known parameters generates the observations. The estimator
+receives time, torque, position, and velocity, together with parameter bounds
+and an initial guess chosen beforehand. The true parameters are used later
+to check the result.
 
 Three names appear in every plot:
 
 | Name | Role |
 |---|---|
-| True system (Oracle) | hidden teacher system that generated the observations |
+| True system (Oracle) | system that generated the observations |
 | Initial model | plausible but intentionally wrong model available before identification |
 | Identified model | model after fitting `J` and `b` |
 
-The Initial model is not a second truth. It answers the practical question:
-what happens if we use a plausible model before calibration or SysID? The
-Identified model shows whether the experiment gave enough information to
-improve it. Controls engineers also use *nominal model* for a chosen reference
-model, but the course uses *Initial model* here because its role is clearer.
+Comparing the initial and identified models shows how fitting changes the
+prediction. We then test a motion withheld from fitting to see whether the
+improvement carries over to new data.
 
 ## Checkpoint
 

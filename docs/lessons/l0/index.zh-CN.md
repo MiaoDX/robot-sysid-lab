@@ -1,0 +1,125 @@
+# L0 · 估计关节的惯量与阻尼
+
+第一节实验从一个转动关节开始。我们会根据实验数据估计它的惯量和阻尼，再用一段新的运动，检验模型预测得准不准。
+
+我们先观察初始模型的偏差，再跟着拟合与验证的结果，看看数据告诉了我们什么。需要先熟悉输入、观测和参数时，可以回到 [K1 · 系统辨识基础](../k1/index.md)。
+
+## 先看初始模型的偏差 {#mismatch}
+
+给一个关节和它的模型施加相同的力矩，为什么它们会越转越不一样？原因可能很简单：模型里的参数还没有估计准确。
+
+下面的短片中，白色表示产生观测的系统，橙色表示初始模型。先观察两者的位置，再比较下方使用相同刻度的速度条。
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-mismatch.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-mismatch.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l0-mismatch.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l0-mismatch.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>模型偏差看起来是什么样？</figcaption><details><summary>阅读视频说明</summary><p>同一个方程：J qdd + b qd = u。比较真实系统与初始模型。</p><p>同一段实际力矩驱动两个系统。白色表示真实系统，橙色表示初始模型。</p><p>下方速度条使用相同尺度。阻尼不正确时，运动响应会明显不同。</p></details></figure>
+
+我们希望用记录下来的运动修正参数。要判断修正是否有用，还需要让模型预测一段没有参与拟合的新运动。
+
+## 这个关节怎样运动 {#boundary}
+
+实验从已知的实际力矩开始，记录角位置和角速度。模型只包含惯量和黏性阻尼：
+
+$$
+J\ddot q+b\dot q=u
+$$
+
+$q$ 是角位置，单位为 rad；$\dot q$ 是角速度，单位为 rad/s；$\ddot q$ 是角加速度。$u$ 是实际力矩，单位为 N m。要估计的两个参数是惯量 $J$（kg m²）和阻尼 $b$（N m s/rad）。
+
+惯量决定了关节有多难加速；黏性阻尼决定了同样速度下有多大的阻力。比如，在速度相同、阻尼相同的时刻，增大惯量会让相同净力矩产生更小的加速度。
+
+这个实验没有重力、摩擦中的非黏性部分或传感器噪声。产生数据的系统与待拟合模型使用相同的方程。我们知道真实参数，便于最后核对；拟合程序只能使用时间、力矩、位置、速度，以及事先选定的参数范围和初始猜测。
+
+## 用怎样的运动收集数据 {#data}
+
+我们事先准备两组不同的输入。第一组用于估计参数，第二组留到拟合完成后再检查预测。
+
+| 数据 | 施加的力矩 | 用途 |
+|---|---|---|
+| 拟合 | 频率逐渐升高的正弦信号，称为扫频 | 估计惯量和阻尼 |
+| 验证 | 由几个固定频率的正弦信号叠加而成的多正弦信号 | 检查另一种运动的预测 |
+
+扫频让关节经历不同快慢的运动，有助于区分惯量和阻尼的影响。验证使用另外一种频率组合，检查估计出的参数能否解释新的运动。两组运行都从实验规定的相同初始状态开始。
+
+## 根据数据拟合参数 {#fit}
+
+拟合程序反复尝试不同的 $J$ 和 $b$，用模型预测位置和速度，再比较预测与观测的差异。它沿着减小误差的方向调整参数。
+
+先看拟合前后的对比。橙色是初始模型，蓝色是辨识后模型；蓝色接近真实系统，表示这段用于拟合的运动已经能够被较好地重现。
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-fit-lands.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-fit-lands.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l0-fit-lands.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l0-fit-lands.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>拟合真的改善了预测吗？</figcaption><details><summary>阅读视频说明</summary><p>用拟合观测搜索惯量 J 和阻尼 b，观察位置误差的变化。</p><p>橙色是初始模型，蓝色是辨识后模型。相同坐标尺度让偏差可比较。</p><p>蓝色与真实系统重合，支持这次拟合匹配成功；还需要留出验证。</p></details></figure>
+
+下面的短片把参数调整过程展开。左侧显示不同参数对应的损失，右侧显示对应的运动预测。沿着箭头移动时，留意曲线怎样接近观测。
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-fit-walk.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-fit-walk.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l0-fit-walk.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l0-fit-walk.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>拟合是怎样到达这个解的？</figcaption><details><summary>阅读视频说明</summary><p>左侧：不同 J、b 对应的损失；右侧：对应模型的位置曲线。</p><p>箭头连接优化器实际接受的迭代点；颜色表示损失大小。</p><p>随着参数移动，比较当前模型与记录下来的真实轨迹。</p><p>最终模型接近真值。优化路径解释了这次拟合，不证明所有问题都会收敛。</p></details></figure>
+
+这次运行得到的参数如下。表中的真实值只用于核对结果。
+
+| 量 | 真实系统 | 初始模型 | 辨识后模型 |
+|---|---:|---:|---:|
+| 惯量 `J`（kg m^2） | 0.06500000 | 0.09500000 | 0.06500000 |
+| 阻尼 `b`（N m s/rad） | 0.05500000 | 0.01800000 | 0.05500000 |
+
+## 换一个初始猜测会怎样 {#starts}
+
+一次成功的拟合，可能与起点有关。我们再用九组初始猜测运行相同的估计过程，看看它们是否会到达相同的解。
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-fit-robust.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-fit-robust.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l0-fit-robust.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l0-fit-robust.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>只是某个起点运气好吗？</figcaption><details><summary>阅读视频说明</summary><p>一次成功可能与起点有关。这次比较九个初始猜测。</p><p>所有路径使用相同的数据、模型和公开参数边界。</p><p>多起点到达同一解，支持本实验的收敛稳定性。仍不能代替留出验证。</p></details></figure>
+
+这些起点都收敛到同一结果，说明这次实验的拟合对这些初始猜测比较稳定。接下来还要检验新运动；多起点收敛本身不能回答预测是否有效。
+
+## 用新运动检查预测 {#validation}
+
+现在固定辨识后的参数，输入事先留出的多正弦力矩。这组数据没有用于拟合或挑选参数。
+
+[![L0 的拟合与验证曲线：位置、速度和残差](../../../reports/l0_inertia_damping/report.png)](../../../reports/l0_inertia_damping/report.png)
+
+先看图的前两行：左列是拟合（Fit），右列是验证（Validation），分别比较位置和速度。深色实线是真实系统，橙色是初始模型，蓝色虚线与空心标记是辨识后模型。点击图片可以查看大图。
+
+第三行显示两组实验施加的力矩。第四行的两幅残差图都来自拟合数据：左边是位置残差，右边是速度残差。最下方还有参数对比。
+
+下表报告位置 `q` 和速度 `qd` 的平均绝对误差（MAE），数值越小表示平均偏差越小。前面视频使用的均方根误差（RMSE）会更强调较大的偏差，读数时要注意指标名称。
+
+| 数据 / 模型 | q MAE（rad） | qd MAE（rad/s） |
+|---|---:|---:|
+| 拟合 / 初始模型 | 4.3107227 | 1.4136074 |
+| 拟合 / 辨识后模型 | 1.5607874e-14 | 1.2252942e-14 |
+| 验证 / 初始模型 | 2.7396426 | 0.87716149 |
+| 验证 / 辨识后模型 | 1.8251542e-14 | 2.0286828e-14 |
+
+辨识后的模型在验证数据上也明显优于初始模型，回答了开头的问题：这两个估计参数可以预测这里留出的新运动。
+
+报告中的**残差**是“模型预测减去观测”。第四行的位置与速度残差都接近零，与拟合误差表中的结果一致。误差达到约 $10^{-14}$ 的量级，是因为本例使用相同方程和理想观测，拟合后只剩极小的数值误差。真实测量通常达不到这种结果。
+
+## 想一想，再对照结果 {#exercise}
+
+1. 相同速度、相同阻尼下，如果惯量变大，同样的净力矩会使关节加速得更快还是更慢？
+2. 如果只展示左侧拟合曲线，我们还缺少什么证据？
+3. 如果拟合很好，但右侧验证误差很大，你会怎样继续检查？
+
+<details markdown="1">
+<summary>查看参考思路</summary>
+
+惯量变大时，加速度更小。拟合曲线只能说明模型匹配了用于调参的数据，还需要检查未参与调整的运动。
+
+如果验证较差，可以先改变起点，检查拟合是否稳定，再看实验是否充分激发了参数的影响，以及模型是否漏掉了某种效应。还要核对两组数据的初始状态、单位和输入定义。根据验证结果作出修改后，最终评估需要另外保留的数据。
+
+</details>
+
+## 这次结果适用于什么条件 {#limits}
+
+在已知实际力矩、观测理想、模型结构正确的条件下，我们恢复了惯量和阻尼，并预测了另一种输入下的运动。
+
+真实关节还可能受到控制器、延迟、力矩限幅、其他摩擦、柔性和测量噪声的影响。遇到这些情况，要重新检查模型和实验。下一课 [L1 · 从运动中估计指令延迟](../l1/index.md) 会加入位置控制器和一个未知延迟，研究图纸上看不到的时序效应。
+
+## 可选：自己运行实验 {#local-experiment}
+
+如果想改变参数再比较一次，可以在仓库根目录运行以下命令。实验使用 CPU；前两条准备依赖并生成报告，最后一条打开本地交互应用。
+
+```bash
+python -m pip install -r requirements-interactive.txt
+python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping
+python -m marimo run apps/l0_inertia_damping.py --host 0.0.0.0 --port 2718
+```
+
+在应用里改变初始阻尼，先预测橙色曲线会怎样变化，再观察预览。蓝色仍代表上一次拟合结果；点击 **Run identification（运行辨识）** 后再比较新结果和验证误差。
+
+需要进一步检查时，可以阅读[完整实验报告](../../../reports/l0_inertia_damping/report.md)、[补充笔记与代码入口](README.md)，或下载 [Notebook](../../../notebooks/l0_inertia_damping.ipynb)。

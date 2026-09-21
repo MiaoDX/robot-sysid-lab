@@ -1,0 +1,13 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.442
+A fixed base, rigid arm, and payload. A drawing does not reveal command delay.
+
+00:00:04.442 --> 00:00:08.884
+q_des enters the fixed PD controller. The buffer stores the full torque command c.
+
+00:00:08.884 --> 00:00:13.325
+Delay is after PD; the delayed torque drives the gravity-loaded pendulum.
+
+00:00:13.325 --> 00:00:17.767
+This is an effective command delay at this boundary, not an electromagnetic motor time constant.

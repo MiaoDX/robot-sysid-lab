@@ -1,60 +1,30 @@
-# L1: Servo-driven loaded pendulum
+# L1 · Supplementary notes and code
 
-L1 adds one machine-shaped mismatch to the complete L0 loop. A fixed base holds
-a rotary arm and a known point payload. A position command `q_des` goes through
-a fixed PD controller, and the controller's torque command is delayed before it
-drives the gravity-loaded pendulum.
+The [L1 lesson](index.md) contains the full explanation, videos, validation results, and exercises. This page provides notes organized by topic and links for running or inspecting the experiment.
 
-The question this lab asks:
+## Look up a topic
 
-> A delay is invisible in a drawing of the machine. Can it still be identified
-> from the motion it causes?
+- [The machine and its dynamics](00-orientation.md)
+- [From position command to torque](01-command-to-torque.md)
+- [Fitting, validation, and phase error](02-fit-validation-residuals.md)
+- [Exercises and the scope of the result](03-exercise-and-limits.md)
 
-The delay is an **effective parameter of this command boundary and sampling
-setup** — not a motor electromagnetic time constant.
+## Inspect the results
 
-## Read this in order
+The [full report](../../../reports/l1_servo_loaded_pendulum/report.md) includes parameters, plots, errors, and experiment conditions. Open the [full-size figure](../../../reports/l1_servo_loaded_pendulum/report.png) alongside it, or download the [notebook](../../../notebooks/l1_servo_loaded_pendulum.ipynb) to inspect the computation step by step.
 
-Keep the [fixed report](../../../reports/l1_servo_loaded_pendulum/report.md) open
-while you read. The goal is to explain the evidence, not to memorize the fitted
-numbers.
+## Run an experiment
 
-1. [Meet the machine and the question](00-orientation.md)
-2. [From command to delayed torque](01-command-to-torque.md)
-3. [Fit, validation, and residual phase](02-fit-validation-residuals.md)
-4. [Exercise, limits, and the bridge to L2](03-exercise-and-limits.md)
-
-## Try it yourself
-
-The [Marimo app](../../../apps/l1_servo_loaded_pendulum.py) is the guided path.
-It has one fit-affecting control, **Initial delay**, and an explicit **Run
-identification** action. Changing that control marks the completed result
-stale; the orange baseline changes only when you submit, and the blue result
-does not move until you do.
+Running the code requires a basic Python environment. The experiment uses a CPU and needs no robot middleware or GPU. From the repository root:
 
 ```bash
 python -m pip install -r requirements-interactive.txt
+python -m synthetic.l1_servo_loaded_pendulum --output-dir reports/l1_servo_loaded_pendulum
 python -m marimo run apps/l1_servo_loaded_pendulum.py --host 0.0.0.0 --port 2719
 ```
 
-The [notebook](../../../notebooks/l1_servo_loaded_pendulum.ipynb) exposes the
-same completed run cell by cell if you would rather inspect than click.
+The [end of the lesson](index.md#local-experiment) guides the app exercise. Predict how the curves will change before adjusting a parameter, then compare fitting and validation after running it.
 
-## Before you start
+## Reproduction record
 
-You need basic Python and the ability to read a curve over time. No robot
-middleware, simulator, or GPU is required.
-
-## Reproduction and acceptance
-
-Your run reproduces the report with:
-
-```bash
-python -m synthetic.l1_servo_loaded_pendulum --output-dir reports/l1_servo_loaded_pendulum
-```
-
-Everything an implementer or verifier needs — the gate-by-gate evidence, the
-privileged-signal contract, the clean-environment commands, and the independent
-learner checklist — lives with the verification record:
-
-**[L1 implementation verification](../../../reports/l1_servo_loaded_pendulum/verification.md)**
+The [engineering verification record](../../../reports/l1_servo_loaded_pendulum/verification.md) keeps experiment checks, reproduction commands, and learner feedback tasks for inspecting the implementation.

@@ -822,7 +822,7 @@ def write_report(run: L0Run, output_dir: str | Path) -> Path:
     truth = run.config.truth
     report = f"""# L0 inertia and damping identification
 
-This is the result of the first lesson in the [L0 lesson set](../../docs/lessons/l0/README.md).
+This is the result of the first lesson in the [L0 lesson](../../docs/lessons/l0/index.md).
 The lesson asks a small question: can we use observed motion to estimate the
 inertia and viscous damping of a one-degree-of-freedom plant?
 
@@ -882,7 +882,7 @@ explain how those omissions shape the next experiment.
 
 ## Try it
 
-Read the [L0 lessons](../../docs/lessons/l0/README.md), then change one Initial-
+Read the [L0 lessons](../../docs/lessons/l0/index.md), then change one Initial-
 model value in the [interactive Marimo lesson](../../apps/l0_inertia_damping.py).
 The orange preview changes immediately; press **Run identification** to refresh
 the blue result. A successful fit should still recover the Oracle parameters.

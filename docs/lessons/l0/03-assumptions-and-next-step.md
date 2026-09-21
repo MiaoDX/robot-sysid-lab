@@ -1,43 +1,21 @@
-# 4. Assumptions, limits, and the next lesson
+# L0 · Assumptions and the next step
 
-L0 is a correctness and intuition lesson, not a complete servo model. It uses
-known applied torque and ideal observations, and its teacher and Student share
-the same equation. That makes parameter recovery easy to interpret.
+L0 uses known applied torque and ideal position and velocity observations. The system generating the data and the fitted model share the same equation, so we can directly check the estimated inertia and damping.
 
-The result should not be transferred directly to a real robot. Real systems
-may add:
+Under these conditions, the model estimates parameters from a chirp and predicts motion under a separate multisine input. This establishes a working experiment to compare with later ones.
 
-- command-to-torque scale and controller dynamics;
-- delay and timing misalignment;
-- saturation and voltage/current limits;
-- Coulomb or Stribeck friction;
-- backlash, compliance, and resonance;
-- contact and load changes;
-- sensor noise, filtering, quantization, and missing samples.
+Real joints may also have command delay, torque limits, other friction, compliance, and sensor noise. When those effects matter, changing inertia and damping alone may be insufficient. Fitted values can compensate for missing effects: a larger inertia parameter might improve one trajectory while failing to predict another.
 
-These are not footnotes. Each omitted effect can leave a structured residual
-or make a fitted value effective rather than physically literal. For example,
-an inertia-like simulator parameter that improves trajectory prediction is not
-automatically a measurement of rotor inertia.
+## What to study next
 
-## Next question
+[L1](../l1/index.md) uses a known arm, payload, and position controller, then adds one unknown command delay. We will see how it changes motion and test whether a delay estimated from one motion predicts another.
 
-The next lesson should add exactly one model-mismatch effect: delay. The
-question becomes: can a Student without delay still fit one motion, and what
-does held-out phase error reveal? It should reuse this lesson's flow:
+The question changes, but we still need to understand inputs and observations, fit parameters, and check data withheld from adjustment. This distinguishes a closer match to the original data from better prediction on a new motion.
 
-```text
-declare boundary -> generate fit/validation data -> fit -> validate -> diagnose
-```
+## Explain the result in one sentence
 
-That repeated shape is why the repository keeps a [Lesson / Experiment
-Pipeline](../../lesson_pipeline.md). We will extract shared code only after
-the second lesson shows which data and report structures are genuinely common.
+Include both the experiment conditions and its validation result. For example:
 
-## Final checkpoint
+> With known torque, ideal observations, and a correct model structure, we estimated inertia and damping from a chirp and predicted a multisine motion withheld from fitting.
 
-State the L0 conclusion in one sentence:
-
-> Under a matched $J\ddot{q} + b\dot{q} = u$ model with known torque and ideal
-> observations, a chirp fit can recover `J` and `b` and predict a held-out
-> multisine; the conclusion is bounded by those assumptions.
+Before applying this result to hardware, check which conditions still hold and decide what additional models or measurements are needed.

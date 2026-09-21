@@ -1,0 +1,22 @@
+# Project resources
+
+This page collects curriculum plans, experiment reports, and implementation notes. To start learning, return to the [course homepage](index.html) and follow K0 → K1 → L0.
+
+## Curriculum and progress
+
+The [lesson design](../lessons/course-design.md) describes the question behind each lesson, its place in the sequence, and future topics. [Course progress](status.md) records what is available, what is in preparation, and which learner feedback remains to be collected.
+
+The [experiment roadmap](../03_synthetic_lab_roadmap.md) covers the longer-term direction. These documents support discussion and maintenance of the course.
+
+## Reports and references
+
+- [L0 inertia and damping report](../../reports/l0_inertia_damping/report.md): parameters, fitting errors, and validation results.
+- [L1 command delay report](../../reports/l1_servo_loaded_pendulum/report.md): the machine, timing, residuals, and new-motion predictions.
+- [System identification reference notes](../01_sysid_101.md): concepts and terminology.
+- [Books and references](../02_learning_path_and_references.md): further reading.
+
+## Produce and reproduce experiments
+
+The [experiment and lesson pipeline](../lesson_pipeline.md) describes how numerical experiments produce reports and teaching assets. The [delivery policy](../lesson_delivery_policy.md) and [implementation plan](../plans/course-delivery-split.md) record the roles of web pages, local experiments, and future browser interaction.
+
+Find local apps and notebook instructions in the [L0 supplementary material](../lessons/l0/README.md) and [L1 supplementary material](../lessons/l1/README.md). Those pages also link to downloadable engineering verification records.

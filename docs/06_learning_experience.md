@@ -578,11 +578,17 @@ Across lessons, use separate pages or Marimo apps:
 ```text
 Course index (K0-K8 knowledge / L0-L6 labs / H0-H2 hardware)
   -> L0: inertia and damping
+  -> L0-E: excitation and identifiability (proposed extension)
   -> L1: delay and model mismatch
-  -> L2: actuator and friction
-  -> fixed-base leg
-  -> whole robot
+  -> L1-F / L1-S / L1-O: friction, saturation, observations (proposed extensions)
+  -> L2: fixed-base leg
+  -> L3: leg with contact
+  -> L4 / L5: Microduck / Microban
+  -> L6: sim-to-sim mismatch
 ```
+
+The lesson-by-lesson design is available in [English](lessons/course-design.md)
+and [中文](lessons/course-design.zh-CN.md), with matching IDs for review.
 
 Inside one lesson, use a continuous vertical narrative:
 

@@ -1,10 +1,9 @@
-# 3. Fit, validation, and residual phase
+# L1 · Fit, validation, and residual phase
 
-The fit asks the Student to choose one delay value that reproduces the public
-fit observations. The Initial model remains the transparent zero-delay
-baseline. The Identified Student starts from the optimizer's configured start
-and is constrained by the documented lower and upper bounds. Those optimizer
-details are separate from the learner-visible Initial model.
+Fitting searches for a delay that explains the chirp observations, then we
+compare its predictions with the zero-delay initial model. The search bounds
+and optimizer start are chosen before running; neither validation data nor
+the true delay selects them.
 
 | Split | Excitation | Used by fitting? | Question |
 | --- | --- | --- | --- |

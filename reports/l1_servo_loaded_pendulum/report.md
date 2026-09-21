@@ -1,7 +1,7 @@
 # L1: Servo-driven loaded pendulum
 
 This fixed run comes from `l1-servo-loaded-pendulum-v2`. For the guided explanation and exercise,
-start with the [L1 lesson](../../docs/lessons/l1/README.md).
+start with the [L1 lesson](../../docs/lessons/l1/index.md).
 
 ## The machine and its boundary
 

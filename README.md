@@ -14,9 +14,20 @@ The Oracle knows its full state and parameters; the estimator receives only the 
 
 ## Start the course
 
-Open the [rendered course overview](docs/course/index.html) first. It explains
-why the project uses `K`, `L`, and `H` tracks, shows every planned level, and
-links to the interactive L0 and L1 lessons, notes, and fixed reports.
+Open the [course homepage](docs/course/index.html), then follow
+[K0: why identification matters](docs/lessons/k0/index.html) →
+[K1: the fundamentals](docs/lessons/k1/index.html) →
+[L0: inertia and damping](docs/lessons/l0/index.html).
+Each lesson is a continuous reading page with examples and exercises.
+[L1: command delay](docs/lessons/l1/index.html) continues the experimental path.
+Future lessons appear in the course directory with their availability marked.
+
+The website is available in [English](docs/course/index.html) and
+[中文](docs/course/index.zh-CN.html). Use the language switch at the top right
+to keep reading the same page in the other language. Lesson notes, report
+explanations, and the curriculum design are rendered as bilingual web pages;
+teaching clips include both subtitle languages. See the [website authoring guide](docs/site/README.md)
+for rebuilding the pages after an edit.
 
 To review the HTML and interactive lesson over a LAN, run these commands from
 the repository root in separate terminals:

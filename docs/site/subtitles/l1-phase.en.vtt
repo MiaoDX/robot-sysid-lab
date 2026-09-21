@@ -1,0 +1,10 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.667
+During the chirp, frequency increases while delay stays at 0.080 s.
+
+00:00:05.667 --> 00:00:11.333
+The same time delay occupies more of each shorter cycle, revealing a phase difference.
+
+00:00:11.333 --> 00:00:17.000
+The local phase clue is about 360 × frequency × delay; closed-loop response also depends on plant and controller.

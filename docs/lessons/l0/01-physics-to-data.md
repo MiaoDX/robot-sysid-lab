@@ -1,4 +1,4 @@
-# 2. From physics to data: why inertia and damping matter
+# L0 · From physics to data: why inertia and damping matter
 
 The equation has two competing effects:
 
@@ -35,9 +35,9 @@ fixed and is marked stale. Press **Run identification** to fit again from the
 new starting values. A successful fit should still converge to the same Oracle
 values.
 
-This separates a learner-visible baseline from the hidden system. It also
-reveals why a starting guess is an implementation detail, while the baseline
-is part of the teaching comparison.
+Compare the new starting prediction with the completed fit, then check
+validation. This shows both how the starting guess changes the initial error
+and whether fitting still reaches a useful result.
 
 ## Checkpoint
 
