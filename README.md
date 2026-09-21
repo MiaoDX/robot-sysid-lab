@@ -41,7 +41,11 @@ The first guided course is the [interactive L0 Marimo app](apps/l0_inertia_dampi
 a continuous lesson from motivation through experiment evidence and limits,
 introduced by the [L0 lesson set](docs/lessons/l0/README.md). The
 next guided lab is the [interactive L1 servo-loaded-pendulum app](apps/l1_servo_loaded_pendulum.py),
-introduced by the [L1 lesson set](docs/lessons/l1/README.md). The
+introduced by the [L1 lesson set](docs/lessons/l1/README.md). The static lesson
+pages and teaching videos are the primary learning path; Marimo is the bounded
+interactive adapter, and longer or heavier experiments should use the local
+CPU/GPU commands documented with each lesson. See the [lesson delivery policy](docs/lesson_delivery_policy.md)
+for the split used by future levels. The
 [Jupyter notebook](notebooks/l0_inertia_damping.ipynb) remains available for
 cell-by-cell inspection.
 Its headless equivalent is `python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping`.

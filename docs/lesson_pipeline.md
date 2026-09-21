@@ -4,7 +4,9 @@ Each lesson is a small, repeatable unit that teaches one system-identification
 question and leaves behind enough evidence for another engineer to reproduce
 it. The pipeline is deliberately a contract first. Shared Python abstractions
 should be extracted only after a second lesson proves that a boundary is truly
-repeated.
+repeated. The [lesson delivery policy](lesson_delivery_policy.md) assigns the
+main explanation to static HTML/video, treats Marimo WASM as a bounded optional
+surface, and keeps the full experiment available locally.
 
 ## The lesson contract
 
@@ -93,12 +95,16 @@ A completed lesson produces:
 docs/lessons/<track>/<lesson>.md       narrative and exercises
 synthetic/<lesson>.py                  shared numerical implementation
 synthetic/<lesson>_config.json         frozen example configuration
-notebooks/<lesson>.ipynb               visual learner entry point
 reports/<lesson>/report.md             explained run result
 reports/<lesson>/report.png            static visual evidence
 reports/<lesson>/metrics.json          machine-readable metrics and provenance
 tests/test_<lesson>.py                 focused numerical and contract checks
 ```
+
+The local notebook or command is required for computational labs. A guided
+Marimo app and its WASM export are added when the lesson passes the browser
+execution gates; they are optional adapters around the shared implementation,
+not prerequisites for understanding the lesson.
 
 The report is not a replacement for the lesson. It answers “what happened in
 this run”; the lesson answers “why did we run it, how should I read it, and
@@ -120,12 +126,15 @@ An experiment can move to the next lesson only when it has:
 
 ## Presentation surfaces
 
-Jupyter remains an inspectable L0 surface. The guided Marimo course calls the
-same numerical implementation but separates two actions: changing an Initial-
-model parameter updates its orange preview immediately, while **Run
-identification** explicitly starts fitting and refreshes the blue result. Fit
-and Validation remain visible side by side. The static course overview owns the
-K/L/H learning map; generated reports remain immutable run artifacts.
+The static lesson and teaching clips are the primary narrative surface. Jupyter
+remains an inspectable local surface. The guided Marimo course calls the same
+numerical implementation but separates two actions: changing an Initial-model
+parameter updates its orange preview immediately, while **Run identification**
+explicitly starts fitting and refreshes the blue result. Fit and Validation
+remain visible side by side. A WASM export may provide this bounded interaction
+on GitHub Pages; heavy fitting, native simulator work, and large datasets stay
+on the local path. The static course overview owns the K/L/H learning map;
+generated reports remain immutable run artifacts.
 
 ## L0 mapping
 
