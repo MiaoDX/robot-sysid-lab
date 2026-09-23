@@ -4,7 +4,7 @@
 
 **Status: curriculum proposal, 2026-09-21.** This document turns the [roadmap](../03_synthetic_lab_roadmap.md) into teachable lessons. L0 and L1 already have implementations, notes, videos, and reports; independent learner acceptance remains open. All other lab cards below are proposals, not runnable lessons or measured results. [K0](k0/index.md) and [K1](k1/index.md) now have independent reading pages; other knowledge lessons remain in preparation.
 
-English and Chinese versions share section and lesson IDs. Feedback can reference `D02`, `K4`, or `L1-F` without depending on a translation's paragraph numbers. The proposals here do not change the frozen L0/L1 experiment contracts.
+English and Chinese versions share section and lesson IDs. Feedback can reference `D02`, `K4`, or the L1 friction extension without depending on a translation's paragraph numbers. The proposals here extend the L1 experiment contract without changing its public course level.
 
 Review entry points: [sequence](#d02) · [page structure](#d03) · [knowledge chapters](#d04) · [lab cards](#d05) · [hardware](#d06) · [next steps](#d08).
 
@@ -32,13 +32,13 @@ K chapters supply concepts when a lab needs them. Learners do not have to finish
 |---|---|---|
 | First complete loop | K0 + K1 → L0 → introduction to K6 | Explain what fitting and held-out prediction establish |
 | Make the experiment informative | K4 + essential K5 → L0-E | Recognize when changing the input helps more than changing the optimizer |
-| Understand the actuator boundary | K3 + K7 → L1 → L1-F → L1-S | Separate timing, friction, and output-limit hypotheses |
+| Understand the actuator boundary | K3 + K7 → L1 → L1 extensions | Separate timing, friction, and output-limit hypotheses |
 | Prepare realistic observations | L1-O, revisiting K4/K6 | Reason about measured position, derived velocity, and uncertainty |
 | Add robot structure | K2 as needed → L2 → L3 | Separate actuator, rigid-body, and contact errors |
 | Scale and challenge the model | L4 → L5 → L6; K8 alongside L4/L6 | Compare fitting strategies, parameter sharing, and model mismatch |
 | Transfer to hardware | H0 → H1 → H2 when the corresponding subsystem is ready | Support conclusions with calibration and repeatable physical measurements |
 
-L0-E is a return to the same tiny plant, not a new robot. L1-F and L1-S isolate their new effects instead of accumulating every previous imperfection. Combining effects is a later extension after the individual cases are understood.
+L0-E is a return to the same tiny plant, not a new robot. L1's delay, friction, and saturation sections isolate their new effects instead of accumulating every previous imperfection. Combining effects is a later extension after the individual cases are understood.
 
 Hardware is a branch of the course: H0 can begin after the actuator lessons and its bench procedure are ready. H1 requires the relevant whole-robot and contact evidence; H2 requires H1 and the platform-specific acquisition procedure. Completing every synthetic extension is not a prerequisite for a bench experiment.
 
@@ -76,7 +76,7 @@ The table describes the goals of independent knowledge lessons. K0 and K1 have r
 | K0 | Why does a plausible robot model still fail? | Compare before/after trajectories; distinguish parameter, prediction, and transfer claims | L0 introduction; revisit in L4 |
 | K1 | What exactly is being identified? | Annotate an input → plant → observation diagram; separate state, parameter, and measurement | L0 boundary; L1 command path |
 | K2 | Which dynamics term could explain this behavior? | Show inertia, gravity, coupling, and contact on a leg; predict the effect of a posture change | Minimal inertia in L0; gravity in L1; full treatment in L2/L3 |
-| K3 | What lies between a command and joint torque? | Walk through a model ladder; locate delay, friction, and saturation at their declared boundaries | L1, L1-F, L1-S |
+| K3 | What lies between a command and joint torque? | Walk through a model ladder; locate delay, friction, and saturation at their declared boundaries | L1 and its extensions |
 | K4 | Did the experiment reveal enough information? | Compare input coverage and loss contours; select an excitation that separates two parameters | L0-E; revisit in L2 |
 | K5 | What does an optimizer's answer establish? | Follow a least-squares cost surface and several starts; choose a diagnostic for failed fitting | L0 and L0-E; population methods become optional in L4 |
 | K6 | What evidence would challenge this fitted model? | Compare withheld-motion predictions and residuals; design a condition not used in fitting | L0 onward; develop the full chapter with L1 |
@@ -120,20 +120,20 @@ Unless a card says otherwise, Oracle truth is available only to the generator/ev
 - **Exercise / expected explanation:** Predict what changing Initial delay will do, submit a fit, then explain the validation result. In the existing L1 app, this edit is pending until submission; replay and signal selection use the completed run.
 - **Delivery / limit:** [Existing lesson](l1/README.md), [report](../../reports/l1_servo_loaded_pendulum/report.md), and local CPU path. The fitted delay is boundary-dependent, not an electromagnetic motor constant. Independent reader acceptance remains open.
 
-<a id="l1-f"></a>
-### L1-F · Distinguish friction from viscous damping
+<a id="l1-friction"></a>
+### L1 extension · Distinguish friction from viscous damping
 
 - **Question / prerequisite:** Why can a viscous-only model miss reversals even after fitting? Follow L1 and K3/K6.
 - **Boundary:** A known-inertia rotary load with known applied torque. Oracle resistance is `b*qd + tau_c*tanh(qd/v_eps)`, with public fixed `v_eps`. Compare a viscous-only Student against a Student fitting `b` and `tau_c`. Delay is zero; gravity and saturation are absent in this isolated experiment.
 - **Experiment:** Fit bidirectional motions covering low and moderate velocities. Hold out a predeclared different amplitude and reversal rate; report the achieved velocity coverage. Freeze both Student structures before evaluation.
 - **Evidence:** Resistance-versus-velocity illustration, residuals around reversals, candidate prediction errors, and recovery of shared parameters only where sensitivity supports it. True resistance is explanatory evidence, not an estimator input.
 - **Exercise / expected explanation:** Predict where the viscous-only residual will concentrate and propose data that separate `b` from `tau_c`. Explain why a residual-versus-velocity pattern alone does not prove friction.
-- **Delivery / limit:** Proposed next actuator lesson, static plus local CPU. This is smooth Coulomb-like resistance; it does not implement static sticking, Stribeck behavior, or backlash. A small browser comparison depends on measured cost.
+- **Delivery / limit:** Delivered as the second L1 experiment with static explanation plus local CPU. This is smooth Coulomb-like resistance; it does not implement static sticking, Stribeck behavior, or backlash. A browser comparison is intentionally deferred.
 
 <a id="l1-s"></a>
 ### L1-S · Reveal a torque limit
 
-- **Question / prerequisite:** Can gentle motion identify a limit it never reaches? Follow L1; compare the diagnosis with L1-F.
+- **Question / prerequisite:** Can gentle motion identify a limit it never reaches? Follow L1 and compare the diagnosis with its friction extension.
 - **Boundary:** Public torque command → symmetric clipping → known rotary dynamics. Estimate `tau_max`; torque scale and mechanics are fixed, with delay and extra friction absent. Applied Oracle torque is not given to the fitter.
 - **Experiment:** Contrast a fit dataset entirely below clipping with one that crosses the limit. Predeclare a validation amplitude that exercises the limit. Compare unclipped and clipped Students on the same data.
 - **Evidence:** Command/applied-torque illustration for evaluation, loss versus `tau_max`, and amplitude-dependent prediction errors. Below clipping, any sufficiently high limit produces the same behavior; report that bound instead of claiming a recovered value.
@@ -246,12 +246,12 @@ Shared terminology for future lesson translations:
 |---|---|---|
 | 1 | Review this bilingual sequence and the L0/L1 teaching questions | Feedback references lesson IDs and states what to keep, split, reorder, or clarify |
 | 2 | Complete the static L0/L1 narrative and Chinese learner pages | Both languages explain the boundary, fit/validation, exercise, limits, and local mode; record actual independent reader answers |
-| 3 | Freeze L1-F as the next actuator experiment | Numerical contract, parameter/observation boundaries, held-out conditions, tolerances, and execution budget |
-| 4 | Deliver L1-F locally with a report and static lesson | Reproduction and learner evidence; make the browser decision after measuring the run |
+| 3 | Freeze the L1 friction extension | Numerical contract, parameter/observation boundaries, held-out conditions, tolerances, and execution budget |
+| 4 | Deliver the L1 friction extension locally with a report | Reproduction and learner evidence; make the browser decision after measuring the run |
 | 5 | Add L0-E/L1-S and the observation bridge as needed, then freeze L2 | Every extension answers its own question; L2 explicitly states which upstream evidence it relies on |
 
-Teaching order and implementation order differ: L0-E belongs early in the learner route, while L1-F is the next new actuator implementation after current acceptance work. Advanced compliance/backlash, active excitation, optimizer leaderboards, and broad condition matrices stay optional until a lesson's residuals justify them. The [delivery backlog](../plans/course-delivery-split.md) owns packaging/deployment tasks.
+Teaching order and implementation order differ: L0-E belongs early in the learner route, while the L1 friction extension is the first additional actuator experiment after current acceptance work. Advanced compliance/backlash, active excitation, optimizer leaderboards, and broad condition matrices stay optional until a lesson's residuals justify them. The [delivery backlog](../plans/course-delivery-split.md) owns packaging/deployment tasks.
 
 Suggested review points: Does `D02` match how you want engineers to learn? Does each lab introduce a distinguishable uncertainty? Do the visuals and checkpoint answers make the lesson reviewable without executing code? Is a proposed exercise too shallow or too broad?
 
-Feedback format: **ID → issue or preferred change → reason**. For example: “L1-F → add two recorded speed ranges to the static exercise → make the separation between viscous and Coulomb-like resistance visible.” Feedback on this design is separate from the independent learner acceptance of a delivered lesson.
+Feedback format: **ID → issue or preferred change → reason**. For example: “L1 friction → add two recorded speed ranges to the static exercise → make the separation between viscous and Coulomb-like resistance visible.” Feedback on this design is separate from the maintainer learner acceptance of a delivered lesson.

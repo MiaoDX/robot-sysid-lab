@@ -1,0 +1,32 @@
+{
+  "version": "l1-friction-v1",
+  "dt": 0.005,
+  "duration_s": 10.0,
+  "initial_state": {"q": 0.0, "qd": 0.0},
+  "model": {"inertia": 0.065, "v_eps": 0.04},
+  "truth": {"damping": 0.055, "coulomb": 0.06},
+  "viscous_initial": {"damping": 0.08, "coulomb": 0.0},
+  "friction_initial": {"damping": 0.08, "coulomb": 0.03},
+  "bounds": {
+    "lower": {"damping": 0.0, "coulomb": 0.0},
+    "upper": {"damping": 0.2, "coulomb": 0.2}
+  },
+  "fit_excitation": {
+    "amplitude_nm": 0.28,
+    "frequency_hz": 0.18,
+    "harmonic": 0.35,
+    "harmonic_phase_rad": 0.5
+  },
+  "validation_excitation": {
+    "amplitude_nm": 0.34,
+    "frequency_hz": 0.31,
+    "harmonic": 0.2,
+    "harmonic_phase_rad": -0.35
+  },
+  "acceptance": {
+    "validation_error_ratio_max": 0.25,
+    "reversal_ratio_max": 0.4,
+    "parameter_abs_tolerance": 0.002
+  },
+  "metadata": {"seed": 7, "timestamp_utc": "2026-01-01T00:00:00Z"}
+}

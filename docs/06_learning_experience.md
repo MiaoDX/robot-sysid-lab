@@ -580,7 +580,7 @@ Course index (K0-K8 knowledge / L0-L6 labs / H0-H2 hardware)
   -> L0: inertia and damping
   -> L0-E: excitation and identifiability (proposed extension)
   -> L1: delay and model mismatch
-  -> L1-F / L1-S / L1-O: friction, saturation, observations (proposed extensions)
+  -> L1 friction / saturation / observation sections (proposed extensions)
   -> L2: fixed-base leg
   -> L3: leg with contact
   -> L4 / L5: Microduck / Microban

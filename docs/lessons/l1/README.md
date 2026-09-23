@@ -11,7 +11,7 @@ The [L1 lesson](index.md) contains the full explanation, videos, validation resu
 
 ## Inspect the results
 
-The [full report](../../../reports/l1_servo_loaded_pendulum/report.md) includes parameters, plots, errors, and experiment conditions. Open the [full-size figure](../../../reports/l1_servo_loaded_pendulum/report.png) alongside it, or download the [notebook](../../../notebooks/l1_servo_loaded_pendulum.ipynb) to inspect the computation step by step.
+The [delay report](../../../reports/l1_servo_loaded_pendulum/report.md) and [friction report](../../../reports/l1_friction/report.md) include parameters, plots, errors, and experiment conditions. Download the [delay notebook](../../../notebooks/l1_servo_loaded_pendulum.ipynb) or [friction notebook](../../../notebooks/l1_friction.ipynb) to inspect each computation step by step.
 
 ## Run an experiment
 
@@ -20,6 +20,7 @@ Running the code requires a basic Python environment. The experiment uses a CPU 
 ```bash
 python -m pip install -r requirements-interactive.txt
 python -m synthetic.l1_servo_loaded_pendulum --output-dir reports/l1_servo_loaded_pendulum
+python -m synthetic.l1_friction --output-dir reports/l1_friction
 python -m marimo run apps/l1_servo_loaded_pendulum.py --host 0.0.0.0 --port 2719
 ```
 

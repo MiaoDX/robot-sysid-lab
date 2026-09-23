@@ -11,7 +11,7 @@
 
 ## 查看实验结果
 
-[完整报告](../../../reports/l1_servo_loaded_pendulum/report.zh-CN.md)包含参数、曲线、误差与实验条件。阅读时可以对照[报告大图](../../../reports/l1_servo_loaded_pendulum/report.png)，也可以下载 [Notebook](../../../notebooks/l1_servo_loaded_pendulum.ipynb)逐步检查计算。
+[延迟报告](../../../reports/l1_servo_loaded_pendulum/report.zh-CN.md)与[摩擦报告](../../../reports/l1_friction/report.zh-CN.md)包含参数、曲线、误差与实验条件。可以下载[延迟 Notebook](../../../notebooks/l1_servo_loaded_pendulum.ipynb)或[摩擦 Notebook](../../../notebooks/l1_friction.ipynb)逐步检查计算。
 
 ## 自己运行一次
 
@@ -20,6 +20,7 @@
 ```bash
 python -m pip install -r requirements-interactive.txt
 python -m synthetic.l1_servo_loaded_pendulum --output-dir reports/l1_servo_loaded_pendulum
+python -m synthetic.l1_friction --output-dir reports/l1_friction
 python -m marimo run apps/l1_servo_loaded_pendulum.py --host 0.0.0.0 --port 2719
 ```
 

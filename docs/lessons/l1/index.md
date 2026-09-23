@@ -1,4 +1,4 @@
-# L1 · Estimate command delay from motion
+# L1 · Actuator delay and friction
 
 L0 started with known torque and estimated a joint's inertia and damping. This lesson uses position control: we specify a target angle, a controller calculates torque, and that torque drives a loaded arm.
 
@@ -98,6 +98,31 @@ Start with the orange residuals near reversals. A response that arrives early or
 
 Velocity correlation alone cannot establish friction as the cause: delay can produce a similar pattern. Use the system boundary to guide experiments that distinguish possible causes. Torque traces in this figure help explain the motion; the fitting program did not receive those hidden signals.
 
+## Extension: friction versus viscous damping {#friction}
+
+The delay experiment raises a second question: when a residual follows velocity, is the missing effect timing or resistance? We isolate that question in a known-torque rotary load before combining effects in a richer model.
+
+The friction extension uses:
+
+$$
+J\\ddot q + b\\dot q + \\tau_c\\tanh(\\dot q/v_{eps}) = u
+$$
+
+`J` and `v_eps` are fixed and known. The Oracle has viscous damping `b` and a smooth Coulomb-like term `tau_c`; delay, gravity, saturation, sensor noise, and backlash are absent. The estimator receives only `t`, applied torque `u`, `q`, and `qd`.
+
+We compare two Students:
+
+- **Viscous-only:** fit `b` with `tau_c = 0`;
+- **Friction:** fit both `b` and `tau_c`.
+
+The fit motion is bidirectional and includes low and moderate speeds. A different amplitude, frequency, and harmonic composition is held out. In the frozen run, the viscous-only fit returns `b=0.097292`; the friction Student recovers `b=0.055000` and `tau_c=0.060000`. The held-out q and qd RMSE ratios (friction / viscous) are approximately `1.18e-18` and `2.67e-17`; the reversal-window ratio is `1.22e-19`.
+
+![L1 friction extension: resistance and reversal residuals](../../../reports/l1_friction/report.png)
+
+These results show why the experiments are separated: L1 first isolates timing in the closed-loop command path, then this extension isolates a resisting-torque hypothesis. A velocity-correlated residual alone does not prove friction; delay, filtering, or an incorrect torque boundary can produce similar patterns.
+
+This extension uses smooth `tanh` friction. It does not cover static sticking, Stribeck behavior, asymmetric friction, backlash, sensor noise, or hardware transfer. See the [friction experiment report](../../../reports/l1_friction/report.md) and [Notebook](../../../notebooks/l1_friction.ipynb) for the reproducible local run.
+
 ## Think it through {#exercise}
 
 1. Why could predictions be inaccurate even with correct arm length and masses?
@@ -121,7 +146,7 @@ This is an effective delay between the PD torque command and the arm input in th
 
 The experiment still omits other friction, saturation, compliance, measurement noise, and contact. Its result supports timing estimation and new-motion prediction for these known mechanics. A real actuator needs measurements to check those assumptions.
 
-Later lessons will study friction, output limits, and observation errors before moving to coupled joints. They are in preparation; the [course map](../../course/index.html#tracks) describes the learning direction.
+L1 now contains two isolated actuator experiments: command delay in the closed-loop loaded arm, followed by friction versus viscous damping under known torque. Later lessons will study output limits and observation errors before moving to coupled joints.
 
 ## Optional: run the experiment yourself {#local-experiment}
 

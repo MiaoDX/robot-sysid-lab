@@ -12,6 +12,7 @@
 
 - [L0 惯量与阻尼报告](../../reports/l0_inertia_damping/report.zh-CN.md)：参数、拟合误差与验证结果。
 - [L1 指令延迟报告](../../reports/l1_servo_loaded_pendulum/report.zh-CN.md)：装置、时序、残差与新运动预测。
+- [L1 摩擦扩展报告](../../reports/l1_friction/report.md)：摩擦失配、换向残差与留出预测。
 - [系统辨识参考笔记](../01_sysid_101.zh-CN.md)：查阅概念与术语。
 - [书籍与参考资料](../02_learning_path_and_references.zh-CN.md)：继续学习的材料。
 

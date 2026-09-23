@@ -2,7 +2,9 @@
 
 If this is your first visit, start with [K0 · Why system identification matters](k0/index.md), read [K1 · System identification fundamentals](k1/index.md), then continue to [L0 · Estimate joint inertia and damping](l0/index.md).
 
-Once those ideas are familiar, continue to [L1 · Estimate command delay from motion](l1/index.md). Each lesson brings its explanation, videos, exercises, and conclusions together on one page.
+Once those ideas are familiar, continue to [L1 · Actuator delay and friction](l1/index.md). Each lesson brings its explanation, videos, exercises, and conclusions together on one page.
+
+L1 now includes a second isolated actuator experiment on friction versus viscous damping, delivered through the same lesson page with a local CPU report and notebook.
 
 ## Find a lesson
 

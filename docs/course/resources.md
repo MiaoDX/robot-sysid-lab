@@ -12,6 +12,7 @@ The [experiment roadmap](../03_synthetic_lab_roadmap.md) covers the longer-term 
 
 - [L0 inertia and damping report](../../reports/l0_inertia_damping/report.md): parameters, fitting errors, and validation results.
 - [L1 command delay report](../../reports/l1_servo_loaded_pendulum/report.md): the machine, timing, residuals, and new-motion predictions.
+- [L1 friction extension report](../../reports/l1_friction/report.md): friction mismatch, reversal residuals, and held-out prediction.
 - [System identification reference notes](../01_sysid_101.md): concepts and terminology.
 - [Books and references](../02_learning_path_and_references.md): further reading.
 
