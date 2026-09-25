@@ -104,6 +104,8 @@ If validation is poor, try other starting guesses to check fitting stability. Th
 
 </details>
 
+If the curves look identical, check the input and observation columns before trusting the parameter values. Continue when you can state which result is fit evidence and which result is held-out evidence.
+
 ## Understand the conditions behind the result {#limits}
 
 With known applied torque, ideal observations, and a correct model structure, we recovered inertia and damping and predicted motion under another input.

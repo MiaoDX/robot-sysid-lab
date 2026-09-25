@@ -37,6 +37,8 @@ Repeat enough runs to inspect parameter stability. If a grouping is changed afte
 
 ## Read scale evidence {#evidence}
 
+This is a planned parameter-sharing comparison. The exception and stability views describe the required evidence package; they do not reveal hidden values to the fitter.
+
 Show joint/body error heatmaps, parameter counts, estimate distributions, residuals around the hidden exception, cross-motion predictions, and runtime. Separate:
 
 - lower variance from sharing;
@@ -54,6 +56,8 @@ The shared model has slightly worse training error, better held-out body motion,
 
 The shared model may be preferable if body prediction and stability are the declared goals, but the joint residual is a signal to inspect rather than erase. Request repeated runs, joint-level held-out metrics, and an independent component or excitation test for that joint. Choose using the predeclared task and parameter-use requirements, not the best final score.
 </details>
+
+The common wrong turn is to select sharing after seeing the final exception score. If you cannot choose, freeze the grouping from metadata or development data and request a joint-specific held-out motion. Continue when variance, bias, and task metrics are reported separately.
 
 ## What sharing cannot prove {#limits}
 

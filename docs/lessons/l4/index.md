@@ -40,6 +40,8 @@ Do not train RL inside the identification loop. Policy training and randomizatio
 
 ## Read whole-robot evidence {#evidence}
 
+This is a planned whole-robot comparison. Route and controller metrics become evidence only after the paired runs are completed and checked.
+
 Show route cost, data lineage, joint and base errors, prediction horizon, and parameter interpretation. Then show the two model-to-controller paths and the matched Oracle evaluation. A route with a lower fitting loss may still have worse held-out motion or less interpretable parameters.
 
 Count the number of component runs, fitting time, and constraints. Otherwise the comparison can accidentally report an unequal-data advantage as an optimizer advantage.
@@ -53,6 +55,8 @@ Route A uses extra actuator data and has a slightly higher whole-robot fitting l
 
 There is no single answer without a declared task cost and data budget. Report the extra data/compute, held-out joint/base metrics, and controller metrics separately. Choose A only if the intended task values its improved base prediction and effort within the declared constraints; otherwise the global route may be preferable. Do not reduce the decision to fitting loss.
 </details>
+
+The common wrong turn is to rank routes by whole-robot fit loss. If you cannot choose, write the task cost and data budget first, then compare paired held-out and controller metrics. Continue when the route choice can be defended without a single aggregate score.
 
 ## What the whole-robot case cannot prove {#limits}
 

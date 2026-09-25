@@ -58,6 +58,8 @@ A position-plus-velocity objective has a lower training loss, but its delay esti
 Prefer the objective with the more stable held-out prediction under the declared use, then investigate whether channel scaling or the differencing rule is responsible. Do not choose only by training loss or by visual smoothness. If the question is timing, design a new observation or excitation that gives timing information rather than adding a correlated derived channel.
 </details>
 
+The common wrong turn is to treat a smoother derived velocity as a new measurement. If you cannot choose an objective, compare repeated-seed stability and held-out plant prediction separately. Continue when the observation claim and the plant claim are written apart.
+
 ## What observation quality cannot prove {#limits}
 
 This experiment isolates one position-noise model. It does not cover quantization, filter phase, timestamp offset, jitter, missing samples, or all sensor fusion choices. A noisy observation can widen uncertainty without changing the plant; a clean-looking trace cannot prove the underlying parameter is accurate.

@@ -37,6 +37,8 @@ RL training and broad or targeted domain randomization are extensions. They intr
 
 ## Read downstream evidence {#evidence}
 
+The three protocols define what a fair comparison would measure. They become evidence only after both model-to-controller paths run under the same declared Oracle conditions.
+
 Report prediction metrics separately from tracking error, control effort, and constraint violations. Pair initial conditions and disturbances where possible. A controller that tracks better but uses more effort may be preferable or unacceptable depending on the declared task cost.
 
 The evidence should show both model-to-controller paths and the same Oracle evaluation conditions. Do not use a single final score to hide a change in safety margin or operating range.
@@ -50,6 +52,8 @@ A report says: “The identified model improves control because its prediction e
 
 The claim confuses prediction with downstream control. With an unchanged controller and physical system, changing an offline model cannot by itself change the closed-loop result. Request two controller configurations generated from the initial and identified models using the same design method, then evaluate them on the same hidden Oracle with paired conditions and declared tracking, effort, and constraint metrics.
 </details>
+
+The common wrong turn is to infer control improvement from an unchanged controller. If you cannot design the comparison, draw two model-to-controller paths and freeze the design rule before evaluation. Continue when tracking, effort, and constraints have separate metrics.
 
 ## What this protocol cannot prove {#limits}
 

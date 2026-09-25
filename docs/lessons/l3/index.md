@@ -35,6 +35,8 @@ Timestep refinement is a numerical check, not a new fitted parameter. If changin
 
 ## Read contact evidence {#evidence}
 
+This is a planned contact experiment contract. The listed traces and regression table are required outputs, not measured results on this page.
+
 The evidence package should show contact onset, force–compression and force–velocity views, motion and force residuals, held-out behavior, and a free-space regression table. If penetration is not observable to the Student, show it only as an Oracle diagnostic.
 
 Separate the questions: did contact start at the right time, did the force response have the right magnitude, and did the leg motion remain consistent? One aggregate score can hide a failure in one of these stages.
@@ -48,6 +50,8 @@ A single slow compression fits well, but a faster release has a large force resi
 
 Change approach/release speed and collect a condition that makes velocity-dependent damping visible, while keeping geometry and free-space parameters fixed. Link mass belongs to the upstream rigid-body model; changing it to fix contact would spend free-space evidence on a contact error and change the meaning of the fitted result.
 </details>
+
+The common wrong turn is to change link parameters because they are already available. If you cannot choose, inspect contact onset and free-space regression first, then vary release speed while holding the upstream model fixed. Continue when contact and free-space claims remain separate.
 
 ## What this contact lesson cannot prove {#limits}
 

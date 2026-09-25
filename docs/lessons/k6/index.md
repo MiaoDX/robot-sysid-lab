@@ -28,6 +28,8 @@ The fitter receives only fitting observations. The final evaluation observations
 
 ## Read residuals as clues, not verdicts {#evidence}
 
+The split and residual examples are a reading contract. A final claim must use a completed, untouched run and its measured metrics.
+
 A residual is the declared difference between model and observation, with a unit and sign convention. Its structure can suggest a hypothesis:
 
 - growth with frequency may point toward timing, unmodeled dynamics, or numerical effects;
@@ -54,6 +56,8 @@ A team fits a delay model, checks one held-out reversal, sees a low error, and t
 
 The reversal became development data when it changed the bound. It can no longer support an untouched final claim. Freeze the model, bound, scale, and fitting rule, then evaluate a new complete run chosen for the intended operating change. State whether the new run changes frequency, direction, posture, load, or another condition, and report the range covered.
 </details>
+
+The common wrong turn is to tune on the only held-out run and still call it final evaluation. If you cannot classify the split, record which decision changed after viewing it and reserve a fresh complete run. Continue when the final claim names the changed condition and its range.
 
 ## What validation cannot prove {#limits}
 

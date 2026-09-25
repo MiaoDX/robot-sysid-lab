@@ -40,6 +40,8 @@ Do not add delay, friction, and saturation to one Student before the single-effe
 
 ## Read actuator evidence {#evidence}
 
+The comparison below is a conceptual contract. Any applied-torque or internal-state trace is an Oracle diagnostic unless the page explicitly declares it as an observation.
+
 Use a boundary diagram, a signal timeline, and condition-specific residuals together. A phase shift is a clue for delay, not a direct measurement of motor electromagnetic time. A reversal-localized residual is a clue for resistance, not proof that friction is the only missing effect. A flat response at large commands suggests saturation only if the command actually crosses the limit.
 
 Mark Oracle-only signals such as actual applied torque and internal delay state. They can explain why a trace looks the way it does, but they must not leak into a command-only fit.
@@ -53,6 +55,8 @@ A command sweep has a phase-like error at high frequency. A low-speed reversal h
 
 Use a frequency comparison with a declared command history for delay, bidirectional low/high-speed motions for friction, and below/above-threshold amplitudes for saturation. Keep actual applied torque and internal actuator states hidden when the Student is meant to infer effects from commands and motion. Those signals can appear in an explanation or evaluator-only plot.
 </details>
+
+The common wrong turn is to use the Oracle's applied torque to explain a command-only fit. If you cannot choose an experiment, hold the controller fixed and change only frequency, direction, or amplitude. Continue when each hypothesis has one condition that could make it disagree with the others.
 
 ## What the command boundary cannot prove {#limits}
 

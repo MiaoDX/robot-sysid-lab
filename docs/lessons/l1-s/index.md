@@ -49,6 +49,8 @@ Dataset A uses small commands and gives identical predictions for every threshol
 Dataset B supports a saturation hypothesis because it contains behavior that separates the candidate models. Check that the apparent clip is not a controller or numerical artifact, that the held-out amplitude was declared before selection, and that the fitted threshold remains supported across seeds and relevant motion conditions. Dataset A supports only a statement that the limit was not reached.
 </details>
 
+The common wrong turn is to report a unique threshold without a crossing. If you cannot decide, inspect the command range and the loss plateau, then design a declared amplitude family that crosses the candidate limit. Continue when the result can be stated as a threshold or a lower bound.
+
 ## What this experiment cannot prove {#limits}
 
 A constant symmetric limit is a teaching boundary, not a complete actuator model. Speed-, voltage-, temperature-, direction-, and load-dependent limits remain separate questions. If no command reaches the limit, report a range or lower bound rather than a unique parameter.

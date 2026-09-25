@@ -36,6 +36,8 @@ Independent component constraints can narrow a compensation valley, but they als
 
 ## Read parameter evidence {#evidence}
 
+The parameter comparisons are conceptual until the stated conditions produce a checked record. Treat a stable label as a claim with a boundary, not as a measured fact by itself.
+
 Use a parameter-pair loss view, fitted values across conditions, and predictions together. A stable parameter value with poor held-out behavior is not a success. A changing effective value with stable prediction may be useful, provided its range and boundary are stated.
 
 Only parameters with shared semantics and enough information support a recovery-error claim. For unmatched Oracle/Student effects, report behavior, residuals, and operating range instead. Local optimizer curvature is not a complete uncertainty description under model mismatch.
@@ -49,6 +51,8 @@ A friction-free Student fits a low-speed run by increasing damping. On a higher-
 
 Report the damping as an effective value for the low-speed, friction-free boundary, not as an independently recovered physical damping coefficient. Add bidirectional speeds that expose the missing resistance, or measure an independent torque/resistance signal if that belongs to the intended boundary. If the richer model is selected using the same evaluation run, reserve another final run.
 </details>
+
+The common wrong turn is to attach a physical name to a value before checking its boundary. If you cannot classify it, compare the value and the prediction across a new condition, then report a combination or range. Continue when the label states the evidence and the limit.
 
 ## What parameter labels cannot prove {#limits}
 

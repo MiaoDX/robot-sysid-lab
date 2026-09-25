@@ -53,6 +53,8 @@ If the validation result is then used to tune the model, that data becomes part 
 
 </details>
 
+If you cannot name a changed condition, start with a complete held-out run and write down its input range before reading the score. Continue when you can state the operating range supported by the comparison.
+
 ## Continue to the next lesson {#next}
 
 Our goal is to predict a system's motion from its input. [K1 · System identification fundamentals](../k1/index.md) introduces inputs, states, observations, and parameters so that we can describe the first experiment precisely.

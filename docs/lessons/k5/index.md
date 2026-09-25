@@ -42,6 +42,8 @@ This is why K4 and K5 are connected: the optimizer can only use information that
 
 ## Read the fitting record {#diagnostics}
 
+This page describes how to read a fitting record. The examples are diagnostic illustrations unless a run and its record are linked explicitly.
+
 Use the following order when a fit looks wrong:
 
 1. **Objective:** Are residual signs, units, channel scales, and masks correct?
@@ -68,6 +70,8 @@ For each record, choose the first action: improve the model structure, redesign 
 
 A calls for a model-structure hypothesis, because agreement across starts does not remove a systematic residual. B calls for checking the model and the fitting boundary before increasing the optimizer budget; the bound and frequency pattern are evidence, not a generic optimization failure. C calls for a more informative experiment or an additional constraint, because nearly parallel sensitivities indicate weak separation. In all cases, inspect units and objective construction before interpreting the parameter values.
 </details>
+
+The common wrong turn is to treat a convergence flag as a model verdict. If you are unsure, check units, residual scales, bound hits, and the held-out split in that order. Continue when you can name whether the next action is a better fit, a better experiment, or a richer structure.
 
 ## What fitting cannot prove {#limits}
 

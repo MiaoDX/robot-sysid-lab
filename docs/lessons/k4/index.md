@@ -43,6 +43,8 @@ The final evaluation motion must be declared before looking at its score. It tes
 
 ## Read sensitivity and loss-valley evidence {#evidence}
 
+The sensitivity and loss views here are conceptual until a corresponding run is replayed. They explain what evidence to request; they do not report a new measured result.
+
 Three views answer different questions:
 
 1. **Coverage:** Do the two fitting inputs actually produce different ranges of $\dot q$ and $\ddot q$?
@@ -66,6 +68,8 @@ Prefer Dataset B because its input separates velocity and acceleration effects m
 
 If the held-out result is used to choose a frequency band or retune the objective, it becomes development data. Reserve a fresh final evaluation for the resulting claim.
 </details>
+
+Do not repair a long loss valley by adding more nearby samples. If you cannot choose, inspect scaled sensitivity columns and state which new condition would rotate one of them. Continue when the proposed input changes information rather than only sample count.
 
 ## What this experiment cannot tell us {#limits}
 

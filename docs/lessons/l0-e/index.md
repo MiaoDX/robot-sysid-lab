@@ -56,6 +56,8 @@ A slow input gives a lower fitting loss than a broadband input. Its loss surface
 Use the declared prediction goal and held-out evidence, not fitting loss alone. The broadband input may expose more useful behavior even if its optimization is harder. Inspect scaling, convergence, and state coverage before concluding that its higher loss is a problem. If the next choice is made from the held-out result, reserve another final run.
 </details>
 
+If you cannot choose between the inputs, inspect scaled sensitivities and state coverage before looking at held-out loss. Continue when the next input changes an independent motion feature.
+
 ## What this experiment cannot prove {#limits}
 
 This comparison isolates excitation under ideal observations and a matched two-parameter model. Weak sensitivity does not prove structural non-identifiability, and a successful broadband fit does not guarantee hardware identifiability. Noise and preprocessing belong to L1-O; multibody excitation returns in L2.

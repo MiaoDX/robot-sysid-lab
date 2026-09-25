@@ -32,6 +32,8 @@ Both cases require timestep refinement. If the conclusion changes with the step,
 
 ## Read mismatch evidence {#evidence}
 
+This is a planned two-case mismatch study. Cross-engine claims remain pending until interface alignment and timestep refinement are recorded.
+
 Show the model/parameter semantics table, residual structure, timestep-refinement error, cross-condition error matrix, prediction horizon, and operating envelope. Report recovery only for parameters whose meaning is shared. For the second engine, avoid claiming that all remaining error belongs to one physical mechanism.
 
 A useful final claim has the form: “Under these inputs, observations, and backend alignment rules, the Student predicts within this range; outside it, the residual pattern requires a richer model, a better experiment, or a narrower use envelope.”
@@ -45,6 +47,8 @@ Case A leaves a frequency-dependent residual. Case B adds a second engine and sh
 
 Complete the timestep refinement and interface checks first. The cross-engine difference may include numerical error or semantic misalignment. If the residual survives those checks, decide among a richer Student, a new excitation, or a narrower operating envelope. Do not use cross-engine error as a direct estimate of real-world uncertainty.
 </details>
+
+The common wrong turn is to read cross-engine residuals as physical uncertainty before checking semantics and timestep refinement. If you cannot choose a response, complete those checks and write the remaining operating envelope. Continue when the next step is a richer model, a new experiment, or a narrower claim.
 
 ## What cross-engine evidence cannot prove {#limits}
 
