@@ -118,14 +118,22 @@ legs and whole robots. See the [Marimo WASM guide](https://docs.marimo.io/guides
 
 ## Application to the lab ladder
 
+The [unified design](lessons/course-design.md) owns lesson scope and
+prerequisites. K lessons use static explanations, diagrams, and cited lab
+results without an independent numerical implementation requirement. The table
+describes delivery targets; H retains its earlier arrangements outside this
+design round.
+
 | Level | Static HTML/video | WASM role | Full experiment |
 |---|---|---|---|
 | L0 inertia and damping | Core lesson and fixed report | Small fit and safe controls | Local CPU runner and notebook |
 | L1 delayed servo and pendulum | Core lesson, machine explanation, and report | Small fit, replay, and residual views after packaging dependencies | Local CPU runner and notebook |
+| L0-E/L1-O; elective L1-S | Isolated excitation, observation, or saturation comparisons | Optional bounded interaction after budget checks | Local CPU |
 | L2 fixed-base leg | Core lesson and videos explain coupling | Precomputed replay or tiny previews; no whole fit by default | Local simulator and fitting workflow |
 | L3 contact | Core lesson and contact-failure videos | Static evidence or replay only unless a bounded toy contact case qualifies | Local simulator with contact experiments |
 | L4 Microduck | Core lesson, videos, and report summaries | Summary/replay surface | Local or scheduled whole-robot fitting |
 | L5 Microban | Core lesson, videos, and scaling evidence | Optional result explorer | Local/GPU workflow |
+| L6 structural and cross-engine mismatch | Both single-engine structural mismatch and a genuine cross-engine case | Fixed results or replay | Local reproduction with both backends |
 | H hardware track | Safety and experiment procedure in HTML/video | No hardware execution in WASM | Local machine and hardware services |
 
 This keeps the course readable and deployable while allowing the computational

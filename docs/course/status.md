@@ -16,9 +16,11 @@ Engineering verification exists for both lessons. Independent learner acceptance
 
 ## Planned lessons
 
-Knowledge chapters K2–K8 are still in preparation. L0-E and additional L1 actuator effects such as saturation and observation quality remain proposals; the friction extension is implemented inside L1 and still needs maintainer learner acceptance. L2–L6 cover a fixed-base leg, contact, Microduck, Microban, and simulator mismatch. H0–H2 apply the method to hardware. These remain design proposals unless linked to an implemented experiment.
+The overall K/L direction is agreed and the [unified content design](../lessons/course-design.md) is ready for individual lesson review. It covers K2–K8, core bridges L0-E/L1-O, elective L1-S, and L2–L6. These are designs, not delivered experiments. L4 includes a bounded control comparison; L6 includes both structural mismatch and a genuine cross-engine case, with no L5 prerequisite. L1 friction is already implemented and still needs maintainer learner acceptance. H0–H2 retain their earlier proposals outside this design round.
 
 ## Next work
+
+Review the cards by [batch and lesson ID](../lessons/course-design.md#d08), then freeze numerical and content details per lesson before implementation.
 
 Record the maintainer learner walkthrough for L0/L1, including both the delay and friction sections, then decide whether the measured value justifies a browser surface. Use the [delivery policy](../lesson_delivery_policy.md) for static, browser, and local execution decisions.
 

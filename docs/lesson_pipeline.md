@@ -33,6 +33,12 @@ and residual evidence instead.
 The contract prevents a lesson from silently changing its model, data boundary,
 or validation meaning while its narrative remains the same.
 
+Knowledge lessons cite existing lab evidence or clearly labeled conceptual
+illustrations; they do not require an independent fitting implementation.
+Computational labs use the three visibility levels and minimum evidence package
+in [curriculum design D03](lessons/course-design.md#d03). Validation used for
+model selection requires a separate untouched split for final claims.
+
 ## The shared flow
 
 ```text
@@ -117,8 +123,10 @@ An experiment can move to the next lesson only when it has:
 1. **Numerical evidence:** the declared estimator runs, the fit/validation
    split is preserved, and the result meets the lesson's recovery or behavior
    criteria.
-2. **Reproduction evidence:** a clean CPU command regenerates the report, and
-   the visual entry point uses the same implementation and configuration.
+2. **Reproduction evidence:** a clean reproduction command regenerates the
+   report in the declared CPU/GPU and backend environment. Record resources and
+   runtime budgets; the visual entry point shares implementation/configuration.
+   Small CPU lessons retain that path; large lessons need not be CPU-only.
 3. **Learning evidence:** a reader can identify the baseline mismatch, explain
    the held-out result, change one exposed setting, and name the main limits.
 4. **Scope evidence:** the report states what is absent, so later model

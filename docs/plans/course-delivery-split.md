@@ -56,9 +56,7 @@ static lesson and local numerical path are complete.
 
 ### B1. Choose one bounded mismatch question
 
-Use the next documented actuator effect, preferably friction or saturation,
-only after stating why L1's delay lesson cannot answer it. Freeze the lesson
-contract and the execution budget before implementation.
+L1 friction is delivered. Use the [unified curriculum design](../lessons/course-design.md#d08) to review L0-E and L1-O as core bridges; L1-S is elective. Explain the new question beyond the delivered L0/L1 cases, then freeze its numerical contract and execution budget. This backlog does not make optional WASM packaging a prerequisite for designing or delivering the next static/local lesson.
 
 ### B2. Local benchmark and report
 
@@ -110,6 +108,10 @@ contract and the execution budget before implementation.
   report summaries.
 - Browser surface is a result explorer with precomputed artifacts.
 - Local or scheduled CPU/GPU jobs handle fitting, caching, and large data.
+- L4 includes the bounded controller-design comparison in the agreed card; L5
+  studies parameter sharing. L6 then has local reproduction of both structural
+  mismatch and a genuine second-engine case on one small plant, with static
+  evidence/replay. See [L4–L6 scope](../lessons/course-design.md#l4).
 
 ### C4. Hardware track
 

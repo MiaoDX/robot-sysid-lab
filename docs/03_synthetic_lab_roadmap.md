@@ -9,6 +9,11 @@ The repository is intended to be both:
 
 The project should not be organized primarily around a generic software framework. Reusable abstractions are useful, but they should be derived from concrete labs and repeated workflows.
 
+The [unified curriculum design](lessons/course-design.md) owns the current K/L
+teaching scope, recommended sequence, and necessary prerequisites. This roadmap
+retains long-term research options, not a cumulative implementation checklist
+for each lesson.
+
 ## 1. Project thesis
 
 A useful robotics SysID workflow should teach and test the following loop:
@@ -337,7 +342,7 @@ Possible comparisons:
 - MuJoCo CPU versus MuJoCo Warp where parameter semantics align;
 - different contact implementations.
 
-This level approximates an essential sim-to-real property: the student model class never exactly contains reality.
+This level approximates an essential sim-to-real property: the student model class never exactly contains reality. The teaching scope requires two cases on the same small plant: isolate structural mismatch in the primary backend, then compare genuinely different physics engines. The first case alone does not complete L6. It is accessible after L4 without L5; select the second engine at individual review.
 
 ## 4. Hardware transfer track
 
