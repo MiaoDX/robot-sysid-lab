@@ -1,6 +1,6 @@
 # 正式课程内容实施计划
 
-[English version](course-content-rollout.md) · [统一课程设计](../lessons/course-design.zh-CN.md)
+[English version](course-content-rollout.md) · [课程讲述与编辑原则](../lessons/course-editorial-principles.zh-CN.md) · [统一课程设计](../lessons/course-design.zh-CN.md)
 
 **状态：第 0–5 批内容已完成；数值实现待进行，2026-09-25。** 本计划把已经确认的 K/L 宏观设计转成面向学习者的正式课程页面。不凭空编造数值结果：实验页面可以在运行器和报告完成前说明契约与练习，但只有本地路径生成并通过检查后，才能声称某个实验结果。
 

@@ -16,4 +16,4 @@ The [L0 supplementary material](l0/README.md) and [L1 supplementary material](l1
 
 ## Discuss the curriculum
 
-[Project resources](../course/resources.md) collects the curriculum design, production process, and implementation progress. The design is available in [English](course-design.md) and [中文](course-design.zh-CN.md). Reference a lesson code or section D01–D08 when giving feedback.
+[Project resources](../course/resources.md) collects the curriculum design, editorial principles, production process, and implementation progress. Read the [editorial principles](course-editorial-principles.md) before reviewing lesson voice, evidence status, or exercises. The curriculum design is available in [English](course-design.md) and [中文](course-design.zh-CN.md). Reference a lesson code or section D01–D08 when giving feedback.

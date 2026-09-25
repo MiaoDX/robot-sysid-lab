@@ -16,4 +16,4 @@ L1 现在还包含一个隔离摩擦与黏性阻尼的执行器实验，通过�
 
 ## 参与课程设计
 
-[项目资料](../course/resources.zh-CN.md)集中收录课程设计、制作流程与实现进度。设计有[中文版](course-design.zh-CN.md)和[英文版](course-design.md)，可以用课程编号或 D01–D08 章节编号提出反馈。
+[项目资料](../course/resources.zh-CN.md)集中收录课程设计、讲述与编辑原则、制作流程和实现进度。评审课程口吻、证据状态或练习前，请先阅读[课程讲述与编辑原则](course-editorial-principles.zh-CN.md)。课程设计有[中文版](course-design.zh-CN.md)和[英文版](course-design.md)，可以用课程编号或 D01–D08 章节编号提出反馈。

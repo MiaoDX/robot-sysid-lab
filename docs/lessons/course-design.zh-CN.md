@@ -1,6 +1,6 @@
 # Lessons 课程设计评审稿
 
-[English version](course-design.md) · [课程地图](../course/index.html) · [已有课程](README.md)
+[English version](course-design.md) · [课程讲述与编辑原则](course-editorial-principles.zh-CN.md) · [课程地图](../course/index.zh-CN.html) · [已有课程](README.zh-CN.md)
 
 **状态：K/L 正式阅读页已完成；数值实现与逐课评审仍待进行，2026-09-25。** 本稿记录批量讨论中确认的课程范围与取舍，并定义统一内容契约。它是 K/L 教学顺序和本轮交付范围的维护入口；[长期路线图](../03_synthetic_lab_roadmap.md)保留研究方向。数值参数、算法配置、资产版本、运行预算和素材脚本在单课 review 后冻结。正式页面不声称任何尚未生成并验证的数值结果。
 

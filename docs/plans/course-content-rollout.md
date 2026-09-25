@@ -1,6 +1,6 @@
 # Formal Lesson Content Rollout Plan
 
-[中文版](course-content-rollout.zh-CN.md) · [Unified curriculum design](../lessons/course-design.md)
+[中文版](course-content-rollout.zh-CN.md) · [Editorial principles](../lessons/course-editorial-principles.md) · [Unified curriculum design](../lessons/course-design.md)
 
 **Status: Content rollout complete through Phase 5; numerical implementation pending, 2026-09-25.** This plan turns the agreed K/L curriculum design into learner-facing lesson pages. It does not authorize invented numerical results: an experiment lesson may describe a contract and exercise before its runner/report exists, but it may claim a result only after the local path produces checked evidence.
 

@@ -1,6 +1,6 @@
 # Lessons Curriculum Design Review
 
-[中文版](course-design.zh-CN.md) · [Course map](../course/index.html) · [Existing lessons](README.md)
+[中文版](course-design.zh-CN.md) · [Editorial principles](course-editorial-principles.md) · [Course map](../course/index.html) · [Existing lessons](README.md)
 
 **Status: formal K/L reading pages completed; numerical implementations and individual lesson reviews remain, 2026-09-25.** This document records the agreed scope and tradeoffs from the batch discussion and defines the shared content contract. It owns the K/L teaching sequence and this rollout's scope; the [long-term roadmap](../03_synthetic_lab_roadmap.md) retains research directions. Numerical values, algorithm settings, asset versions, runtime budgets, and media scripts are frozen after individual reviews. The formal pages claim no numerical results that have not been produced and verified.
 
