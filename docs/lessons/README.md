@@ -8,7 +8,7 @@ L1 now includes a second isolated actuator experiment on friction versus viscous
 
 ## Find a lesson
 
-The [course directory](../course/index.html#tracks) shows knowledge lessons, synthetic experiments, and hardware experiments. Available lessons link directly to their content; future lessons are marked “Coming later”.
+The [course directory](../course/index.html#tracks) shows knowledge lessons, synthetic experiments, and hardware experiments. Formal reading pages are now available for K0–K8, L0, L0-E, L1, L1-O, L1-S, and L2–L6. The pages freeze the shared teaching structure and exercises; numerical experiment reports and simulator evidence are added as each lesson is implemented. Hardware lessons remain marked “Coming later”.
 
 ## Explore an experiment
 
