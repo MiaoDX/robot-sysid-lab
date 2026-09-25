@@ -16,7 +16,7 @@ Engineering verification exists for both lessons. Independent learner acceptance
 
 ## Planned lessons
 
-The overall K/L direction is agreed and the [unified content design](../lessons/course-design.md) is ready for individual lesson review. K4–K6 now have formal bilingual reading pages; K2, K3, K7, and K8 remain in preparation. The design covers core bridges L0-E/L1-O, elective L1-S, and L2–L6. These are designs, not delivered experiments. L4 includes a bounded control comparison; L6 includes both structural mismatch and a genuine cross-engine case, with no L5 prerequisite. L1 friction is already implemented and still needs maintainer learner acceptance. H0–H2 retain their earlier proposals outside this design round.
+The overall K/L direction is agreed and the [unified content design](../lessons/course-design.md) is ready for individual lesson review. K2–K6 now have formal bilingual reading pages. L1-O and elective L1-S also have formal contract pages, but their numerical runners and reports are not implemented. K7/K8 and L0-E/L2–L6 remain in preparation. The design covers the full synthetic ladder. These are designs, not delivered experiments. L4 includes a bounded control comparison; L6 includes both structural mismatch and a genuine cross-engine case, with no L5 prerequisite. L1 friction is already implemented and still needs maintainer learner acceptance. H0–H2 retain their earlier proposals outside this design round.
 
 ## Next work
 

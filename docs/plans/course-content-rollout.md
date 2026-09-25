@@ -2,7 +2,7 @@
 
 [中文版](course-content-rollout.zh-CN.md) · [Unified curriculum design](../lessons/course-design.md)
 
-**Status: Phase 1 in progress, 2026-09-25.** This plan turns the agreed K/L curriculum design into learner-facing lesson pages. It does not authorize invented numerical results: an experiment lesson may describe a contract and exercise before its runner/report exists, but it may claim a result only after the local path produces checked evidence.
+**Status: Phase 2 in progress, 2026-09-25.** This plan turns the agreed K/L curriculum design into learner-facing lesson pages. It does not authorize invented numerical results: an experiment lesson may describe a contract and exercise before its runner/report exists, but it may claim a result only after the local path produces checked evidence.
 
 ## Scope
 
@@ -43,7 +43,7 @@ For each batch:
 
 ## Current slice
 
-Phase 0 is complete in the unified design document. Phase 1 starts with K4, K5, and K6 because they define the experiment-design, fitting, and validation vocabulary reused by every later lab. L0-E remains a companion experiment page to be written after these three knowledge pages; it must not contain fabricated plots or measurements.
+Phase 0 is complete and Phase 1 knowledge pages K4–K6 are delivered. Phase 2 has delivered K2, K3, L1-O, and elective L1-S as formal reading/contract pages; their numerical paths remain future work. L0-E remains the next companion experiment page and must not contain fabricated plots or measurements.
 
 ## Review gates
 
