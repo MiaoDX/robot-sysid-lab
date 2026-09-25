@@ -2,15 +2,17 @@
 
 This file tracks changing delivery status, immediate work, and completion evidence. The [README](README.md) stays focused on the project purpose, architecture, and reading entry points.
 
-**Snapshot: 2026-09-17.** L0 and L1 have executable Marimo lessons, inspectable
+**Snapshot: 2026-09-25.** L0 and L1 have executable Marimo lessons, inspectable
 notebooks, CPU runners, and generated reports. L1 engineering gates pass;
-independent learner acceptance remains open. Later levels remain design work.
+independent learner acceptance remains open. Formal K/L reading pages now cover
+K0–K8 and L0–L6 (including L0-E, L1-O, and L1-S); numerical implementations
+for the newly added experiment pages remain pending.
 
 ## Current checkpoint
 
 | Area | State | Evidence / interpretation |
 |---|---|---|
-| Knowledge and synthetic-lab direction | Documented in the design PR | [Overview](docs/00_overview.md), [roadmap](docs/03_synthetic_lab_roadmap.md) |
+| Knowledge and synthetic-lab direction | K/L formal reading rollout delivered through L6; later numerical paths remain pending | [Course map](docs/course/index.html), [rollout plan](docs/plans/course-content-rollout.md), [roadmap](docs/03_synthetic_lab_roadmap.md) |
 | Oracle, whole-robot, and RL protocols | Documented; not implemented | [Experiment design](docs/04_oracle_sim_experiment_design.md) |
 | Visualization and learning experience | K/L/H course map and guided L0 Marimo course delivered; Jupyter remains an inspectable lab surface | [course map](docs/course/index.html), [L0 lessons](docs/lessons/l0/README.md), [reporting](docs/05_visualization_and_reporting.md), [learning experience](docs/06_learning_experience.md) |
 | Reusable lesson workflow | Documented as a contract; code extraction waits for a second lesson | [Lesson / Experiment Pipeline](docs/lesson_pipeline.md) |

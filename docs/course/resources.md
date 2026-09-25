@@ -4,7 +4,7 @@ This page collects curriculum plans, experiment reports, and implementation note
 
 ## Curriculum and progress
 
-The [curriculum design draft](../lessons/course-design.md) records the agreed K/L direction and consistent cards awaiting individual review. Start with the [suggested sequence and necessary prerequisites](../lessons/course-design.md#d02), then review [K2–K8](../lessons/course-design.md#d04), [synthetic labs](../lessons/course-design.md#d05), and the [individual review checklist](../lessons/course-design.md#d08). Hardware is outside this round. [Course progress](status.md) records what is available, what is in preparation, and which learner feedback remains to be collected.
+The [curriculum design](../lessons/course-design.md) records the agreed K/L direction and the shared structure used by the formal pages. Start with the [suggested sequence and necessary prerequisites](../lessons/course-design.md#d02), then review [K2–K8](../lessons/course-design.md#d04), [synthetic labs](../lessons/course-design.md#d05), and the [individual review checklist](../lessons/course-design.md#d08). Hardware is outside this round. [Course progress](status.md) records the available reading pages, pending numerical implementations, and learner feedback still to be collected.
 
 The [experiment roadmap](../03_synthetic_lab_roadmap.md) covers the longer-term direction. These documents support discussion and maintenance of the course.
 

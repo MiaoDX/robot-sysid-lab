@@ -20,7 +20,10 @@ Open the [course homepage](docs/course/index.html), then follow
 [L0: inertia and damping](docs/lessons/l0/index.html).
 Each lesson is a continuous reading page with examples and exercises.
 [L1: command delay](docs/lessons/l1/index.html) continues the experimental path.
-Future lessons appear in the course directory with their availability marked.
+Formal reading pages for K0–K8 and the synthetic L track are available in the
+course directory. Numerical reports and simulator evidence for the newly added
+experiment pages will be added as their local implementations are completed;
+hardware lessons remain outside this rollout.
 
 The website is available in [English](docs/course/index.html) and
 [中文](docs/course/index.zh-CN.html). Use the language switch at the top right

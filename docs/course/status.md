@@ -14,9 +14,9 @@ The interactive Marimo apps are local Python applications. Their deployment and 
 
 Engineering verification exists for both lessons. Independent learner acceptance remains open: an actual reader must identify the initial mismatch, explain held-out performance, change one setting, and state the assumptions. Translating a page or passing automated checks does not supply this learner evidence.
 
-## Planned lessons
+## Formal pages and pending implementation
 
-The overall K/L direction is agreed and the [unified content design](../lessons/course-design.md) is ready for individual lesson review. K2–K8, L0-E, L1-O, elective L1-S, and L2–L6 now have formal bilingual reading or contract pages. The new experiment pages do not yet have numerical runners, reports, or simulator-specific evidence and deliberately make no measured claims. The design covers the full synthetic ladder. L4 includes a bounded control comparison; L6 includes structural mismatch and a genuine cross-engine case, with no L5 prerequisite. L1 friction remains implemented and awaits maintainer learner acceptance. H0–H2 retain their earlier proposals outside this design round.
+The overall K/L direction is agreed and the [unified content design](../lessons/course-design.md) now has corresponding formal pages. K2–K8, L0-E, L1-O, elective L1-S, and L2–L6 have bilingual reading or contract pages. The new experiment pages do not yet have numerical runners, reports, or simulator-specific evidence and deliberately make no measured claims. The design covers the full synthetic ladder. L4 includes a bounded control comparison; L6 includes structural mismatch and a genuine cross-engine case, with no L5 prerequisite. L1 friction remains implemented and awaits maintainer learner acceptance. H0–H2 retain their earlier proposals outside this design round.
 
 ## Next work
 

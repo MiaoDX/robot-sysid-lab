@@ -2,7 +2,7 @@
 
 [中文版](course-content-rollout.zh-CN.md) · [Unified curriculum design](../lessons/course-design.md)
 
-**Status: Phase 5 content complete; numerical implementation pending, 2026-09-25.** This plan turns the agreed K/L curriculum design into learner-facing lesson pages. It does not authorize invented numerical results: an experiment lesson may describe a contract and exercise before its runner/report exists, but it may claim a result only after the local path produces checked evidence.
+**Status: Content rollout complete through Phase 5; numerical implementation pending, 2026-09-25.** This plan turns the agreed K/L curriculum design into learner-facing lesson pages. It does not authorize invented numerical results: an experiment lesson may describe a contract and exercise before its runner/report exists, but it may claim a result only after the local path produces checked evidence.
 
 ## Scope
 
@@ -43,7 +43,7 @@ For each batch:
 
 ## Current slice
 
-Phase 0 is complete. Formal bilingual pages now cover K2–K8, L0-E, L1-O, elective L1-S, and L2–L6. The new experiment pages freeze learner-facing contracts and exercises but do not claim numerical results. The next implementation work is numerical: freeze each individual contract, build the local runner/report, then add any optional replay or browser surface.
+Content phases 0–5 are complete. Formal bilingual pages now cover K2–K8, L0-E, L1-O, elective L1-S, and L2–L6. The new experiment pages freeze learner-facing contracts and exercises but do not claim numerical results. The next implementation work is numerical: freeze each individual contract, build the local runner/report, then add any optional replay or browser surface.
 
 ## Review gates
 

@@ -4,7 +4,7 @@
 
 ## 课程设计与进度
 
-[课程设计评审稿](../lessons/course-design.zh-CN.md)汇总已确认的 K/L 整体方向，以及待逐课评审的统一内容卡片。先看[推荐顺序与必要前置](../lessons/course-design.zh-CN.md#d02)，再按编号查看 [K2–K8](../lessons/course-design.zh-CN.md#d04)、[仿真实验](../lessons/course-design.zh-CN.md#d05)和[单课评审清单](../lessons/course-design.zh-CN.md#d08)。真机部分暂不在本轮范围。[课程进度](status.zh-CN.md)记录哪些内容已经提供，哪些仍在准备，以及还需要收集哪些学员反馈。
+[课程设计评审稿](../lessons/course-design.zh-CN.md)汇总已确认的 K/L 整体方向，以及正式页面共用的统一结构。先看[推荐顺序与必要前置](../lessons/course-design.zh-CN.md#d02)，再按编号查看 [K2–K8](../lessons/course-design.zh-CN.md#d04)、[仿真实验](../lessons/course-design.zh-CN.md#d05)和[单课评审清单](../lessons/course-design.zh-CN.md#d08)。真机部分暂不在本轮范围。[课程进度](status.zh-CN.md)记录现有阅读页、待实现的数值路径，以及还需要收集的学员反馈。
 
 需要了解较长远的安排，可以查看[实验路线图](../03_synthetic_lab_roadmap.zh-CN.md)。这些资料供讨论和维护课程时使用。
 
