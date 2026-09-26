@@ -70,6 +70,8 @@ A single position usually cannot determine them. Different parameter values and 
 
 </details>
 
+The common wrong turn is to call a single position a dataset. If you are stuck, write the time-varying input and observation columns first, then mark which quantities are unknown. Continue when you can draw the boundary without using the true parameters.
+
 ## Start the first experiment {#next}
 
 Continue to [L0 · Estimate joint inertia and damping](../l0/index.md). We will start with an inaccurate model, fit its parameters, and check its predictions on a new motion.
