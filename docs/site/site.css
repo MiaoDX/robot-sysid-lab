@@ -38,3 +38,80 @@ video::cue { font-family: sans-serif; }
   .button, .action { font-size: .85rem; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Course visual system: one stable mother theme with chapter-level accents. */
+:root {
+  color-scheme: light;
+  --ink: #1f2937;
+  --muted: #65717d;
+  --paper: #f7f8f6;
+  --soft: #eef3f5;
+  --line: #d6ddd8;
+  --blue: #285f86;
+  --accent: #285f86;
+  --page-accent: #285f86;
+  --page-soft: #eef3f5;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  --font-display: ui-sans-serif, system-ui, -apple-system, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  --font-code: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+body.reading-page,
+body.course-home { background: var(--paper); color: var(--ink); }
+body.reading-page { --accent: var(--page-accent); --blue: var(--page-accent); --soft: var(--page-soft); }
+body.reading-page.lesson-k0,
+body.reading-page.lesson-k1,
+body.reading-page.lesson-k3 { --page-accent: #285f86; --page-soft: #eef3f5; }
+body.reading-page.lesson-k2,
+body.reading-page.lesson-k6,
+body.reading-page.lesson-l2,
+body.reading-page.lesson-l3 { --page-accent: #1f7f83; --page-soft: #edf6f3; }
+body.reading-page.lesson-k5,
+body.reading-page.lesson-k7,
+body.reading-page.lesson-l4,
+body.reading-page.lesson-l6 { --page-accent: #6b6597; --page-soft: #f1f0f8; }
+body.reading-page.lesson-k4,
+body.reading-page.lesson-l0,
+body.reading-page.lesson-l0-e { --page-accent: #ad7435; --page-soft: #f8f2e9; }
+body.reading-page.lesson-l1,
+body.reading-page.lesson-l1-o,
+body.reading-page.lesson-l1-s { --page-accent: #c45c4d; --page-soft: #fbefec; }
+body.reading-page.lesson-k8,
+body.reading-page.lesson-l5 { --page-accent: #27866d; --page-soft: #edf6f0; }
+body.reading-page h1,
+body.reading-page h2,
+body.reading-page h3 { font-family: var(--font-display); font-style: normal; }
+body.reading-page h1 { color: var(--ink); }
+body.reading-page h2 { border-top-color: color-mix(in srgb, var(--page-accent) 46%, var(--line)); }
+body.reading-page h3 { color: var(--ink); }
+body.reading-page aside summary,
+body.reading-page main summary { color: var(--page-accent); }
+body.reading-page main details { background: var(--page-soft); border-inline-start-color: var(--page-accent); }
+body.reading-page pre { background: var(--page-soft); border-color: var(--line); }
+body.reading-page blockquote { border-left-color: var(--page-accent); }
+body.reading-page th { background: var(--page-soft); color: var(--ink); }
+body.reading-page .lesson-nav { border-top-color: var(--page-accent); }
+body.reading-page .lesson-nav a { color: var(--page-accent); }
+body.reading-page .language-switch a[aria-current="page"] { background: var(--page-accent); }
+body.reading-page .language-switch a:hover { box-shadow: inset 0 0 0 1px var(--page-accent); }
+body.reading-page a:focus-visible,
+body.course-home a:focus-visible { outline-color: var(--page-accent, var(--accent)); }
+html[lang="zh-CN"] body:not(.reading-page) h1,
+html[lang="zh-CN"] body:not(.reading-page) h2,
+html[lang="zh-CN"] body:not(.reading-page) h3 { font-family: var(--font-display); }
+body.reading-page h1,
+body.reading-page h2,
+body.reading-page h3,
+body:not(.reading-page) h1,
+body:not(.reading-page) h2,
+body:not(.reading-page) h3 { max-width: 100%; overflow-wrap: anywhere; word-break: break-all; white-space: normal; }
+@media (max-width: 600px) {
+  body:not(.reading-page) .intro h1 { width: 100%; max-width: 9ch; font-size: clamp(2.1rem, 10vw, 3.2rem); }
+  body.reading-page .reading-layout { width: calc(100% - 24px); max-width: 100%; margin-inline: auto; }
+  body.reading-page .reading-layout main { width: 100%; max-width: 100%; }
+  body.reading-page h1 { width: 100%; max-width: 9ch; }
+  body > header .shell { width: calc(100% - 24px); max-width: 100%; margin-inline: auto; flex-wrap: nowrap; }
+  body > header .brand { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  body > header .header-actions { min-width: 0; width: auto; flex: 0 1 auto; margin-left: auto; display: flex; }
+  body > header .language-switch { margin-left: auto; }
+  body > header .language-switch { flex-shrink: 0; }
+}
