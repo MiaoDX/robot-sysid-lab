@@ -5,6 +5,9 @@ import re
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
+STANDALONE_SITE_PAGES = {
+    ROOT / "docs/course/lesson-visual-styles.html",
+}
 
 
 class Page(HTMLParser):
@@ -36,8 +39,21 @@ def site_pages():
     return sorted(p for directory in (ROOT / "docs", ROOT / "reports") for p in directory.rglob("*.html"))
 
 
+def paired_site_pages():
+    pages = set(site_pages())
+    return sorted(path for path in pages if _language_peer(path) in pages)
+
+
+def _language_peer(path):
+    if ".zh-CN.html" in path.name:
+        return path.with_name(path.name.replace(".zh-CN.html", ".html"))
+    return path.with_name(path.name.replace(".html", ".zh-CN.html"))
+
+
 def test_all_site_pages_have_same_page_language_switches():
-    for path in site_pages():
+    unpaired = set(site_pages()) - set(paired_site_pages())
+    assert unpaired == STANDALONE_SITE_PAGES
+    for path in paired_site_pages():
         page = Page(path)
         assert page.lang in ("en", "zh-CN"), path
         assert set(page.switches) == {"en", "zh-CN"}, path

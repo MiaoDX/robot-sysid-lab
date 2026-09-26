@@ -188,3 +188,40 @@
       .step:nth-child(4) { border-left: 1px solid var(--line); padding-left: .75rem; }
       footer .shell { display: block; }
     }
+
+/* Course visual system: stable layout, restrained texture, chapter accents. */
+:root {
+  --ink: #1f2937;
+  --muted: #65717d;
+  --paper: #f7f8f6;
+  --soft: #eef3f5;
+  --line: #d6ddd8;
+  --green: #27866d;
+  --green-soft: #edf6f0;
+  --blue: #285f86;
+  --blue-soft: #eef3f5;
+  --amber: #ad7435;
+  --amber-soft: #f8f2e9;
+  --font-display: ui-sans-serif, system-ui, -apple-system, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+}
+body { background: var(--paper); color: var(--ink); }
+body .intro { background-color: var(--paper); background-image: repeating-linear-gradient(0deg, rgba(40,95,134,.035) 0, rgba(40,95,134,.035) 1px, transparent 1px, transparent 32px); }
+body .eyebrow,
+body .reading-path .level-code,
+body .downlink { color: var(--blue); }
+body .action.primary { border-color: var(--blue); background: var(--blue); }
+body .workflow { border-top-color: var(--blue); }
+body .step code { color: var(--blue); }
+body .language-switch a[aria-current="page"] { background: var(--blue); }
+body .track-tag { border-radius: 4px; }
+body .knowledge .track-tag { color: var(--blue); background: var(--blue-soft); }
+body .labs .track-tag { color: #1f7f83; background: #edf6f3; }
+body .hardware .track-tag { color: var(--amber); background: var(--amber-soft); }
+body .level-link:hover strong { color: var(--blue); }
+body .intro h1,
+body .section h2,
+body .meaning-copy h2 { letter-spacing: -.025em; }
+body .section,
+body .reading-path li,
+body .tracks { border-color: var(--line); }
