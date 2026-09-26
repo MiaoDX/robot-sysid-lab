@@ -1,10 +1,10 @@
 # Lessons Curriculum Design Review
 
-[中文版](course-design.zh-CN.md) · [Course map](../course/index.html) · [Existing lessons](README.md)
+[中文版](course-design.zh-CN.md) · [Editorial principles](course-editorial-principles.md) · [Course map](../course/index.html) · [Existing lessons](README.md)
 
-**Status: overall direction agreed; individual lesson designs await review, 2026-09-25.** This document records the agreed scope and tradeoffs from the batch discussion and develops them into a consistent content design. It owns the K/L teaching sequence and this design round's scope; the [long-term roadmap](../03_synthetic_lab_roadmap.md) retains research directions. Numerical values, algorithm settings, asset versions, runtime budgets, and media scripts are frozen after individual reviews. This round implements no new experiments and claims none of the planned results.
+**Status: formal K/L reading pages completed; numerical implementations and individual lesson reviews remain, 2026-09-25.** This document records the agreed scope and tradeoffs from the batch discussion and defines the shared content contract. It owns the K/L teaching sequence and this rollout's scope; the [long-term roadmap](../03_synthetic_lab_roadmap.md) retains research directions. Numerical values, algorithm settings, asset versions, runtime budgets, and media scripts are frozen after individual reviews. The formal pages claim no numerical results that have not been produced and verified.
 
-K0, K1, L0, and L1 already have lesson pages; both L1 delay and friction experiments are delivered. Independent learner acceptance for L0/L1 remains open. New design covers **K2–K8, L0-E, L1-O, elective L1-S, and L2–L6**. Hardware H lessons are outside this round; D06 retains the earlier draft for future discussion.
+K0, K1, L0, and L1 already have lesson pages; both L1 delay and friction experiments are delivered. Independent learner acceptance for L0/L1 remains open. Formal pages now cover **K2–K8, L0-E, L1-O, elective L1-S, and L2–L6**. Hardware H lessons are outside this round; D06 retains the earlier draft for future discussion.
 
 Review entry points: [outcomes](#d01) · [sequence and prerequisites](#d02) · [shared structure and evidence](#d03) · [K cards](#d04) · [L cards](#d05) · [delivery](#d07) · [individual review checklist](#d08). Cite lesson IDs in feedback; existing D01–D08 and L anchors remain available.
 
@@ -55,7 +55,7 @@ K0/K1 → L0 → K4/K5/K6 → L0-E
                                                              └→ L6 structure mismatch → cross-engine case
 ```
 
-The available path remains **K0 → K1 → L0 → L1 (including friction)**. Unreleased K lessons and extensions do not block reading the existing L1; its required concepts are explained locally.
+The recommended reading path is **K0 → K1 → L0 → L1 (including friction)** and then the formal K/L pages shown in D02. Every released page is readable on its own where its listed prerequisites are met; numerical evidence status is stated per lesson. Required concepts for L1 are explained locally.
 
 Maintain asset and backend continuity: use the same fixed-base two-joint leg for L2/L3 and connect its conventions to the full Microduck in L4. L5 moves to the designated Microban while reusing the primary backend and experiment protocol. Freeze the primary backend and asset versions at L2 review and retain them afterward; introduce the second engine in L6. Geometry adaptation is not assumed to be implemented.
 
@@ -94,7 +94,7 @@ Use a continuous page for one learning question. Section anchors aid scrolling; 
 <a id="d04"></a>
 ## D04 · Knowledge lesson cards
 
-K0/K1 are delivered and retained: K0 motivates identification; K1 separates inputs, state, observations, models, and parameters. The following cards design future content; all listed visuals are planned. Reuse the [books and references](../02_learning_path_and_references.md).
+K0/K1 are delivered and retained: K0 motivates identification; K1 separates inputs, state, observations, models, and parameters. The K2–K8 cards now have corresponding formal reading pages with the shared structure. Conceptual visuals remain explicitly labeled until a numerical run supplies verified evidence. Reuse the [books and references](../02_learning_path_and_references.md).
 
 [K2](#k2) · [K3](#k3) · [K4](#k4) · [K5](#k5) · [K6](#k6) · [K7](#k7) · [K8](#k8)
 
@@ -357,7 +357,7 @@ Follow the [delivery policy](../lesson_delivery_policy.md) and [lesson pipeline]
 The static website provides English and Chinese course pages, lesson notes, report explanations, and curriculum design, with a language switch on each page. Teaching videos have both subtitle tracks and matching written explanations; the source footage and numerical data are shared. The local Python app and implementation records remain separate research tools. Maintain both languages when adding a lesson or changing its contract.
 
 
-The agreed curriculum assigns delivery surfaces below. These are future delivery targets, not claims of implementation:
+The agreed curriculum now has formal reading pages for every row below. The table records the remaining numerical and evidence work; a static page does not claim that its local experiment has already run:
 
 | Lessons | Main reading and presentation | Full computation |
 |---|---|---|
@@ -367,7 +367,7 @@ The agreed curriculum assigns delivery surfaces below. These are future delivery
 | L4/L5 | Static lessons, report summaries, and precomputed replay | Local CPU/GPU or scheduled work with actual requirements declared |
 | L6 | Static evidence and replay for both cases | Local reproduction with both backends |
 
-K and L pages share the explanatory structure; only computational labs require full numerical artifacts. Large experiments are accepted in their declared CPU/GPU environment rather than requiring CPU for every lesson. Static reading still requires no compute setup. A planned visual becomes a course result only after an actual run produces and verifies it.
+K and L pages share the explanatory structure; only computational labs require full numerical artifacts. The formal static pages are complete, while local reports, simulator replays, and performance evidence remain per-lesson implementation work. Large experiments are accepted in their declared CPU/GPU environment rather than requiring CPU for every lesson. Static reading still requires no compute setup. A planned visual becomes a course result only after an actual run produces and verifies it.
 
 Shared terminology for future lesson translations:
 

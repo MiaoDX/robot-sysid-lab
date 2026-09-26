@@ -140,6 +140,8 @@ Design experiments that separate timing shifts from resisting torque. For exampl
 
 </details>
 
+If delay and friction still look interchangeable, keep the boundary fixed and add a bidirectional speed comparison before widening the Student. Continue when the proposed run changes one declared condition and preserves the frozen evaluation split.
+
 ## Understand what the delay represents {#limits}
 
 This is an effective delay between the PD torque command and the arm input in this experiment. Moving the delay or changing the sampling setup can change the parameter's meaning. It should not be interpreted as the motor's electromagnetic time constant.

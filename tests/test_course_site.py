@@ -63,7 +63,9 @@ def test_site_file_links_and_local_section_links_resolve():
 
 
 def test_video_pages_select_subtitles_for_the_page_language():
-    for path in (ROOT / "docs/lessons").glob("l*/index*.html"):
+    # Only the delivered L0/L1 base lessons carry video tracks. Static contract
+    # pages such as L1-O and L1-S intentionally have no video surface yet.
+    for path in sorted(path for name in ("l0", "l1") for path in (ROOT / "docs/lessons" / name).glob("index*.html")):
         page = Page(path)
         expected = 4 if path.parent.name == "l0" else 3
         defaults = [track for track in page.tracks if "default" in track]
