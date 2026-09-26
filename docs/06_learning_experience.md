@@ -20,6 +20,11 @@ Robot SysID Lab learning experience
 
 The website or notebook technology is an implementation detail. The important design decision is that **visual explanation and interaction are first-class teaching tools rather than decorative additions**.
 
+The first concrete course surface is the [L0 lesson set](lessons/l0/README.md).
+Its repeated experiment and artifact stages are captured in the [Lesson /
+Experiment Pipeline](lesson_pipeline.md), which is the working contract for
+future lessons.
+
 ## 1. Three layers of presentation
 
 The project should eventually expose three complementary surfaces.
@@ -64,9 +69,11 @@ change Student model class
   -> observe compensation and validation failure
 ```
 
-A reactive Python notebook environment such as Marimo is a strong candidate for these labs because parameter controls can trigger simulation and plot updates while remaining close to normal Python source. Jupyter remains a valid alternative where ecosystem compatibility is more important.
-
-Again, the requirement is the interactive experience, not a specific notebook product.
+The first executable lab now uses Marimo as its guided learner surface. It
+opens with the motivation and SysID workflow, then exposes constrained reactive
+controls for the experiment. Jupyter remains available for cell-by-cell code
+inspection. Both call importable Python code so the same computation can run
+headlessly in CI and generate the recorded report.
 
 ### Layer 3 — Experiment reports
 
@@ -78,7 +85,7 @@ Reports should combine:
 - Student model and identified parameters;
 - scalar metrics;
 - diagnostic plots;
-- synchronized Oracle / nominal / identified rollouts;
+- synchronized True-system / Initial-model / Identified-model rollouts;
 - contact and gait visualization;
 - prediction-horizon analysis;
 - failure cases;
@@ -209,10 +216,10 @@ Oracle:
 Stribeck + load dependence + delay + backlash
 
 Students:
-H1 viscous
-H2 viscous + Coulomb
-H3 richer friction + delay
-H4 + backlash
+M1 viscous
+M2 viscous + Coulomb
+M3 richer friction + delay
+M4 + backlash
 ```
 
 For each Student, show:
@@ -271,12 +278,12 @@ rich actuator
 
 Do not reveal every numeric truth parameter to the Student pipeline, but the teaching/report surface may reveal them when explaining results.
 
-### Step 2 — Show the nominal Student failure
+### Step 2 — Show the Initial-model failure
 
 Use synchronized replay:
 
 ```text
-Oracle                 nominal Student
+True system            Initial model
 [robot]                 [robot]
 ```
 
@@ -293,12 +300,12 @@ Present selected information such as:
 
 Avoid implying that optimizer convergence alone proves model correctness.
 
-### Step 4 — Show the identified Student
+### Step 4 — Show the Identified model
 
 Prefer a three-way synchronized view where practical:
 
 ```text
-Oracle        nominal        identified
+True system   Initial model  Identified model
 ```
 
 The important visual question is:
@@ -423,7 +430,7 @@ command ------> [ ORACLE ]
              +-------+-------+
              |               |
              v               v
-        Student H1       Student H2
+        Student M1       Student M2
              |               |
              +-------+-------+
                      |
@@ -473,7 +480,7 @@ For whole-robot results, prefer an immediate visual comparison such as:
 ```text
 Before SysID                 After SysID
 
-[Oracle vs nominal]          [Oracle vs identified]
+[True vs Initial]            [True vs Identified]
 ```
 
 Short loops are useful for documentation landing pages. Full synchronized videos belong in benchmark reports.
@@ -483,7 +490,7 @@ Videos should be accompanied by quantitative plots so visual similarity is not m
 Recommended dynamic artifacts include:
 
 - side-by-side synchronized replay;
-- Oracle / nominal / identified three-way replay;
+- True system / Initial model / Identified model three-way replay;
 - ghost overlay where technically practical;
 - contact-vector overlay;
 - dynamic residual annotations;
@@ -554,17 +561,66 @@ This should be treated as a pragmatic starting point rather than a permanent arc
 
 ### Interactive labs
 
-Initial candidates:
+The initial guided surface is Marimo, with plots generated from the same
+importable implementation used by Jupyter and headless checks. The L0 course
+uses one continuous lesson, reactive Initial-model previews, an explicit
+identification action, and visible compute status. Jupyter remains the
+inspectable research surface; Marimo does not own a second implementation of
+the experiment.
+
+### Course page contract
+
+Course progression and view selection are different navigation problems. They
+should not share the same tab bar.
+
+Across lessons, use separate pages or Marimo apps:
 
 ```text
-Marimo
-or
-Jupyter
+Course index (K0-K8 knowledge / L0-L6 labs / H0-H2 hardware)
+  -> L0: inertia and damping
+  -> L1: delay and model mismatch
+  -> L2: actuator and friction
+  -> fixed-base leg
+  -> whole robot
 ```
 
-Marimo is particularly attractive for parameter-slider -> simulation -> plot workflows and source-code-friendly review. Jupyter remains useful for interoperability and exploratory analysis.
+Inside one lesson, use a continuous vertical narrative:
 
-The project should select one after the first executable lab clarifies the actual requirements.
+```text
+why -> boundary -> physical intuition -> experiment -> evidence -> limits
+```
+
+A compact chapter rail may link to those sections, but scrolling remains the
+primary reading interaction. Use local tabs, radios, or segmented controls only
+when simultaneous comparison is impractical. In L0, Fit and Validation are
+shown as adjacent columns because direct comparison is the teaching point.
+Do not add one top-level tab per concept or lesson stage.
+
+The Marimo file is the executable page for one lesson, not the entire course.
+When multiple lessons exist, a small MkDocs or Quarto course shell should own
+the index, previous/next navigation, and search while linking or embedding the
+separate Marimo apps. This keeps kernel startup, memory, reactive dependencies,
+and failures isolated as experiments grow from a joint to a leg or whole robot.
+
+### Visual language
+
+The course should feel like a technical field notebook rather than a dashboard
+or marketing page. The L0 page establishes these reusable rules:
+
+- a low-contrast cool-to-warm wash marks the course entry and chapter rail;
+- a fine, quiet texture keeps those orientation surfaces from feeling flat;
+- text and plots remain on clear, nearly opaque surfaces with strong contrast;
+- translucent blur is reserved for navigation and compute-status surfaces;
+- dark ink denotes True-system evidence, warm orange denotes the Initial model,
+  cool blue denotes the Identified model, and green marks progression;
+- full-width rules and changes in rhythm separate chapters instead of stacks of
+  floating cards;
+- controls stay close to the phenomenon they change, and their effect is stated
+  in domain terms rather than implementation terms.
+
+These are project-owned design choices. Marimo's disconnected screen inspired
+the layered wash and texture, but its error-state images are not application
+assets and must not be copied into the course.
 
 ### Robot visualization
 
@@ -660,4 +716,4 @@ Robot SysID Lab
 |   +-- Experiment design
 |   +-- Identifiability
 |   +-- Estimation
-|  
+|

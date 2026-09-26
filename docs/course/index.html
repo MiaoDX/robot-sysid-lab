@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Robot SysID Lab course map: knowledge, synthetic labs, and hardware transfer.">
+  <title>Robot SysID Lab - Course Map</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17231d;
+      --muted: #59665f;
+      --paper: #fbfcfa;
+      --soft: #f1f5f1;
+      --line: #ced8d0;
+      --green: #26734a;
+      --green-soft: #dceee3;
+      --blue: #176f91;
+      --blue-soft: #dceef4;
+      --amber: #a65b08;
+      --amber-soft: #f7e8d2;
+      --font-display: Charter, "Bitstream Charter", Georgia, serif;
+      --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--font-body);
+      line-height: 1.55;
+    }
+    a { color: var(--blue); text-underline-offset: 3px; }
+    a:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+    .shell { width: min(1180px, calc(100% - 2rem)); margin-inline: auto; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(251, 252, 250, .92);
+      backdrop-filter: blur(14px);
+    }
+    .topbar-inner {
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand { color: var(--ink); font-weight: 750; text-decoration: none; }
+    .topbar nav { display: flex; align-items: center; gap: 1rem; }
+    .topbar nav a { color: var(--muted); font-size: .88rem; font-weight: 650; text-decoration: none; }
+
+    .intro {
+      min-height: calc(100svh - 56px);
+      display: grid;
+      align-content: center;
+      padding: 4rem 0 2.5rem;
+      border-bottom: 1px solid var(--line);
+      background-color: var(--paper);
+      background-image: repeating-linear-gradient(115deg, transparent 0, transparent 7px, rgba(38, 115, 74, .045) 8px);
+    }
+    .eyebrow { color: var(--green); font: 750 .78rem/1.2 var(--font-mono); text-transform: uppercase; }
+    h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0; }
+    h1 { max-width: 16ch; margin: .8rem 0 1rem; font-size: 4rem; line-height: 1.02; }
+    .intro-copy { max-width: 68ch; margin: 0; color: var(--muted); font-size: 1.1rem; }
+    .intro-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem; }
+    .action {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .65rem .9rem;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .action.primary { border-color: var(--green); background: var(--green); color: white; }
+    .intro-note { margin: 2.25rem 0 0; color: var(--muted); font-size: .84rem; }
+    .downlink { display: inline-block; margin-top: 1.5rem; color: var(--green); font-weight: 700; text-decoration: none; }
+
+    .section { padding: 4rem 0; border-bottom: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 2rem; align-items: end; margin-bottom: 2rem; }
+    .section h2 { margin: .4rem 0 0; font-size: 2.3rem; line-height: 1.12; }
+    .section-lede { max-width: 65ch; margin: 0; color: var(--muted); }
+
+    .tracks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+    .track { min-width: 0; padding: 1.4rem 1.2rem 0 0; }
+    .track + .track { border-left: 1px solid var(--line); padding-left: 1.2rem; }
+    .track-tag { display: inline-block; padding: .28rem .48rem; border-radius: 4px; font: 750 .76rem/1 var(--font-mono); }
+    .knowledge .track-tag { color: var(--green); background: var(--green-soft); }
+    .labs .track-tag { color: var(--blue); background: var(--blue-soft); }
+    .hardware .track-tag { color: var(--amber); background: var(--amber-soft); }
+    .track h3 { margin: .8rem 0 .35rem; font-size: 1.4rem; }
+    .track > p { min-height: 4.7rem; margin: 0 0 1.2rem; color: var(--muted); font-size: .92rem; }
+    .level-list { list-style: none; margin: 0; padding: 0; }
+    .level {
+      display: grid;
+      grid-template-columns: 2.9rem minmax(0, 1fr) auto;
+      gap: .7rem;
+      align-items: start;
+      min-height: 72px;
+      padding: .85rem 0;
+      border-top: 1px solid var(--line);
+    }
+    .level-code { color: var(--muted); font: 750 .8rem/1.4 var(--font-mono); }
+    .level strong { display: block; line-height: 1.25; }
+    .level small { display: block; margin-top: .2rem; color: var(--muted); line-height: 1.35; }
+    .status { font: 700 .7rem/1.4 var(--font-mono); text-transform: uppercase; white-space: nowrap; }
+    .status.live { color: var(--green); }
+    .status.planned { color: var(--muted); }
+    .level-link { color: inherit; text-decoration: none; }
+    .level-link:hover strong { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+
+    .meaning { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 2.5rem; align-items: center; }
+    .meaning img { display: block; width: 100%; height: auto; border: 1px solid var(--line); background: white; }
+    .meaning-copy h2 { margin: .5rem 0 1rem; font-size: 2.3rem; }
+    .meaning-copy p { color: var(--muted); }
+    .legend { display: grid; gap: .65rem; margin-top: 1.25rem; }
+    .legend-row { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: .75rem; align-items: baseline; }
+    .legend-row code { color: var(--ink); font: 750 .85rem/1 var(--font-mono); }
+
+    .workflow { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); margin-top: 2rem; border-top: 2px solid var(--green); }
+    .step { min-width: 0; padding: 1rem .75rem 0 0; }
+    .step + .step { border-left: 1px solid var(--line); padding-left: .75rem; }
+    .step code { color: var(--green); font: 750 .76rem/1 var(--font-mono); }
+    .step strong { display: block; margin-top: .45rem; font-size: .9rem; }
+    .step small { color: var(--muted); }
+
+    footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .86rem; }
+    footer .shell { display: flex; justify-content: space-between; gap: 1rem; }
+
+    @media (max-width: 900px) {
+      h1 { font-size: 3.2rem; }
+      .tracks { grid-template-columns: 1fr; }
+      .track { padding: 1.5rem 0; }
+      .track + .track { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
+      .track > p { min-height: 0; }
+      .meaning { grid-template-columns: 1fr; }
+      .workflow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .step:nth-child(4) { border-left: 0; padding-left: 0; }
+    }
+    @media (max-width: 600px) {
+      .shell { width: min(100% - 1.25rem, 1180px); }
+      .topbar nav a:not(:last-child) { display: none; }
+      .intro { min-height: calc(100svh - 56px); padding-top: 2.5rem; }
+      h1 { font-size: 2.55rem; }
+      .section { padding: 3rem 0; }
+      .section-head { grid-template-columns: 1fr; gap: 1rem; }
+      .section h2, .meaning-copy h2 { font-size: 1.9rem; }
+      .workflow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .step:nth-child(3), .step:nth-child(5) { border-left: 0; padding-left: 0; }
+      .step:nth-child(4) { border-left: 1px solid var(--line); padding-left: .75rem; }
+      footer .shell { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top">Robot SysID Lab</a>
+      <nav aria-label="Course navigation">
+        <a href="#tracks">Course map</a>
+        <a href="#method">Method</a>
+        <a id="nav-l0-link" href="http://127.0.0.1:2718">Open L0</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="intro">
+      <div class="shell">
+        <div class="eyebrow">Course overview / start here</div>
+        <h1>Learn robot system identification by seeing it work.</h1>
+        <p class="intro-copy">Build the vocabulary, run controlled synthetic experiments, then carry the same evidence discipline onto actuators, legs, and complete robots. Each lab adds only enough complexity to answer one new question.</p>
+        <div class="intro-actions">
+          <a class="action primary" id="hero-l0-link" href="http://127.0.0.1:2718">Open the interactive L0 lesson <span aria-hidden="true">-&gt;</span></a>
+          <a class="action" href="../lessons/l0/README.md">Read the L0 notes</a>
+          <a class="action" href="../../reports/l0_inertia_damping/report.md">Inspect the fixed report</a>
+        </div>
+        <p class="intro-note"><strong>L0 means Lab 0.</strong> It is the smallest complete SysID loop, not a difficulty score or the whole course.</p>
+        <a class="downlink" href="#tracks">See all three tracks</a>
+      </div>
+    </section>
+
+    <section class="section" id="tracks">
+      <div class="shell">
+        <div class="section-head">
+          <div><div class="eyebrow">Course map</div><h2>Three tracks, one method</h2></div>
+          <p class="section-lede">Knowledge explains the ideas. Synthetic labs isolate them with known truth. Hardware stages test the same workflow against measurement limits and effects the simulator did not include.</p>
+        </div>
+
+        <div class="tracks">
+          <section class="track knowledge">
+            <span class="track-tag">K0-K8</span>
+            <h3>Knowledge</h3>
+            <p>Concepts you need to design, fit, and challenge an identification experiment.</p>
+            <ol class="level-list">
+              <li class="level"><span class="level-code">K0</span><span><strong>Why SysID matters</strong><small>Model mismatch, prediction, and sim-to-real</small></span><span class="status live">live in L0</span></li>
+              <li class="level"><span class="level-code">K1</span><span><a class="level-link" href="../01_sysid_101.md"><strong>SysID fundamentals</strong></a><small>Plant, input, state, observation, parameter</small></span><span class="status live">notes</span></li>
+              <li class="level"><span class="level-code">K2</span><span><strong>Robot dynamics</strong><small>Inertia, gravity, coupling, contact</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">K3</span><span><strong>Actuator modeling</strong><small>Torque response, friction, delay, compliance</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">K4</span><span><strong>Experiment design</strong><small>Excitation, sensitivity, identifiability</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">K5</span><span><strong>Estimation</strong><small>Least squares, nonlinear and population methods</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">K6</span><span><strong>Validation</strong><small>Held-out conditions and residual diagnosis</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">K7</span><span><strong>Parameter meaning</strong><small>Physical, effective, nuisance, uncertain</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">K8</span><span><strong>SysID to sim-to-real</strong><small>Targeted randomization and robust control</small></span><span class="status planned">planned</span></li>
+            </ol>
+          </section>
+
+          <section class="track labs">
+            <span class="track-tag">L0-L6</span>
+            <h3>Synthetic labs</h3>
+            <p>Runnable experiments where Oracle truth is known but hidden from the estimator.</p>
+            <ol class="level-list">
+              <li class="level"><span class="level-code">L0</span><span><a class="level-link" id="map-l0-link" href="http://127.0.0.1:2718"><strong>1-DoF foundations</strong></a><small>Now: inertia and damping. Next: delay mismatch.</small></span><span class="status live">interactive</span></li>
+              <li class="level"><span class="level-code">L1</span><span><strong>Synthetic actuator</strong><small>Friction, saturation, compliance, richer observations</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">L2</span><span><strong>Fixed-base leg</strong><small>Coupling, gravity, parameter compensation</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">L3</span><span><strong>Leg with contact</strong><small>Ground and sole uncertainty</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">L4</span><span><strong>Whole Microduck</strong><small>Component-first versus global fitting</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">L5</span><span><strong>Microban humanoid</strong><small>Parameter sharing and scale</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">L6</span><span><strong>Sim-to-sim mismatch</strong><small>Different model and numerical implementations</small></span><span class="status planned">planned</span></li>
+            </ol>
+          </section>
+
+          <section class="track hardware">
+            <span class="track-tag">H0-H2</span>
+            <h3>Hardware transfer</h3>
+            <p>Apply the established experiment and validation contract to physical systems.</p>
+            <ol class="level-list">
+              <li class="level"><span class="level-code">H0</span><span><strong>Actuator bench</strong><small>Calibration, timing, noise, operating conditions</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">H1</span><span><strong>Microduck / Microban</strong><small>Subsystem and whole-robot validation</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">H2</span><span><strong>Full humanoid</strong><small>Scalable data, fitting, and deployment workflow</small></span><span class="status planned">planned</span></li>
+            </ol>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="method">
+      <div class="shell meaning">
+        <img src="../assets/architecture.svg" alt="Knowledge and experiment tracks connected through an Oracle, declared observations, model fitting, validation, and visual explanation.">
+        <div class="meaning-copy">
+          <div class="eyebrow">How to read the names</div>
+          <h2>Every lab keeps the roles explicit</h2>
+          <p>The True system produces observations. The Initial model is what we have before identification. The Identified model is the fitted result. The Oracle truth may be shown for teaching and evaluation, but it never enters the estimator.</p>
+          <div class="legend">
+            <div class="legend-row"><code>K</code><span>Knowledge chapter: understand a concept.</span></div>
+            <div class="legend-row"><code>L</code><span>Synthetic lab: test the concept with controlled truth.</span></div>
+            <div class="legend-row"><code>H</code><span>Hardware stage: confront calibration and unmodeled reality.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section-head">
+          <div><div class="eyebrow">Repeated workflow</div><h2>One loop at increasing scale</h2></div>
+          <p class="section-lede">The plant becomes more complex, and later runs may move from browser interaction to queued computation. The evidence contract remains the same.</p>
+        </div>
+        <div class="workflow" aria-label="System identification workflow">
+          <div class="step"><code>01</code><strong>Boundary</strong><small>Name input, output, and unknowns.</small></div>
+          <div class="step"><code>02</code><strong>Excite</strong><small>Reveal the target dynamics.</small></div>
+          <div class="step"><code>03</code><strong>Observe</strong><small>Declare estimator-visible signals.</small></div>
+          <div class="step"><code>04</code><strong>Fit</strong><small>Estimate model parameters.</small></div>
+          <div class="step"><code>05</code><strong>Validate</strong><small>Predict held-out behavior.</small></div>
+          <div class="step"><code>06</code><strong>Diagnose</strong><small>Read residuals and uncertainty.</small></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      <span>Robot SysID Lab course map</span>
+      <span><a href="../03_synthetic_lab_roadmap.md">Detailed roadmap</a> · <a href="../lesson_pipeline.md">Lesson pipeline</a> · <a href="../../STATUS.md">Delivery status</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const l0Url = `${window.location.protocol}//${window.location.hostname}:2718`;
+    for (const id of ["nav-l0-link", "hero-l0-link", "map-l0-link"]) {
+      document.getElementById(id).href = l0Url;
+    }
+  </script>
+</body>
+</html>
