@@ -61,6 +61,7 @@ video::cue { font-family: sans-serif; }
   --ink: #1f2937;
   --muted: #65717d;
   --paper: #f7f8f6;
+  --surface: #ffffff;
   --soft: #eef3f5;
   --line: #d6ddd8;
   --blue: #285f86;
@@ -70,6 +71,7 @@ video::cue { font-family: sans-serif; }
   --font-body: ui-sans-serif, system-ui, -apple-system, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
   --font-display: ui-sans-serif, system-ui, -apple-system, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
   --font-code: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --shadow-soft: 0 3px 12px rgba(31, 41, 55, .07);
 }
 body.reading-page,
 body.course-home { background: var(--paper); color: var(--ink); }

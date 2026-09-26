@@ -1,8 +1,20 @@
-# L0 · 估计关节的惯量与阻尼
+<p class="lesson-eyebrow">L0 · 实验记录</p>
 
-第一节实验从一个转动关节开始。我们会根据实验数据估计它的惯量和阻尼，再用一段新的运动，检验模型预测得准不准。
+# 估计关节的惯量与阻尼 {#l0-estimate-joint-inertia-and-damping}
 
-我们先观察初始模型的偏差，再跟着拟合与验证的结果，看看数据告诉了我们什么。需要先熟悉输入、观测和参数时，可以回到 [K1 · 系统辨识基础](../k1/index.md)。
+<p class="lesson-lede">第一节实验从一个转动关节开始。我们会根据实验数据估计它的惯量和阻尼，再用一段新的运动，检验模型预测得准不准。</p>
+
+<p class="lesson-context">我们先观察初始模型的偏差，再跟着拟合与验证的结果，看看数据告诉了我们什么。需要先熟悉输入、观测和参数时，可以回到 <a href="../k1/index.html">K1 · 系统辨识基础</a>。</p>
+
+<div class="experiment-contract" aria-label="实验契约">
+<p class="contract-label">实验契约</p>
+<div class="contract-flow">
+<div class="contract-step"><strong>输入</strong><span>已知力矩 <code>u</code></span></div><span class="contract-arrow" aria-hidden="true">→</span>
+<div class="contract-step"><strong>模型</strong><span>惯量 <code>J</code> + 阻尼 <code>b</code></span></div><span class="contract-arrow" aria-hidden="true">→</span>
+<div class="contract-step"><strong>观测</strong><span>位置 <code>q</code> + 速度 <code>q̇</code></span></div><span class="contract-arrow" aria-hidden="true">→</span>
+<div class="contract-step"><strong>检查</strong><span>拟合时留出的新运动</span></div>
+</div>
+</div>
 
 ## 先看初始模型的偏差 {#mismatch}
 
@@ -70,7 +82,7 @@ $q$ 是角位置，单位为 rad；$\dot q$ 是角速度，单位为 rad/s；$\d
 
 现在固定辨识后的参数，输入事先留出的多正弦力矩。这组数据没有用于拟合或挑选参数。
 
-[![L0 的拟合与验证曲线：位置、速度和残差](../../../reports/l0_inertia_damping/report.png)](../../../reports/l0_inertia_damping/report.png)
+<figure class="report-figure"><a href="../../../reports/l0_inertia_damping/report.png"><img src="../../../reports/l0_inertia_damping/report.png" alt="L0 的拟合与验证曲线：位置、速度和残差" /></a><figcaption>拟合与验证证据总览。点击图片查看完整报告。</figcaption></figure>
 
 先看图的前两行：左列是拟合（Fit），右列是验证（Validation），分别比较位置和速度。深色实线是真实系统，橙色是初始模型，蓝色虚线与空心标记是辨识后模型。点击图片可以查看大图。
 
@@ -85,7 +97,7 @@ $q$ 是角位置，单位为 rad；$\dot q$ 是角速度，单位为 rad/s；$\d
 | 验证 / 初始模型 | 2.7396426 | 0.87716149 |
 | 验证 / 辨识后模型 | 1.8251542e-14 | 2.0286828e-14 |
 
-辨识后的模型在验证数据上也明显优于初始模型，回答了开头的问题：这两个估计参数可以预测这里留出的新运动。
+<aside class="evidence-callout"><strong>证据</strong><p>辨识后的模型在验证数据上也明显优于初始模型，回答了开头的问题：这两个估计参数可以预测这里留出的新运动。</p></aside>
 
 报告中的**残差**是“模型预测减去观测”。第四行的位置与速度残差都接近零，与拟合误差表中的结果一致。误差达到约 $10^{-14}$ 的量级，是因为本例使用相同方程和理想观测，拟合后只剩极小的数值误差。真实测量通常达不到这种结果。
 
