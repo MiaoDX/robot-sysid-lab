@@ -1,0 +1,84 @@
+{
+  "config_version": "l0-inertia-damping-v1",
+  "fit": {
+    "identified": {
+      "q_mae": 1.5607873608998458e-14,
+      "q_rmse": 1.804501910137662e-14,
+      "qd_mae": 1.2252941716806021e-14,
+      "qd_rmse": 1.642461054900796e-14
+    },
+    "nominal": {
+      "q_mae": 4.310722699947272,
+      "q_rmse": 5.505707426248781,
+      "qd_mae": 1.4136073746330404,
+      "qd_rmse": 1.5405693475578042
+    }
+  },
+  "identified": {
+    "damping": 0.05500000000000012,
+    "inertia": 0.06499999999999938
+  },
+  "metadata": {
+    "config_version": "l0-inertia-damping-v1",
+    "dt_s": 0.01,
+    "duration_s": 8.0,
+    "fit_excitation": "chirp",
+    "initial_state": {
+      "q": 0.0,
+      "qd": 0.0
+    },
+    "input_boundary": "known applied joint torque u in N m",
+    "model": "J*qdd + b*qd = u",
+    "observations": [
+      "t",
+      "u",
+      "q",
+      "qd"
+    ],
+    "validation_excitation": "multisine"
+  },
+  "nominal": {
+    "damping": 0.018,
+    "inertia": 0.095
+  },
+  "optimizer": {
+    "cost": 5.768069180924326e-26,
+    "message": "`xtol` termination condition is satisfied.",
+    "nfev": 8,
+    "njev": 7,
+    "scales": {
+      "q": 2.3298233472371077,
+      "qd": 1.7898027453205336
+    },
+    "success": true
+  },
+  "recovery_relative_error": {
+    "damping": 2.1447490248440522e-15,
+    "inertia": 9.607699251563854e-15
+  },
+  "sensitivity": {
+    "condition_number": 2.8532294009877788,
+    "singular_values": [
+      1292.513874612506,
+      453.00033504668147
+    ]
+  },
+  "truth": {
+    "damping": 0.055,
+    "inertia": 0.065
+  },
+  "validation": {
+    "identified": {
+      "q_mae": 1.825154177098609e-14,
+      "q_rmse": 2.2027440048158373e-14,
+      "qd_mae": 2.0286827773219328e-14,
+      "qd_rmse": 2.3465877497038475e-14
+    },
+    "nominal": {
+      "q_mae": 2.73964263807577,
+      "q_rmse": 3.3732613191349343,
+      "qd_mae": 0.8771614945586453,
+      "qd_rmse": 1.115553096545555
+    }
+  }
+}

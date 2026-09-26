@@ -35,7 +35,7 @@ The benchmark is intended to answer three different questions:
 
 1. **Can we recover meaningful hidden parameters when recovery is identifiable?**
 2. **Can the Student predict unseen Oracle behavior even when parameter recovery is not literal?**
-3. **Does the identified Student improve downstream control or RL transfer back to the Oracle?**
+3. **Does the Identified model improve downstream control or RL transfer back to the Oracle?**
 
 These questions are related but not equivalent.
 
@@ -724,14 +724,14 @@ This evaluates behavioral similarity of the two closed-loop systems, not same-in
 
 ## E6 — Policy/control transfer
 
-Train a new controller/policy in the identified Student and evaluate it in the Oracle.
+Train a new controller/policy in the Identified model and evaluate it in the Oracle.
 
 Compare against controlled baselines such as:
 
 ```text
-policy trained in nominal Student
-policy trained in partially identified Student
-policy trained in fully identified Student
+policy trained in Initial model
+policy trained in a partially Identified model
+policy trained in a fully Identified model
 policy trained directly in Oracle (reference)
 ```
 
@@ -851,12 +851,12 @@ Manual residual diagnosis remains valuable and should be the primary teaching me
 Example:
 
 ```text
-H2 fails validation
+M2 fails validation
 residual depends on velocity reversal
         ↓
 hypothesis: current friction model is inadequate
         ↓
-try H3 with richer friction
+try M3 with richer friction
 ```
 
 Later, advanced experiments may compare formal selection criteria such as:

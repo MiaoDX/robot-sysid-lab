@@ -55,7 +55,7 @@
     <rect x="588" y="387" width="222" height="126" rx="14" fill="#f5f0ff" stroke="#c9b5e8"/>
     <text x="606" y="421" font-size="22" font-weight="700" fill="#694492">Student model</text>
     <text x="606" y="452" font-size="17">Fit training trajectories</text>
-    <text x="606" y="482" font-size="16" fill="#526178">Nominal → identified</text>
+    <text x="606" y="482" font-size="16" fill="#526178">Initial → identified</text>
 
     <path d="M 813 453 H 848" fill="none" stroke="#64748b" stroke-width="2.2" marker-end="url(#arrow)"/>
     <rect x="854" y="387" width="210" height="126" rx="14" fill="#fff7e9" stroke="#e7c689"/>

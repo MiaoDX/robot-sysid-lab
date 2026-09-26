@@ -954,7 +954,7 @@ A robust policy can hide some plant mismatch by compensating differently in the 
 
 ---
 
-## 16. Protocol C — train a new policy in the identified Student, then transfer it back to the Oracle
+## 16. Protocol C — train a new policy in the Identified model, then transfer it back to the Oracle
 
 This is the most important downstream test for sim-to-real relevance.
 
@@ -978,10 +978,10 @@ Recommended comparison:
 
 | Training simulator | Purpose |
 |---|---|
-| original nominal Student | sim-to-Oracle baseline |
-| actuator-only identified Student | measure value of component ID |
-| actuator + rigid-body identified Student | measure added subsystem value |
-| actuator + rigid-body + contact/whole-body identified Student | full method |
+| original Initial model | sim-to-Oracle baseline |
+| actuator-only Identified model | measure value of component ID |
+| actuator + rigid-body Identified model | measure added subsystem value |
+| actuator + rigid-body + contact/whole-body Identified model | full method |
 | Oracle-trained policy | reference achievable behavior in the known Oracle world |
 
 The Oracle-trained policy is a reference, not necessarily a formal optimal upper bound unless training conditions are perfectly controlled.

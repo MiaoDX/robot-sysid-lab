@@ -1,0 +1,2 @@
+-r requirements.txt
+marimo>=0.24,<1

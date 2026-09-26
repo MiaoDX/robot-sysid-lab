@@ -28,7 +28,7 @@ Question:
 Canonical plots:
 
 - command versus measured response;
-- Oracle versus nominal student versus identified student;
+- True system (Oracle) versus Initial model versus Identified model;
 - joint position and velocity;
 - torque/current where available;
 - base pose and velocity for floating-base robots;
@@ -104,6 +104,24 @@ rather than mixing quantities with incompatible physical units in one raw-error 
 
 A 2-D loss landscape is particularly useful when two parameters compensate for one another. Long flat valleys should be treated as visual evidence of practical non-identifiability, not as an optimizer problem alone.
 
+### Different Oracle and Student parameter spaces
+
+Later teachers may contain parameters that the Student intentionally omits. Do
+not force those vectors into one bar chart or imply that an absent Student
+parameter was recovered as zero. Reports should use a parameter-role matrix:
+
+| Oracle parameter | Student parameter | Evidence |
+|---|---|---|
+| shared and semantically comparable | present | recovery error and estimate |
+| present only in Oracle | absent | residual or behavior attributed to omitted structure |
+| absent in Oracle | present only in Student | effective or nuisance parameter, with a clear label |
+
+The visual companion is a split parameter view: a shared-parameter comparison,
+an Oracle-only list, and a Student-only list. For whole robots, use the same
+schema per joint or subsystem and add a residual heatmap showing where omitted
+Oracle effects appear. This keeps parameter recovery, effective compensation,
+and predictive behavior as separate claims.
+
 ### V4 — robot behavior visualization
 
 Question:
@@ -158,9 +176,9 @@ contact state
 For each signal, distinguish at least:
 
 ```text
-Oracle
-nominal Student
-identified Student
+True system (Oracle)
+Initial model
+Identified model
 ```
 
 Fit-set and validation-set plots must be visually distinguishable in the report. A model should never look successful only because the report shows the training trajectory.
@@ -191,7 +209,7 @@ Default views:
 - output spectrum;
 - residual spectrum.
 
-Compare Oracle, nominal Student, and identified Student on the same axes.
+Compare the True system, Initial model, and Identified model on the same axes.
 
 Frequency-domain diagnostics are particularly useful for:
 
@@ -332,7 +350,7 @@ same command segment
 A three-way mode can compare:
 
 ```text
-Oracle | nominal Student | identified Student
+True system | Initial model | Identified model
 ```
 
 The viewer/report should show useful synchronized diagnostics alongside the video, for example:
@@ -397,9 +415,9 @@ E(h) = error between Oracle and Student after predicting h seconds
 Plot E(h) for:
 
 ```text
-nominal Student
+Initial model
 intermediate model classes
-identified Student
+Identified model
 ```
 
 This answers a useful question:
