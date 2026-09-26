@@ -18,6 +18,8 @@ class Page(HTMLParser):
         self.switches = {}
         self.ids = set()
         self.tracks = []
+        self.videos = []
+        self.current_video = None
         self.feed(path.read_text())
 
     def handle_starttag(self, tag, attrs):
@@ -33,6 +35,17 @@ class Page(HTMLParser):
             self.switches[attrs["hreflang"]] = attrs["href"]
         if tag == "track":
             self.tracks.append(attrs)
+            if self.current_video is not None:
+                self.current_video["tracks"].append(attrs)
+        if tag == "video":
+            self.current_video = {"tracks": [], "sources": []}
+            self.videos.append(self.current_video)
+        if tag == "source" and self.current_video is not None:
+            self.current_video["sources"].append(attrs)
+
+    def handle_endtag(self, tag):
+        if tag == "video":
+            self.current_video = None
 
 
 def site_pages():
@@ -79,17 +92,25 @@ def test_site_file_links_and_local_section_links_resolve():
 
 
 def test_video_pages_select_subtitles_for_the_page_language():
-    # Only the delivered L0/L1 base lessons carry video tracks. Static contract
-    # pages such as L1-O and L1-S intentionally have no video surface yet.
-    for path in sorted(path for name in ("l0", "l1") for path in (ROOT / "docs/lessons" / name).glob("index*.html")):
+    # Discover every embed, including knowledge lessons that reuse a lab clip.
+    for path in paired_site_pages():
         page = Page(path)
-        expected = 4 if path.parent.name == "l0" else 3
-        defaults = [track for track in page.tracks if "default" in track]
-        assert len(defaults) == expected
-        assert all(track["srclang"] == page.lang for track in defaults)
-        assert len(page.tracks) == 2 * expected
-        for track in page.tracks:
-            assert (path.parent / track["src"]).read_text().startswith("WEBVTT\n")
+        for video in page.videos:
+            assert video["sources"], path
+            tracks = video["tracks"]
+            assert sorted(track["srclang"] for track in tracks) == ["en", "zh-CN"], path
+            defaults = [track for track in tracks if "default" in track]
+            assert len(defaults) == 1 and defaults[0]["srclang"] == page.lang, path
+            cue_times = []
+            for track in tracks:
+                text = (path.parent / track["src"]).read_text()
+                assert text.startswith("WEBVTT\n")
+                stamps = re.findall(r"(\d\d:\d\d:\d\d\.\d{3}) --> (\d\d:\d\d:\d\d\.\d{3})", text)
+                assert stamps, (path, track)
+                assert all(start < end for start, end in stamps), (path, track)
+                assert all(end <= following for (_, end), (following, _) in zip(stamps, stamps[1:])), (path, track)
+                cue_times.append(stamps)
+            assert cue_times[0] == cue_times[1], (path, "translations must follow the same scenes")
 
 
 def test_translated_report_tables_keep_the_recorded_numbers():
@@ -99,3 +120,21 @@ def test_translated_report_tables_keep_the_recorded_numbers():
 
     for original in (ROOT / "reports").glob("l*/report.md"):
         assert numbers(original) == numbers(original.with_name("report.zh-CN.md")), original
+
+
+def test_course_status_inventory_matches_every_lesson_and_embed():
+    """The public media ledger must describe actual lesson delivery, not intent."""
+    lessons = {path.parent.name for path in (ROOT / "docs/lessons").glob("*/index.md")}
+    for suffix in ("", ".zh-CN"):
+        status = (ROOT / f"docs/course/status{suffix}.md").read_text()
+        rows = {}
+        for line in status.splitlines():
+            match = re.match(r"\| \[([KL][\d]+(?:-[A-Z])?)\]", line)
+            if match:
+                rows[match[1].lower()] = line
+        assert set(rows) == lessons, (suffix, "every lesson needs an evidence/media status")
+        for lesson, row in rows.items():
+            page = Page(ROOT / f"docs/lessons/{lesson}/index{suffix}.html")
+            actual = {Path(source["src"]).name for video in page.videos for source in video["sources"]}
+            declared = set(re.findall(r"rendered/([^/)]+\.mp4)", row))
+            assert declared == actual, (lesson, suffix, declared, actual)

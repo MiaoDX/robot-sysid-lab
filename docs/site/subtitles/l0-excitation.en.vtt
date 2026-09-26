@@ -1,0 +1,13 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:07.000
+The fit inputs differ in frequency coverage. Torque amplitude, duration, initial state, bounds, and channel scales stay fixed.
+
+00:00:07.000 --> 00:00:11.000
+Broad excitation raises the smallest scaled sensitivity from 0.494 to 1.218; the condition number falls from 11.81 to 1.90.
+
+00:00:11.000 --> 00:00:16.000
+The slow input reaches greater speed. Broad input changes velocity faster: acceleration RMS rises from 1.61 to 8.47 rad/s².
+
+00:00:16.000 --> 00:00:21.000
+Both noiseless cases recover the parameters from all nine starts and predict the reserved input. Better separation is not a claim of failed recovery.

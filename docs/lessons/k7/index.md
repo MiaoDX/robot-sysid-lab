@@ -42,6 +42,17 @@ Use a parameter-pair loss view, fitted values across conditions, and predictions
 
 Only parameters with shared semantics and enough information support a recovery-error claim. For unmatched Oracle/Student effects, report behavior, residuals, and operating range instead. Local optimizer curvature is not a complete uncertainty description under model mismatch.
 
+Here is a completed L1 friction comparison, distinct from the conceptual delay example above. Both Students use the same known torque, ideal observations, fixed inertia, and fitting record. One fits viscous damping alone; the other fits damping and smooth Coulomb-like resistance.
+
+| Model | Fitted $b$ (N m s/rad) | Fitted $\tau_c$ (N m) | Interpretation |
+|---|---:|---:|---|
+| Viscous-only | 0.097292 | Fixed at 0 | $b$ absorbs omitted resistance: an effective value for this boundary |
+| With friction | 0.055000 | 0.060000 | Recovers the reference values in this matched, noise-free synthetic case |
+
+![Parameter compensation and held-out residuals in L1 friction](../../../reports/l1_friction/report.png)
+
+Read resistance versus velocity first, then the held-out residual: changing the viscous slope cannot reproduce the curved resistance relation. The values and figure come from the [frozen report](../../../reports/l1_friction/report.md). They support compensation for omitted friction. This run did not refit at each speed, so it does not measure a law for how fitted $b$ changes with speed.
+
 ## Think it through {#exercise}
 
 A friction-free Student fits a low-speed run by increasing damping. On a higher-speed reversal, its residual becomes directional and the fitted damping changes. How should the original damping value be reported, and what experiment would reduce the ambiguity?

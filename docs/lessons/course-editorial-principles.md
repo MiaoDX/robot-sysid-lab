@@ -158,7 +158,7 @@ Do the English and Chinese versions preserve the same boundary, claim, uncertain
 
 ## Non-goals
 
-These principles do not make the course casual, remove equations, require first-person prose in every sentence, or force every page to contain a video and a live experiment. They do not require artificial failures, a single correct interpretation, a fixed visual style, or a complete simulator before a contract can be taught. They do not replace numerical validation, independent learner acceptance, or lesson-specific technical review.
+These principles do not make the course casual, remove equations, or force every lesson to have a video. Every lesson must still declare its media status (available, planned, or not needed) and provide static explanation plus usable evidence for its named question. They do not require artificial failures, a single correct interpretation, a fixed visual style, or a complete simulator before a contract can be taught. They do not replace numerical validation, independent learner acceptance, or lesson-specific technical review.
 
 ## Definition of done
 

@@ -43,3 +43,38 @@ footer { border-top: 1px solid var(--line); padding-block: 24px 40px; display: f
 .katex-display { overflow-x: auto; overflow-y: clip; padding-block: 8px; }
 @media(max-width: 900px) { .reading-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-top: 24px; } aside { position: static; max-height: 160px; } aside details { border-bottom: 1px solid var(--line); padding-bottom: 12px; } aside a { display: inline-block; margin-right: 20px; } }
 @media(max-width: 420px) { .shell { width: calc(100% - 24px); } body { font-size: 15px; } th,td { padding: 8px; } }
+
+/* L0 reading treatment: carry the reference's paper, evidence, and boundary language into the document flow. */
+.lesson-l0 main { max-width: 860px; }
+.lesson-l0 .lesson-eyebrow { margin: 0 0 12px; color: var(--page-accent); font: 700 .78rem/1.35 var(--font-code); letter-spacing: .08em; text-transform: uppercase; }
+.lesson-l0 .lesson-lede { max-width: 58ch; margin-top: 0; color: var(--ink); font-size: 1.28rem; line-height: 1.6; }
+.lesson-l0 .lesson-context { max-width: 68ch; color: var(--muted); }
+.lesson-l0 .experiment-contract { margin: 2rem 0 3rem; padding: 1.2rem; border: 1px solid color-mix(in srgb, var(--page-accent) 28%, var(--line)); border-top: 4px solid var(--page-accent); background: var(--surface); box-shadow: var(--shadow-soft); }
+.lesson-l0 .contract-label { margin: 0 0 1rem; color: var(--page-accent); font: 700 .76rem/1.35 var(--font-code); letter-spacing: .08em; text-transform: uppercase; }
+.lesson-l0 .contract-flow { display: flex; align-items: stretch; gap: .55rem; }
+.lesson-l0 .contract-step { flex: 1 1 0; min-width: 0; padding: .85rem .9rem; border: 1px solid var(--line); background: var(--paper); }
+.lesson-l0 .contract-step strong { display: block; margin-bottom: .25rem; font-size: .95rem; }
+.lesson-l0 .contract-step span { display: block; color: var(--muted); font-size: .85rem; line-height: 1.45; }
+.lesson-l0 .contract-arrow { display: grid; place-items: center; flex: none; color: var(--page-accent); font-size: 1.25rem; }
+.lesson-l0 h2::before { content: ""; display: block; width: 3.5rem; height: 3px; margin-bottom: .9rem; background: var(--page-accent); }
+.lesson-l0 .clip, .lesson-l0 .report-figure { margin: 2.3rem 0; padding: 1rem; border: 1px solid var(--line); border-top: 3px solid var(--page-accent); background: var(--surface); box-shadow: var(--shadow-soft); }
+.lesson-l0 .clip figcaption, .lesson-l0 .report-figure figcaption { margin-top: .8rem; color: var(--ink); font-size: .9rem; font-weight: 650; }
+.lesson-l0 .clip figcaption::before { content: "Evidence / "; color: var(--page-accent); font: 700 .74rem/1.35 var(--font-code); letter-spacing: .05em; text-transform: uppercase; }
+.lesson-l0 .clip details { margin: 1rem 0 0; border-inline-start-color: var(--page-accent); }
+.lesson-l0 .report-figure { text-align: left; }
+.lesson-l0 .report-figure img { display: block; width: 100%; border: 1px solid var(--line); }
+.lesson-l0 .table-scroll { margin-block: 1.8rem; padding: .3rem; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-soft); }
+.lesson-l0 .table-scroll table { margin: 0; }
+.lesson-l0 .table-scroll th { color: var(--page-accent); font: 700 .76rem/1.35 var(--font-code); letter-spacing: .03em; }
+.lesson-l0 .evidence-callout { margin: 2rem 0; padding: 1.2rem 1.3rem; border: 1px solid color-mix(in srgb, var(--page-accent) 28%, var(--line)); border-inline-start: 4px solid var(--page-accent); background: var(--page-soft); }
+.lesson-l0 .evidence-callout strong { display: block; margin-bottom: .35rem; color: var(--page-accent); font: 700 .78rem/1.35 var(--font-code); letter-spacing: .08em; text-transform: uppercase; }
+.lesson-l0 .evidence-callout p { margin: 0; max-width: 68ch; }
+.lesson-l0 #limits + p { margin-top: 1.8rem; padding: 1.2rem 1.3rem .7rem; border: 1px solid var(--line); border-bottom: 0; background: var(--page-soft); }
+.lesson-l0 #limits + p + p { margin-top: 0; padding: .7rem 1.3rem 1.2rem; border: 1px solid var(--line); border-top: 0; background: var(--page-soft); }
+@media(max-width: 700px) {
+  .lesson-l0 .lesson-lede { font-size: 1.12rem; }
+  .lesson-l0 .experiment-contract { margin-block: 1.6rem 2.4rem; padding: 1rem; }
+  .lesson-l0 .contract-flow { display: grid; grid-template-columns: minmax(0, 1fr); gap: .45rem; }
+  .lesson-l0 .contract-arrow { min-height: 1rem; transform: rotate(90deg); }
+  .lesson-l0 .clip, .lesson-l0 .report-figure { margin-block: 1.8rem; padding: .65rem; }
+}

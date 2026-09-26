@@ -30,6 +30,9 @@ def test_manim_demo_is_syntax_valid_without_optional_dependency():
         "L1BoundaryDemo",
         "L1PhaseDemo",
         "L1HeldOutDemo",
+        "L0HeldOutDemo",
+        "L1FrictionDemo",
+        "L0ExcitationDemo",
     } <= classes
 
 
@@ -63,6 +66,9 @@ CLIP_STEMS = (
     "l1-boundary",
     "l1-phase",
     "l1-heldout",
+    "l0-heldout",
+    "l1-friction",
+    "l0-excitation",
 )
 
 
@@ -79,7 +85,8 @@ def test_rendered_clips_are_present_and_embedded_in_their_lesson_pages():
     assert 'id="lessons"' in course_map
     assert "<video" not in course_map
     for stem in CLIP_STEMS:
-        lesson = (repo / "docs" / "lessons" / ("l0" if stem.startswith("l0") else "l1") / "index.html").read_text(encoding="utf-8")
+        lesson_id = "l0-e" if stem == "l0-excitation" else "l0" if stem.startswith("l0") else "l1"
+        lesson = (repo / "docs" / "lessons" / lesson_id / "index.html").read_text(encoding="utf-8")
         assert f"rendered/{stem}.mp4" in lesson
         assert f"rendered/{stem}.png" in lesson
 

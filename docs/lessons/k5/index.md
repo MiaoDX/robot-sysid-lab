@@ -40,6 +40,12 @@ where $S$ contains sensitivities of the residual to the parameters. The fitting 
 
 This is why K4 and K5 are connected: the optimizer can only use information that the input made visible. A more elaborate optimizer cannot manufacture a missing sensitivity direction.
 
+## Watch one optimizer path {#media}
+
+The [frozen L0 iteration record](../../../reports/l0_inertia_damping/fitting_paths.json) supplies this path. Left: loss on the declared objective and arrows between accepted parameter points. Right: the corresponding motion prediction. The white truth marker is evaluation-only. The final landing still needs held-out evidence.
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-fit-walk.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-fit-walk.mp4" type="video/mp4"/><track default="" kind="subtitles" label="English" src="../../site/subtitles/l0-fit-walk.en.vtt" srclang="en"/><track kind="subtitles" label="中文" src="../../site/subtitles/l0-fit-walk.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>How does the fit get there?</figcaption><details><summary>Read the video explanation</summary><p>The route comes from the frozen fitting-path artifact, not an invented interpolation.</p><p>A path explains one optimization run; it does not establish model adequacy or prediction.</p></details></figure>
+
 ## Read the fitting record {#diagnostics}
 
 This page describes how to read a fitting record. The examples are diagnostic illustrations unless a run and its record are linked explicitly.
@@ -54,6 +60,10 @@ Use the following order when a fit looks wrong:
 Compare multiple starts under the same budget, then change one upstream condition at a time. A lower fitting loss after changing the model does not tell us whether the new structure will predict new data. A lower loss after changing only the start tells us about optimization, not model adequacy.
 
 ## Think it through {#exercise}
+
+Before using the table below, pause the clip at one arrow: what changes, what stays fixed, and which evidence is still missing?
+
+<details><summary>Check this observation</summary><p>The parameter pair and predicted motion change; observations, bounds, scales, and model structure stay fixed. The path alone still lacks held-out prediction evidence.</p></details>
 
 Three records show these outcomes:
 

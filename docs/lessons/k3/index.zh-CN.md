@@ -26,6 +26,16 @@ q_des → 固定控制器 → 指令延迟 → 限幅/摩擦 → 关节动力学
 
 课程必须声明 Student 得到哪个信号。命令-only Student 不能使用 Oracle 的实际施加力矩来解释自己的结果。如果实际力矩被测量并属于目标边界，也要明确声明。
 
+## 看见边界中的时序 {#media}
+
+短片先展示机械图，再打开 PD 之后的力矩缓存。注意黄色指令和橙色输入的时间关系；这两个内部信号是 Oracle 诊断。
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l1-boundary.png" preload="metadata"><source src="../../../demos/manim/rendered/l1-boundary.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l1-boundary.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l1-boundary.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>延迟藏在哪里？</figcaption><details><summary>阅读视频说明</summary><p>延迟位于固定 PD 之后，作用于完整力矩指令。</p><p>图中的内部缓存和实际力矩没有加入只看指令与运动的拟合 API。</p></details></figure>
+
+对于频率线索，观察固定延迟怎样占据更短周期的更大部分。相位公式提供纯延迟的局部直觉；闭环位置还受机械和控制器影响。
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l1-phase.png" preload="metadata"><source src="../../../demos/manim/rendered/l1-phase.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l1-phase.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l1-phase.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>啁啾为什么能揭示延迟？</figcaption><details><summary>阅读视频说明</summary><p>频率升高时，延迟仍为 0.080 秒。</p><p>延迟在周期中所占的比例增大；这并非直接测量电机时间常数。</p></details></figure>
+
 ## 每次只隔离一种执行器效应 {#comparison}
 
 固定控制器和机械参数，每次改变一个隐藏效应：
@@ -38,15 +48,25 @@ q_des → 固定控制器 → 指令延迟 → 限幅/摩擦 → 关节动力学
 
 在还没有理解单项案例前，不要把延迟、摩擦和限幅一次放入 Student。更丰富的模型可能通过吸收另一种缺失效应来降低拟合误差。
 
+## 对比摩擦线索 {#friction-media}
+
+摩擦扩展采用另一条已声明边界：已知实际力矩进入旋转载荷；惯量已知，延迟、重力和饱和均关闭。两个 Student 使用同一组 t、u、q、qd 拟合，之后固定参数比较新输入。
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l1-friction.png" preload="metadata"><source src="../../../demos/manim/rendered/l1-friction.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l1-friction.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l1-friction.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>黏性阻尼能解释摩擦吗？</figcaption><details><summary>阅读视频说明</summary><p>阻力曲线是评估者诊断，白色为 Oracle，橙色为黏性模型，蓝色为摩擦模型。</p><p>留出位置残差中，蓝色接近零；橙色仍有结构。该模式不能单独证明摩擦。</p></details></figure>
+
 ## 阅读执行器证据 {#evidence}
 
-下面的对比是概念契约。实际力矩或内部状态曲线都是 Oracle 诊断信息，除非本页明确声明它们是观测。
+上表是概念契约；L1 短片与报告给出已运行的合成实验证据。实际力矩或内部状态曲线都是 Oracle 诊断信息，除非本页明确声明它们是观测。
 
 边界图、信号时序和按条件拆分的残差要一起看。相位偏移是延迟线索，不是电机电磁时间的直接测量。换向附近残差是阻力线索，不证明摩擦是唯一缺失项。大指令下响应变平，只有在指令确实超过上限时才支持限幅。
 
 标出实际施加力矩和内部延迟状态等 Oracle-only 信号。它们可以解释曲线，但不能泄露给命令-only Student。
 
 ## 想一想 {#exercise}
+
+比较两个短片：为什么摩擦 Student 可以看到实际力矩 u，而延迟 Student 不能看到橙色执行器输入曲线？
+
+<details><summary>核对边界</summary><p>摩擦实验明确从已知实际力矩开始；延迟实验从位置指令开始，估计隐藏的指令到力矩时序。把实际力矩加入后者的拟合会改变问题。</p></details>
 
 某条指令扫频在高频处出现类似相位的误差；低速换向出现方向相关误差；大幅指令在 Oracle 诊断图中显示实际力矩被截平。你分别用什么实验测试这三个假设？哪个信号必须对拟合器隐藏？
 

@@ -36,4 +36,5 @@
   } else {
     setupSubtitles();
   }
+  document.addEventListener("course:media-ready", setupSubtitles);
 })();

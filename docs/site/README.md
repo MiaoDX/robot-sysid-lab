@@ -43,9 +43,7 @@ lab dependencies.
 ## Writing for learners
 
 The homepage explains the value of identification and recommends K0 → K1 → L0.
-Keep one primary start action. Available courses have complete reading pages;
-future courses show a learning objective and a clear “Coming later” / “准备中”
-status without a placeholder body link. Project plans and delivery records live
+Keep one primary start action. Available pages show their delivery class and evidence state; design drafts show a learning objective and a clear “Coming later” / “准备中” status without implying a runnable experiment. Project plans and delivery records live
 behind the project-resources link.
 
 Write complete, connected explanations that sound natural when read silently.
@@ -56,8 +54,7 @@ English and Chinese share structure, concepts, equations, data, and conclusions;
 their sentence structure should be natural in each language.
 
 Each lesson is one continuous page: question, system, physical intuition,
-experiment, evidence, exercise, and limits. Put videos next to the question they
-answer and include validation evidence on the page. Local execution is optional.
+experiment, evidence, exercise, and limits. Put available videos next to the question they answer, label planned or unnecessary clips, and include usable evidence on the page. Local execution is optional.
 Supplementary notes support deeper reading; they are not required to complete
 the main explanation. Use explicit heading IDs with `{#section}` to preserve
 shared links as wording changes. Preserve the original clip and report assets.

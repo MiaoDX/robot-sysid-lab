@@ -2,17 +2,18 @@
 
 This file tracks changing delivery status, immediate work, and completion evidence. The [README](README.md) stays focused on the project purpose, architecture, and reading entry points.
 
-**Snapshot: 2026-09-25.** L0 and L1 have executable Marimo lessons, inspectable
-notebooks, CPU runners, and generated reports. L1 engineering gates pass;
-independent learner acceptance remains open. Formal K/L reading pages now cover
-K0–K8 and L0–L6 (including L0-E, L1-O, and L1-S); numerical implementations
-for the newly added experiment pages remain pending.
+**Snapshot: 2026-09-26.** L0, L0-E and L1 have reproducible CPU evidence.
+L0/L1 also have local Marimo apps and notebooks; L1 includes delay and friction.
+The course map distinguishes knowledge reading/concepts, runnable experiments,
+and design drafts. L1-O, L1-S and L2–L6 have no delivered numerical experiments.
+The [19-lesson evidence/media matrix](docs/course/status.md) records actual clips,
+figures, reports and missing work. Independent learner acceptance remains open.
 
 ## Current checkpoint
 
 | Area | State | Evidence / interpretation |
 |---|---|---|
-| Knowledge and synthetic-lab direction | K/L formal reading rollout delivered through L6; later numerical paths remain pending | [Course map](docs/course/index.html), [rollout plan](docs/plans/course-content-rollout.md), [roadmap](docs/03_synthetic_lab_roadmap.md) |
+| Knowledge and synthetic-lab direction | Reading/concept pages and design drafts published through L6; only L0/L0-E/L1 numerical paths delivered | [Course map](docs/course/index.html), [rollout plan](docs/plans/course-content-rollout.md), [roadmap](docs/03_synthetic_lab_roadmap.md) |
 | Oracle, whole-robot, and RL protocols | Documented; not implemented | [Experiment design](docs/04_oracle_sim_experiment_design.md) |
 | Visualization and learning experience | K/L/H course map and guided L0 Marimo course delivered; Jupyter remains an inspectable lab surface | [course map](docs/course/index.html), [L0 lessons](docs/lessons/l0/README.md), [reporting](docs/05_visualization_and_reporting.md), [learning experience](docs/06_learning_experience.md) |
 | Reusable lesson workflow | Documented as a contract; code extraction waits for a second lesson | [Lesson / Experiment Pipeline](docs/lesson_pipeline.md) |
@@ -21,6 +22,29 @@ for the newly added experiment pages remain pending.
 | Original 1-DoF prototype | Removed in the design PR | No replacement runnable lab is claimed here |
 | Example results and reproduction command | Delivered | [Interactive course](apps/l0_inertia_damping.py), [generated report](reports/l0_inertia_damping/report.md), [notebook](notebooks/l0_inertia_damping.ipynb), and [reproduction instructions](synthetic/README.md) |
 | Learner walkthrough | Maintainer browser walkthrough passed; independent reader pending | [Walkthrough script](reports/l0_inertia_damping/verification.md#learner-acceptance-walkthrough) |
+
+## Current course media and evidence
+
+Three new silent, subtitled clips cover L0 held-out validation, L1 friction,
+and L0-E excitation. K3–K6 reuse the relevant clips with a specific question;
+K7 uses the existing friction parameter comparison. K2 now has an explicitly
+illustrative force-balance diagram and analytic torque plot. Teaching media
+support the written course; ten short animations do not constitute full
+narrated video lectures.
+
+Reproduce the new comparison with:
+
+```bash
+python -m pip install -r requirements.txt
+python -m synthetic.l0_excitation --output-dir reports/l0_excitation
+```
+
+The [frozen report](reports/l0_excitation/report.md) distinguishes weaker local
+parameter separation from failed recovery: both noiseless inputs recover the
+parameters, while the broad input improves conditioning. The next numerical
+lessons remain per-lesson work; WASM and independent learner acceptance are
+separate gates. Implementation/verification scope is recorded in the
+[approved rollout slice](docs/plans/course-content-rollout.md#approved-media-and-evidence-completion).
 
 ## Delivery rule
 

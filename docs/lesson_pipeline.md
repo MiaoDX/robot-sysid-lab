@@ -5,8 +5,10 @@ question and leaves behind enough evidence for another engineer to reproduce
 it. The pipeline is deliberately a contract first. Shared Python abstractions
 should be extracted only after a second lesson proves that a boundary is truly
 repeated. The [lesson delivery policy](lesson_delivery_policy.md) assigns the
-main explanation to static HTML/video, treats Marimo WASM as a bounded optional
-surface, and keeps the full experiment available locally.
+main explanation and usable evidence to static HTML, treats teaching clips as
+support for named questions and Marimo WASM as optional, and requires a local
+reference path for computational labs. See the [per-lesson matrix](course/status.md#evidence-media-matrix)
+for the actual reading, evidence and media state.
 
 ## The lesson contract
 
@@ -95,7 +97,7 @@ real workload.
 
 ## Artifact contract
 
-A completed lesson produces:
+A runnable computational lesson produces:
 
 ```text
 docs/lessons/<track>/<lesson>.md       narrative and exercises
@@ -134,7 +136,7 @@ An experiment can move to the next lesson only when it has:
 
 ## Presentation surfaces
 
-The static lesson and teaching clips are the primary narrative surface. Jupyter
+The static lesson is the primary narrative surface; teaching clips support named questions when available. Jupyter
 remains an inspectable local surface. The guided Marimo course calls the same
 numerical implementation but separates two actions: changing an Initial-model
 parameter updates its orange preview immediately, while **Run identification**
