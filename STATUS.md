@@ -18,7 +18,7 @@ independent learner acceptance remains open. Later levels remain design work.
 | L0 happy-path scope | Implemented and locally verified; independent learner signoff remains open | [First-lab contract](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) |
 | Original 1-DoF prototype | Removed in the design PR | No replacement runnable lab is claimed here |
 | Example results and reproduction command | Delivered | [Interactive course](apps/l0_inertia_damping.py), [generated report](reports/l0_inertia_damping/report.md), [notebook](notebooks/l0_inertia_damping.ipynb), and [reproduction instructions](synthetic/README.md) |
-| Learner walkthrough | Maintainer browser walkthrough passed; independent reader pending | [Walkthrough script](docs/lessons/l0/README.md#learner-acceptance-walkthrough) |
+| Learner walkthrough | Maintainer browser walkthrough passed; independent reader pending | [Walkthrough script](reports/l0_inertia_damping/verification.md#learner-acceptance-walkthrough) |
 
 ## Delivery rule
 
@@ -123,7 +123,7 @@ python -m marimo run apps/l1_servo_loaded_pendulum.py --port 2719
 The [verification record](reports/l1_servo_loaded_pendulum/verification.md)
 contains clean-environment versions, commands, screenshots, and the gate audit.
 Next action: obtain an independent reader's actual answers and feedback using
-the [walkthrough](docs/lessons/l1/README.md#learner-acceptance-walkthrough). Gates
+the [walkthrough](reports/l1_servo_loaded_pendulum/verification.md#learner-acceptance-walkthrough). Gates
 1–6 and 8 pass; learning gate 7 stays open. Hardware-transfer claims, friction,
 saturation, multibody/contact and framework extraction remain deferred by the
 [plan](docs/plans/l1-servo-loaded-pendulum.md).

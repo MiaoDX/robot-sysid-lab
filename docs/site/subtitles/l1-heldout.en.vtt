@@ -1,0 +1,10 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.367
+Fit delay on a chirp; these reversal motions are withheld from fitting.
+
+00:00:04.367 --> 00:00:08.733
+Compare Initial and Identified position RMSE. The blue trace nearly overlaps truth.
+
+00:00:08.733 --> 00:00:13.100
+Better held-out prediction supports this model under known mechanics, fixed PD, and ideal observations.

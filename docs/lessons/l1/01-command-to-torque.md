@@ -1,17 +1,16 @@
-# 2. From command to delayed torque
+# L1 · From command to delayed torque
 
-It is easy to say “the servo follows position” and accidentally hide the
-experiment boundary. Here the command is not an applied torque. The fixed PD
-controller first computes a torque command from the current position target
-and joint state:
+A position command specifies where the joint should go. To make it move,
+the controller calculates torque from the current position error and velocity.
+Here we use a fixed PD controller:
 
 $$
 c_k = k_p\left(q^{des}_k-q_k\right)-k_d\,\dot q_k,
 \qquad \tau_k = \operatorname{delay}(c)_k.
 $$
 
-The command delay is inserted **after the PD command boundary and before the
-pendulum actuator input** in the declared experiment. The command buffer stores
+The command delay is inserted **after the controller calculates torque and before
+that torque reaches the arm**. The command buffer stores
 the already-computed torque command `c`, not the position target. The delay
 selects/interpolates that buffer at `delay_s`; before the first recorded command
 the history is zero. Oracle and Student share fixed controller gains and

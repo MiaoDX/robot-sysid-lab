@@ -1,43 +1,23 @@
-# 4. Exercise, limits, and the bridge to L2
+# L1 · Exercises and the scope of the result
 
-Before fitting, make one prediction. In the guided app, change the Initial
-delay slider away from zero , observe the pending setup, and write down what you expect to change:
+Open the local app and change **Initial delay**. Predict how the curves will change, then press **Run identification** to check the result.
 
-1. Moving the Initial delay toward the Oracle's effective delay should bring
-   the orange response closer; moving it farther away should generally enlarge
-   the mismatch. The response is a delayed feedback loop, so large delays can
-   also change damping and stability.
-2. A higher-frequency command should make the same time delay occupy more of a
-   cycle, making phase mismatch easier to see.
-3. The blue Identified result should remain the previous completed fit until
-   **Run identification** is pressed.
+Moving the initial delay toward the true value usually brings the orange response closer to the observations. Moving away usually increases error. Because this is a feedback system, larger delays can also change damping and stability; the response is more than a simple time shift of the entire curve.
 
-Run the fit only after making the prediction. Then compare the new fit and
-validation metrics. Presentation controls such as timeline position or signal
-selection are replay controls and should not launch fitting.
+After a settings change, the app shows a pending state. Existing orange and blue curves still come from the previous run. Submit before comparing new results. The replay timeline and signal selector let you inspect the completed run.
 
-## What this lesson leaves out
+## Which conditions still need checking
 
-L1 deliberately introduces one hidden actuator effect. It omits torque scale or
-bias, saturation and velocity limits, Coulomb/Stribeck/asymmetric friction,
-compliance and backlash, reflected motor inertia, voltage and temperature,
-sensor noise/filtering/quantization, contact, payload shifts, and whole-robot
-dynamics. It also does not use CAD assets, MuJoCo/MJLab, hardware collection,
-or a motor-electromagnetic model. A fitted delay therefore does not establish
-hardware transfer; it predicts this declared synthetic boundary.
+This experiment fixes the mechanics and controller and estimates only command delay. Observations are ideal and the model matches the data-generating system. Other friction, saturation, compliance, measurement noise, contact, and payload changes are not included.
 
-The next actuator bridge adds friction and saturation only when their residual
-signatures are useful. The following structural lesson is a fixed-base leg,
-where gravity and joint coupling become the new questions. Keeping one new
-effect per lesson makes it possible to tell whether a failure came from
-excitation, identifiability, estimator convergence, or model structure.
+The result supports improved new-motion prediction using the estimated delay in this known system. Before applying it to a real actuator, check whether omitted effects change the result. The delay describes timing along the chosen command path; it is not the motor's electromagnetic time constant.
 
-## Final checkpoint
+Later experiments will study friction, output limits, and observation errors before moving to coupled joints. Each starts by asking how the added effect changes observations and how to estimate it.
 
-State the L1 conclusion in one sentence:
+## Explain the result in one sentence
 
-> For this fixed-base, gravity-loaded pendulum and declared `q_des -> PD ->
-> delay -> torque` boundary, public position and derived-velocity observations
-> can recover an effective command delay and improve held-out prediction; that
-> conclusion is bounded by the synthetic ideal assumptions and does not claim
-> motor or hardware identification.
+Describe what was estimated, which data was used, and how the result was checked. For example:
+
+> For this loaded arm with known mechanical parameters, we estimated torque-command delay from position and derived velocity, improving predictions on a separate set of reversal motions.
+
+Then name an assumption you would check before moving to hardware and explain which measurement would help.

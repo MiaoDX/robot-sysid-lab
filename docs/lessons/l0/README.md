@@ -1,74 +1,30 @@
-# L0: A first system identification experiment
+# L0 · Supplementary notes and code
 
-`L0` means **Lab 0**: the smallest complete SysID loop in the synthetic-lab
-track. The [course overview](../../course/index.html) shows how this lab relates
-to the `K0-K8` knowledge track and the later `L1-L6` and `H0-H2` stages.
+The [L0 lesson](index.md) contains the full explanation, videos, validation results, and exercises. This page provides notes organized by topic and links for running or inspecting the experiment.
 
-This lesson set begins with why robot system identification is useful, what it
-produces, and the engineering loop it follows. It then uses a deliberately
-small plant so every part of that loop is visible. We identify inertia `J` and
-viscous damping `b` from known applied torque and ideal position/velocity
-observations.
+## Look up a topic
 
-## Learning path
+- [The system, observations, and unknowns](00-orientation.md)
+- [Inertia, damping, and input choice](01-physics-to-data.md)
+- [Fitting, validation, and residuals](02-fit-to-validation.md)
+- [Assumptions and the next step](03-assumptions-and-next-step.md)
 
-1. Open the Marimo course and follow its continuous path from Why to Limits.
-2. [Orientation: what is being identified?](00-orientation.md)
-3. [From physics to data: why inertia and damping matter](01-physics-to-data.md)
-4. [From fit to held-out validation](02-fit-to-validation.md)
-5. [Assumptions, limits, and the next lesson](03-assumptions-and-next-step.md)
+## Inspect the results
 
-The [static report](../../../reports/l0_inertia_damping/report.md) is the
-recorded result for the default configuration. The [Jupyter lab](../../../notebooks/l0_inertia_damping.ipynb)
-lets you inspect and change the same pipeline cell by cell.
+The [full report](../../../reports/l0_inertia_damping/report.md) includes parameters, plots, errors, and experiment conditions. Open the [full-size figure](../../../reports/l0_inertia_damping/report.png) alongside it, or download the [notebook](../../../notebooks/l0_inertia_damping.ipynb) to inspect the computation step by step.
 
-The [Marimo interactive course](../../../apps/l0_inertia_damping.py) is the
-guided entry point. It explains why SysID matters, declares the model boundary,
-and embeds the experiment and its evidence in one vertically scrolling lesson.
-The chapter rail is for orientation. Fit and Validation stay visible side by
-side. Constrained sliders update the orange Initial model immediately; fitting
-runs only when you press **Run identification**, which updates the blue result.
-Install and launch it
-from the repository root with:
+## Run an experiment
+
+Running the code requires a basic Python environment. The experiment uses a CPU and needs no robot middleware or GPU. From the repository root:
 
 ```bash
 python -m pip install -r requirements-interactive.txt
-marimo run apps/l0_inertia_damping.py
-```
-
-Marimo and Jupyter call the same numerical implementation. They provide guided
-and inspectable views of one experiment contract rather than separate labs.
-
-## Learner acceptance walkthrough
-
-Use this short walkthrough with a reader who did not implement L0. Record their
-answers and any confusing point in the L0 closeout row in `STATUS.md`.
-
-1. Before fitting, point to where the orange Initial model first separates from
-   the black True-system curve.
-2. Regenerate the default run and explain which two parameter values fitting
-   changed.
-3. Explain why the chirp is fitting data and the multisine remains held out
-   until evaluation.
-4. Change one Initial-model slider, predict the orange curve's response, and
-   then press **Run identification**. Confirm that blue remains the previous
-   result until the button is pressed.
-5. Name at least three omitted effects and explain why this matched, noise-free
-   result does not establish transfer to a real robot.
-
-A pass requires all five tasks without implementation-author coaching. Treat a
-miss as lesson feedback: record it, improve the relevant explanation, and repeat
-the missed task with another reader.
-
-## Before you start
-
-You need basic Python and the ability to read a curve over time. No robot
-middleware, simulator, or GPU is required. From the repository root:
-
-```bash
-python -m pip install -r requirements.txt
 python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping
+python -m marimo run apps/l0_inertia_damping.py --host 0.0.0.0 --port 2718
 ```
 
-Read the lessons in order. Keep the report open while reading the questions;
-the goal is to explain the evidence, not to memorize the fitted numbers.
+The [end of the lesson](index.md#local-experiment) guides the app exercise. Predict how the curves will change before adjusting a parameter, then compare fitting and validation after running it.
+
+## Reproduction record
+
+The [engineering verification record](../../../reports/l0_inertia_damping/verification.md) keeps experiment checks, reproduction commands, and learner feedback tasks for inspecting the implementation.

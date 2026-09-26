@@ -130,10 +130,30 @@ def test_report_contains_one_run_metadata_and_visual(tmp_path):
     assert "Curve key" in report
 
 
+def test_l0_learner_path_does_not_carry_operator_material():
+    """The lesson README is the learner path; verification material lives elsewhere.
+
+    Reproduction commands, the privileged-signal contract, and the acceptance
+    checklist serve the verifier, not the learner, and used to sit in the entry
+    point where they were the first thing a reader met.
+    """
+
+    lesson = Path("docs/lessons/l0/README.md").read_text(encoding="utf-8")
+    verification_path = Path("reports/l0_inertia_damping/verification.md")
+    verification = verification_path.read_text(encoding="utf-8")
+
+    assert "verification.md" in lesson
+    assert "Learner acceptance walkthrough" not in lesson
+    assert "pytest" not in lesson
+    assert "Learner acceptance walkthrough" in verification
+
+
 def test_l0_lesson_set_and_pipeline_contract_exist():
     lesson_root = Path("docs/lessons/l0")
     assert (lesson_root / "README.md").is_file()
-    assert len(list(lesson_root.glob("*.md"))) == 5
+    english_notes = [p for p in lesson_root.glob("*.md") if ".zh-CN." not in p.name]
+    assert {"index.md", "README.md", "00-orientation.md", "01-physics-to-data.md", "02-fit-to-validation.md", "03-assumptions-and-next-step.md"} <= {p.name for p in english_notes}
+    assert all(p.with_name(p.stem + ".zh-CN.md").is_file() for p in english_notes)
     pipeline = Path("docs/lesson_pipeline.md").read_text(encoding="utf-8")
     assert "The shared flow" in pipeline
     assert "Artifact contract" in pipeline
@@ -145,10 +165,11 @@ def test_rendered_course_map_defines_canonical_tracks_and_l0_entry():
     assert "K0-K8" in course_map
     assert "L0-L6" in course_map
     assert "H0-H2" in course_map
-    assert "L0 means Lab 0" in course_map
-    assert 'id="hero-l0-link"' in course_map
-    assert "window.location.hostname" in course_map
-    assert "architecture.svg" in course_map
+    assert 'id="hero-k0-link"' in course_map
+    assert 'href="../lessons/k0/index.html"' in course_map
+    assert 'href="../lessons/k1/index.html"' in course_map
+    assert 'href="../lessons/l0/index.html"' in course_map
+    assert "site/language.js" in course_map
 
 
 def test_marimo_preview_reuses_shared_l0_runner():
