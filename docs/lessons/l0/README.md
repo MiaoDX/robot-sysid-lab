@@ -39,6 +39,27 @@ marimo run apps/l0_inertia_damping.py
 Marimo and Jupyter call the same numerical implementation. They provide guided
 and inspectable views of one experiment contract rather than separate labs.
 
+## Learner acceptance walkthrough
+
+Use this short walkthrough with a reader who did not implement L0. Record their
+answers and any confusing point in the L0 closeout row in `STATUS.md`.
+
+1. Before fitting, point to where the orange Initial model first separates from
+   the black True-system curve.
+2. Regenerate the default run and explain which two parameter values fitting
+   changed.
+3. Explain why the chirp is fitting data and the multisine remains held out
+   until evaluation.
+4. Change one Initial-model slider, predict the orange curve's response, and
+   then press **Run identification**. Confirm that blue remains the previous
+   result until the button is pressed.
+5. Name at least three omitted effects and explain why this matched, noise-free
+   result does not establish transfer to a real robot.
+
+A pass requires all five tasks without implementation-author coaching. Treat a
+miss as lesson feedback: record it, improve the relevant explanation, and repeat
+the missed task with another reader.
+
 ## Before you start
 
 You need basic Python and the ability to read a curve over time. No robot

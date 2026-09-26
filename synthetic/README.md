@@ -24,6 +24,31 @@ static figure, metrics, and configuration metadata.
 Run the focused checks with `python -m pip install -r requirements-dev.txt`
 followed by `python -m pytest -q`.
 
+## L1 runnable lesson
+
+L1 uses a fixed-base, gravity-loaded arm with a known point payload and fixed
+PD position servo. The Oracle inserts one hidden effect: an effective delay on
+the torque command after the PD law. Public fitting inputs are `t`, `q_des`,
+encoder position `q`, and velocity `qd` derived from that encoder. Fit uses a
+chirp; validation is a held-out reversal waveform. True torque, raw integration
+velocity, and delayed command state stay Oracle-only diagnostics.
+
+Generate the checked-in report and metrics with:
+
+```text
+python -m pip install -r requirements-dev.txt
+python -m synthetic.l1_servo_loaded_pendulum --output-dir reports/l1_servo_loaded_pendulum
+python -m json.tool notebooks/l1_servo_loaded_pendulum.ipynb >/dev/null
+```
+
+Open [the guided L1 Marimo course](../apps/l1_servo_loaded_pendulum.py) on
+port 2719 or inspect [the L1 notebook](../notebooks/l1_servo_loaded_pendulum.ipynb).
+The report includes fit/validation curves, Oracle-only torque diagnostics,
+residual views, machine geometry, provenance, and effective-delay wording.
+This ideal analytical experiment omits friction, saturation,
+compliance/backlash, sensor noise, thermal/voltage effects, contact, and
+whole-robot dynamics; it does not establish hardware transfer.
+
 The synthetic track is a first-class part of this repository, not just a preliminary sanity check before hardware.
 
 Its purpose is to create controlled robot-identification problems where the complete hidden ground truth is available to the lab author while the identification pipeline only receives realistic commands and observations.

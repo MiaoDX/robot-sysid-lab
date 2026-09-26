@@ -173,29 +173,13 @@ def _(mo):
             font: 700 .76rem/1 var(--lesson-font-mono);
             margin-inline-end: var(--lesson-space-2xs);
           }
-          .lesson-progress a {
+          .lesson-progress span {
             color: var(--lesson-muted);
             font: 650 .78rem/1 var(--lesson-font-body);
-            text-decoration: none;
             white-space: nowrap;
-            min-height: 44px;
             display: inline-flex;
             align-items: center;
-            border-bottom: 2px solid transparent;
-            outline: 2px solid transparent;
-            outline-offset: 2px;
           }
-          @media (hover: hover) and (pointer: fine) {
-            .lesson-progress a:hover {
-              color: var(--lesson-green);
-              border-bottom-color: var(--lesson-green);
-            }
-          }
-          .lesson-progress a:focus-visible {
-            color: var(--lesson-ink);
-            outline-color: var(--lesson-focus);
-          }
-          .lesson-progress a:active { color: var(--lesson-blue); }
           .lesson-chapter {
             scroll-margin-top: 6rem;
             padding: var(--lesson-space-xl) 0 var(--lesson-space-lg);
@@ -391,14 +375,14 @@ def _(mo):
           joint, then identify inertia and damping and test the result on motion
           the estimator never saw.</p>
         </section>
-        <nav class="lesson-progress" aria-label="Lesson chapters">
+        <div class="lesson-progress" aria-label="Lesson chapters">
           <strong>L0 PATH</strong>
-          <a href="#why">Why</a>
-          <a href="#boundary">Boundary</a>
-          <a href="#experiment">Experiment</a>
-          <a href="#evidence">Evidence</a>
-          <a href="#limits">Limits</a>
-        </nav>
+          <span>Why</span>
+          <span>Boundary</span>
+          <span>Experiment</span>
+          <span>Evidence</span>
+          <span>Limits</span>
+        </div>
         """
     )
     return lesson_header

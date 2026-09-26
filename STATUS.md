@@ -2,9 +2,9 @@
 
 This file tracks changing delivery status, immediate work, and completion evidence. The [README](README.md) stays focused on the project purpose, architecture, and reading entry points.
 
-**Snapshot: 2026-09-15.** L0 is executable and includes a guided Marimo course,
-an inspectable Jupyter notebook, a headless runner, and a generated report.
-Later benchmark levels remain design work unless explicitly marked delivered.
+**Snapshot: 2026-09-17.** L0 and L1 have executable Marimo lessons, inspectable
+notebooks, CPU runners, and generated reports. L1 engineering gates pass;
+independent learner acceptance remains open. Later levels remain design work.
 
 ## Current checkpoint
 
@@ -15,10 +15,10 @@ Later benchmark levels remain design work unless explicitly marked delivered.
 | Visualization and learning experience | K/L/H course map and guided L0 Marimo course delivered; Jupyter remains an inspectable lab surface | [course map](docs/course/index.html), [L0 lessons](docs/lessons/l0/README.md), [reporting](docs/05_visualization_and_reporting.md), [learning experience](docs/06_learning_experience.md) |
 | Reusable lesson workflow | Documented as a contract; code extraction waits for a second lesson | [Lesson / Experiment Pipeline](docs/lesson_pipeline.md) |
 | Benchmark rules | Documented reference | [Benchmark contract](docs/07_benchmark_contract.md) |
-| L0 happy-path scope | Implemented; learner walkthrough remains open | [First-lab contract](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) |
+| L0 happy-path scope | Implemented and locally verified; independent learner signoff remains open | [First-lab contract](docs/08_happy_path_and_identifiability.md#2-first-happy-path-benchmark-one-default-experiment) |
 | Original 1-DoF prototype | Removed in the design PR | No replacement runnable lab is claimed here |
 | Example results and reproduction command | Delivered | [Interactive course](apps/l0_inertia_damping.py), [generated report](reports/l0_inertia_damping/report.md), [notebook](notebooks/l0_inertia_damping.ipynb), and [reproduction instructions](synthetic/README.md) |
-| Independent learner walkthrough | Pending | Run the guided course with a colleague who did not implement it and record feedback |
+| Learner walkthrough | Maintainer browser walkthrough passed; independent reader pending | [Walkthrough script](docs/lessons/l0/README.md#learner-acceptance-walkthrough) |
 
 ## Delivery rule
 
@@ -45,6 +45,24 @@ The required output is **True system / Initial model / Identified model curves +
 - [ ] **7. Ask an independent colleague to try it.** Check that they can spot the nominal mismatch, reproduce it, explain the held-out result, change one setting, and state the assumptions. Capture feedback and fix confusing material.
 - [ ] **8. Close L0 with evidence.** Link the implementation commit, exact example configuration, generated report, check output, and learner feedback here. Only then start the next lesson.
 
+### Verification evidence
+
+- Implementation: `86db325` introduced the numerical lesson; subsequent L0
+  course and interaction work is included through `24d3922`.
+- Frozen input: [`synthetic/l0_config.json`](synthetic/l0_config.json).
+- Generated evidence: [`report.md`](reports/l0_inertia_damping/report.md),
+  [`report.png`](reports/l0_inertia_damping/report.png), and
+  [`metrics.json`](reports/l0_inertia_damping/metrics.json).
+- CPU checks on 2026-09-16: `python -m pytest -q` passed 18 tests; the documented
+  headless command regenerated the report and recovered `J = 0.065` and
+  `b = 0.055`; notebook JSON validation passed.
+- Maintainer browser walkthrough on Marimo 0.24.2: desktop and 375 px mobile
+  layouts rendered without application console errors; changing Initial-model
+  inertia from `0.095` to `0.120` updated both preview metrics and marked the
+  Identified result stale; **Run identification** restored a current result.
+  This verifies the interaction mechanics but does not count as the required
+  independent-reader feedback.
+
 The checklist follows the [engineering and learning acceptance criteria](docs/08_happy_path_and_identifiability.md#17-deliver-the-first-lesson-end-to-end). Marimo is the guided L0 visual surface, while the notebook and static report remain useful inspection and evidence surfaces. Do not block L0 on the renderer, deployment framework, or every future diagnostic.
 
 ## Then, not in parallel by default
@@ -70,9 +88,42 @@ Package layout, storage format, tracking service, and web framework should be ch
 
 ## Evidence and maintenance
 
-The L0 implementation and generated lesson are delivered in commit `86db325`;
-the notebook, report, configuration, and check output are linked above. The
-reusable workflow contract and course-facing L0 lesson set are now documented;
-the independent learner walkthrough is the only remaining acceptance item.
+L0 and L1 implementations and generated lessons are delivered; notebooks, reports,
+configurations, and check output are linked in their delivery sections. The reusable workflow
+contract and course-facing L0 lesson set are documented. Independent learner
+feedback is the only remaining release-acceptance item.
 
 Keep task state and completion evidence here. Keep the reusable lesson assumptions and acceptance criteria in the happy-path document, and long-term options in the roadmap. Update the snapshot when work changes; leave the README free of dates, percentages, implementation checklists, and claims of capabilities that only exist in the plan.
+
+## Current delivery: L1 servo-loaded pendulum
+
+L1 engineering implementation is delivered; **independent learner acceptance is
+still pending**. The [lesson](docs/lessons/l1/README.md), [Marimo app](apps/l1_servo_loaded_pendulum.py),
+[notebook](notebooks/l1_servo_loaded_pendulum.ipynb), and [report](reports/l1_servo_loaded_pendulum/report.md)
+share the [frozen v2 config](synthetic/l1_config.json) and one analytical CPU
+module. The declared hidden effect is torque-command delay after the full PD
+law. The public fitter cannot receive Oracle config or validation observations.
+
+Verification on 2026-09-17: **30 tests passed**, fresh CPU report reproduction and
+notebook execution passed; default delay recovered at **0.080 s**. Held-out q
+RMSE improves from **0.03085465 rad** to floating-point residual, and qd RMSE
+from **0.49007 rad/s** to floating-point residual (both exceed the 90% gate).
+Real browser checks at 320/768/1440 px verified explicit fit, stale controls,
+recorded playback, all signal views, and no application console errors. Default
+run: **0.176 s**. Marimo asset-preload warnings are documented; the earlier
+missing-Marimo/browser and pytest import-path blockers are resolved.
+
+```bash
+python -m pip install -r requirements-dev.txt -r requirements-interactive.txt
+python -m pytest -q
+python -m synthetic.l1_servo_loaded_pendulum --output-dir reports/l1_servo_loaded_pendulum
+python -m marimo run apps/l1_servo_loaded_pendulum.py --port 2719
+```
+
+The [verification record](reports/l1_servo_loaded_pendulum/verification.md)
+contains clean-environment versions, commands, screenshots, and the gate audit.
+Next action: obtain an independent reader's actual answers and feedback using
+the [walkthrough](docs/lessons/l1/README.md#learner-acceptance-walkthrough). Gates
+1–6 and 8 pass; learning gate 7 stays open. Hardware-transfer claims, friction,
+saturation, multibody/contact and framework extraction remain deferred by the
+[plan](docs/plans/l1-servo-loaded-pendulum.md).

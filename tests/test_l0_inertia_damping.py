@@ -179,6 +179,8 @@ def test_marimo_preview_reuses_shared_l0_runner():
     assert "True system (Oracle), evaluation only" in preview
     assert "Fit / chirp" in preview
     assert "held-out multisine" in preview
+    assert 'href="#experiment"' not in preview
+    assert '<span>Experiment</span>' in preview
 
 
 def test_marimo_slider_changes_do_not_trigger_refit():
