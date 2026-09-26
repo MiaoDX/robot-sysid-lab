@@ -26,6 +26,12 @@ The split should reflect the intended use. A new frequency tests frequency behav
 
 The fitter receives only fitting observations. The final evaluation observations stay unavailable during model and hyperparameter selection. If a validation run changes a decision, rename it development and reserve another run.
 
+This clip reuses the completed L0 run: the chirp fits $J,b$, and the multisine evaluates the frozen model. Both the model and the split are fixed before evaluation. Predict first: if the multisine result helped choose parameter bounds, could it still count as final evaluation?
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-heldout.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-heldout.mp4" type="video/mp4"/><track default="" kind="subtitles" label="English" src="../../site/subtitles/l0-heldout.en.vtt" srclang="en"/><track kind="subtitles" label="中文" src="../../site/subtitles/l0-heldout.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>Can a frozen fit predict a new motion?</figcaption><details><summary>Read the video explanation</summary><p>The chirp estimates J and b; the reserved multisine is evaluated only after fitting.</p><p>On held-out position, orange is the initial model and blue the identified model.</p><p>The identified trace overlaps the Oracle. This supports prediction for the declared boundary and ideal observations.</p></details></figure>
+
+The [fixed report](../../../reports/l0_inertia_damping/report.md) separates fitting and held-out metrics. The clip shows held-out position, while the report's two fourth-row residual panels both use fitting data. Appearing on the same page does not turn fitting residuals into held-out evidence. The tiny errors here come from matched equations and ideal observations and support prediction only under the declared conditions.
+
 ## Read residuals as clues, not verdicts {#evidence}
 
 The split and residual examples are a reading contract. A final claim must use a completed, untouched run and its measured metrics.
@@ -63,4 +69,4 @@ The common wrong turn is to tune on the only held-out run and still call it fina
 
 A successful held-out run supports a bounded prediction claim. It does not establish physical parameter truth, universal generalization, or improved control. A residual pattern is a hypothesis generator, not a diagnosis by itself.
 
-Use K6 throughout L1 and the later labs. [L0-E](../course-design.md#l0-e) applies these ideas to excitation; L2 applies them to posture and coupling. Continue to [K2 · Locate dynamics terms from motion errors](../course-design.md#k2) when you need the dynamics vocabulary for the actuator and leg lessons.
+Use K6 throughout L1 and the later labs. [L0-E](../l0-e/index.md) applies these ideas to excitation; L2 applies them to posture and coupling. Continue to [K2 · Locate dynamics terms from motion errors](../k2/index.md) when you need the dynamics vocabulary for the actuator and leg lessons.

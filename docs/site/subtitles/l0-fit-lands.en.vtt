@@ -1,10 +1,13 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.033
-Fit inertia J and damping b from observations, then compare position error.
+00:00:00.000 --> 00:00:04.000
+The fit estimates inertia J and damping b from the recorded motion; compare the stated position RMSE.
 
-00:00:04.033 --> 00:00:08.067
-Orange is the Initial model; blue is the Identified model. Curves share an axis.
+00:00:04.000 --> 00:00:05.400
+First draw the Oracle, then the orange initial model on the same vertical scale.
 
-00:00:08.067 --> 00:00:12.100
-The identified trace overlaps truth, supporting this fit. Held-out validation is still needed.
+00:00:05.400 --> 00:00:08.000
+The blue identified trace is added. It overlaps the Oracle on this fit input.
+
+00:00:08.000 --> 00:00:12.100
+This supports the fit under matching equations and ideal observations. A separate held-out motion is still needed.

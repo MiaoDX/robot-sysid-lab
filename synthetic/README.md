@@ -1,5 +1,20 @@
 # Synthetic SysID Lab
 
+## Runnable excitation companion
+
+[L0-E](../docs/lessons/l0-e/index.md) compares two frozen torque inputs with
+shared duration, peak, model, estimator and residual scales. Both noiseless
+fits recover; the sensitivity and loss figures explain their different local
+parameter separation.
+
+```bash
+python -m synthetic.l0_excitation --output-dir reports/l0_excitation
+```
+
+See the [bilingual report](../reports/l0_excitation/report.md) for exact data
+boundaries, figures, metrics and measured CPU budget. The broader ladder below
+is a design; current numerical delivery is L0, L0-E and L1 delay/friction.
+
 ## L0 runnable lesson
 
 The first delivered lesson identifies inertia `J` and viscous damping `b` in

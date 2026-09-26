@@ -1,8 +1,20 @@
-# L0 · Estimate joint inertia and damping
+<p class="lesson-eyebrow">L0 · experiment record</p>
 
-Our first experiment starts with one rotating joint. We will estimate its inertia and damping from experimental data, then test the resulting model on a new motion.
+# Estimate joint inertia and damping {#l0-estimate-joint-inertia-and-damping}
 
-We will follow the initial mismatch through fitting and validation to see what the data tells us. If inputs, observations, and parameters are still unfamiliar, start with [K1 · System identification fundamentals](../k1/index.md).
+<p class="lesson-lede">Our first experiment starts with one rotating joint. We will estimate its inertia and damping from experimental data, then test the resulting model on a new motion.</p>
+
+<p class="lesson-context">We will follow the initial mismatch through fitting and validation to see what the data tells us. If inputs, observations, and parameters are still unfamiliar, start with <a href="../k1/index.html">K1 · System identification fundamentals</a>.</p>
+
+<div class="experiment-contract" aria-label="Experiment contract">
+<p class="contract-label">Experiment contract</p>
+<div class="contract-flow">
+<div class="contract-step"><strong>Input</strong><span>known torque <code>u</code></span></div><span class="contract-arrow" aria-hidden="true">→</span>
+<div class="contract-step"><strong>Model</strong><span>inertia <code>J</code> + damping <code>b</code></span></div><span class="contract-arrow" aria-hidden="true">→</span>
+<div class="contract-step"><strong>Observation</strong><span>position <code>q</code> + velocity <code>q̇</code></span></div><span class="contract-arrow" aria-hidden="true">→</span>
+<div class="contract-step"><strong>Check</strong><span>new motion held out from fitting</span></div>
+</div>
+</div>
 
 ## Start with an inaccurate model {#mismatch}
 
@@ -70,7 +82,7 @@ These starts converge to the same result, supporting stable fitting for the star
 
 Now freeze the identified parameters and apply the reserved multisine torque. These observations were used neither to fit nor to select parameters.
 
-[![L0 fit and validation curves showing position, velocity, and residuals](../../../reports/l0_inertia_damping/report.png)](../../../reports/l0_inertia_damping/report.png)
+<figure class="report-figure"><a href="../../../reports/l0_inertia_damping/report.png"><img src="../../../reports/l0_inertia_damping/report.png" alt="L0 fit and validation curves showing position, velocity, and residuals" /></a><figcaption>Fit and validation evidence at a glance. Open the image for the full report.</figcaption></figure>
 
 Start with the first two rows: Fit on the left and Validation on the right, comparing position and velocity. Dark solid lines represent the true system, orange the initial model, and blue dashed lines with hollow markers the identified model. Click the image to inspect it at full size.
 
@@ -85,9 +97,15 @@ The table reports mean absolute error (MAE) for position `q` and velocity `qd`. 
 | validation / Initial model | 2.7396426 | 0.87716149 |
 | validation / Identified model | 1.8251542e-14 | 2.0286828e-14 |
 
-The identified model also improves substantially on validation. This answers our opening question: the two estimated parameters predict the new motion held out in this experiment.
+<aside class="evidence-callout"><strong>Evidence</strong><p>The identified model also improves substantially on validation. This answers our opening question: the two estimated parameters predict the new motion held out in this experiment.</p></aside>
 
 A **residual** in this report is the model prediction minus the observation. The fourth-row position and velocity residuals stay near zero, consistent with the fitting errors in the table. Errors around $10^{-14}$ are possible because this example uses matching equations and ideal observations, leaving only tiny numerical differences after fitting. Real measurements usually do not behave this way.
+
+
+
+The report is static; this short clip walks through the split before showing the held-out response. The multisine is reserved before fitting, and the blue trace is evaluated once without changing parameters.
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-heldout.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-heldout.mp4" type="video/mp4"/><track default="" kind="subtitles" label="English" src="../../site/subtitles/l0-heldout.en.vtt" srclang="en"/><track kind="subtitles" label="中文" src="../../site/subtitles/l0-heldout.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>Can a frozen fit predict a new motion?</figcaption><details><summary>Read the video explanation</summary><p>The chirp estimates J and b; the reserved multisine is evaluated only after fitting.</p><p>On held-out position, orange is the initial model and blue the identified model.</p><p>The identified trace overlaps the Oracle. This supports prediction for the declared boundary and ideal observations.</p></details></figure>
 
 ## Think it through, then check the evidence {#exercise}
 

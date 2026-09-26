@@ -40,6 +40,12 @@ $$
 
 这就是 K4 和 K5 相连的原因：优化器只能使用输入已经显露的信息。更复杂的优化器不能凭空制造缺失的敏感度方向。
 
+## 看一条优化路径 {#media}
+
+路径来自 [L0 的冻结迭代记录](../../../reports/l0_inertia_damping/fitting_paths.json)。左边的颜色是该目标函数的损失，箭头连接实际接受的参数点；右边同时更新运动预测。白色真值标记仅用于评估。
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-fit-walk.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-fit-walk.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l0-fit-walk.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l0-fit-walk.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>拟合是怎样到达这个解的？</figcaption><details><summary>阅读视频说明</summary><p>每个箭头对应记录中的参数更新；更新使用拟合观测，不使用留出输入。</p><p>蓝色最终接近白色轨迹。该路径解释一次运行，预测能力还需 L0 的留出结果。</p></details></figure>
+
 ## 阅读拟合记录 {#diagnostics}
 
 本页说明如何阅读拟合记录。除非明确链接到运行及其记录，示例都属于诊断性说明。
@@ -54,6 +60,10 @@ $$
 在相同预算下比较多个初始点，再一次只改变一个上游条件。模型变丰富后拟合误差下降，并不能说明新结构能预测新数据；只改变初值后误差下降，说明的是优化行为，不是模型充分性。
 
 ## 想一想 {#exercise}
+
+先在一个箭头处暂停：什么在变化，什么保持固定，还缺少哪类证据？
+
+<details><summary>核对观察</summary><p>参数对与预测运动变化；观测、边界、尺度和模型结构固定。仅看路径仍缺少留出预测证据。</p></details>
 
 三条记录有如下结果：
 

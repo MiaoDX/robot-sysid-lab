@@ -225,3 +225,6 @@ body .meaning-copy h2 { letter-spacing: -.025em; }
 body .section,
 body .reading-path li,
 body .tracks { border-color: var(--line); }
+.status.concept { background: var(--blue-soft); color: var(--blue); }
+.status.runnable { background: var(--green-soft); color: var(--green); }
+.status.draft { background: var(--amber-soft); color: var(--amber); }

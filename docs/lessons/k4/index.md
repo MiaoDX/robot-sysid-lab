@@ -43,7 +43,19 @@ The final evaluation motion must be declared before looking at its score. It tes
 
 ## Read sensitivity and loss-valley evidence {#evidence}
 
-The sensitivity and loss views here are conceptual until a corresponding run is replayed. They explain what evidence to request; they do not report a new measured result.
+This clip asks why greater speed does not necessarily separate parameters better. Compare the two inputs at the same peak torque, then the velocity coverage and sensitivity values. The lesson’s contours provide the loss geometry behind the clip’s conclusion.
+
+<figure class="clip"><video controls playsinline poster="../../../demos/manim/rendered/l0-excitation.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-excitation.mp4" type="video/mp4"/><track default kind="subtitles" label="English" src="../../site/subtitles/l0-excitation.en.vtt" srclang="en"/><track kind="subtitles" label="中文" src="../../site/subtitles/l0-excitation.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>Which input separates the effects?</figcaption><details><summary>Read the video explanation</summary><p>The same peak torque, duration, model, scales, and held-out motion are used. Only the fitting excitation changes.</p><p>The slow input has a longer loss valley; the broad input has clearer acceleration reversals and a better-conditioned local Jacobian.</p><p>Both noiseless fits recover and pass held-out prediction. Weak sensitivity is evidence to improve the experiment, not proof of optimizer failure.</p></details></figure>
+
+The L0-E run now provides the corresponding simulation comparison. Both inputs recover the noiseless teacher, but the broad input separates local parameter effects more clearly. This is not a claim that the slow fit fails.
+
+![L0-E simulation coverage and sensitivity](../../../reports/l0_excitation/slow_narrow_vs_broad.png)
+
+The slow record has velocity 0…11.763 rad/s, acceleration RMS 1.609 rad/s², smallest scaled sensitivity singular value 0.494, and condition number 11.81. The broad record has velocity −0.953…6.324 rad/s, acceleration RMS 8.470 rad/s², smallest singular value 1.218, and condition number 1.90. Both use the same 8 s, 0.8 N m peak budget. Output scales are fixed at 1 rad and 1 rad/s; parameter scales use the public initial model, 0.095 and 0.018. Singular values divide the Jacobian by √(2N). Purple denotes J and green b; solid lines show position derivatives and dashed lines velocity derivatives, on shared axes. Read the broad input as better local separation under this contract, while noting its different state coverage.
+
+![L0-E simulation loss contours](../../../reports/l0_excitation/excitation_loss_contours.png)
+
+The long slow valley and compact broad contours are the exact scaled residual objective. Eighteen declared starts recover J = 0.065 and b = 0.055, so the weak valley is not presented as an invented optimizer failure. The shared held-out multisine gives about 2.4 × 10⁻¹⁴ rad position RMSE for both fits. See the [reproducible report](../../../reports/l0_excitation/report.md) and run `python -m synthetic.l0_excitation --output-dir reports/l0_excitation`.
 
 Three views answer different questions:
 
@@ -57,14 +69,14 @@ A multi-start fit is useful evidence about this run's optimization behavior. Sev
 
 ## Think it through {#exercise}
 
-You have two fitting datasets with the same duration and maximum command. Dataset A keeps the joint near one speed. Dataset B contains repeated accelerations and reversals. The fitted losses are similar, but Dataset A produces a long diagonal valley in $(J,b)$ while Dataset B produces a compact region.
+Use the simulation figures above: which column crosses positive and negative acceleration? At the same 0.2 contour level, which valley is longer? Match that observation to condition numbers 11.81 and 1.90.
 
-Which dataset should you use if the next task changes the frequency content? What additional plot would you request before claiming that Dataset B identifies both parameters?
+Then inspect the report’s 18 starts and shared held-out prediction: can you claim the slow input is unidentifiable, or that the broad input predicts significantly better? What would you change first to gain margin against perturbations in a next experiment?
 
 <details markdown="1">
 <summary>Read a suggested answer</summary>
 
-Prefer Dataset B because its input separates velocity and acceleration effects more clearly. Request the actual state coverage and the sensitivity directions, then check the final held-out motion that was declared before fitting. A compact loss region supports local separation under this setup; it does not establish global uniqueness or guarantee transfer to every load and frequency.
+The broad input on the right crosses positive and negative acceleration. The slow input on the left has a longer 0.2 contour, matching its larger condition number of 11.81. Prefer excitation that introduces independent acceleration changes, while checking actual state constraints. Both inputs recover and achieve about 2.4 × 10⁻¹⁴ rad held-out RMSE, so this cannot establish slow-input non-identifiability or rank prediction from floating-point differences. Compact contours support local separation; they do not measure noise robustness, prove global uniqueness, or guarantee hardware transfer.
 
 If the held-out result is used to choose a frequency band or retune the objective, it becomes development data. Reserve a fresh final evaluation for the resulting claim.
 </details>

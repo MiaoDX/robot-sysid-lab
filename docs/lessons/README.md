@@ -2,13 +2,13 @@
 
 If this is your first visit, start with [K0 · Why system identification matters](k0/index.md), read [K1 · System identification fundamentals](k1/index.md), then continue to [L0 · Estimate joint inertia and damping](l0/index.md).
 
-Once those ideas are familiar, continue to [L1 · Actuator delay and friction](l1/index.md). Each lesson brings its explanation, videos, exercises, and conclusions together on one page.
+Once those ideas are familiar, continue to [L1 · Actuator delay and friction](l1/index.md). Each lesson brings its explanation, evidence status, exercises, and conclusions together on one page; a video appears only when its named teaching question is marked available.
 
 L1 now includes a second isolated actuator experiment on friction versus viscous damping, delivered through the same lesson page with a local CPU report and notebook.
 
 ## Find a lesson
 
-The [course directory](../course/index.html#tracks) shows knowledge lessons, synthetic experiments, and hardware experiments. Formal reading pages are now available for K0–K8, L0, L0-E, L1, L1-O, L1-S, and L2–L6. The pages freeze the shared teaching structure and exercises; numerical experiment reports and simulator evidence are added as each lesson is implemented. Hardware lessons remain marked “Coming later”.
+The [course directory](../course/index.html#tracks) shows knowledge lessons, synthetic experiments, and hardware experiments. Formal pages now cover K0–K8, L0, L0-E, L1, L1-O, L1-S, and L2–L6. The course map distinguishes Concept, Runnable, and Design draft; numerical reports and simulator evidence are linked only where they exist. Hardware lessons remain marked “Coming later”.
 
 ## Explore an experiment
 

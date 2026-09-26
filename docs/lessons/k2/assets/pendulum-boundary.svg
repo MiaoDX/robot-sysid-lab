@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" role="img" aria-labelledby="title desc">
+<title id="title">Illustrative single-joint pendulum</title><desc id="desc">Angle q is measured counterclockwise from vertically down. The centre of mass is a distance ell from the pivot. Gravity acts vertically down and gives a restoring torque. Applied torque is positive with q.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#176f91"/></marker><marker id="weight" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#a65b08"/></marker></defs>
+<rect width="760" height="420" fill="#fbfcfa"/>
+<g font-family="Arial, sans-serif" fill="#17231d">
+<text x="28" y="36" font-size="21" font-weight="700">Single-joint concept · not an experiment result</text>
+<path d="M95 83 H235" stroke="#59665f" stroke-width="8"/><circle cx="165" cy="105" r="12" fill="#26734a"/>
+<line x1="165" y1="105" x2="165" y2="345" stroke="#59665f" stroke-dasharray="7 5" stroke-width="2"/>
+<line x1="165" y1="105" x2="290" y2="279" stroke="#176f91" stroke-width="10" stroke-linecap="round"/><circle cx="290" cy="279" r="16" fill="#a65b08"/>
+<path d="M165 167 A62 62 0 0 0 201 155" fill="none" stroke="#26734a" stroke-width="3"/><text x="179" y="158" font-size="19" fill="#26734a">q</text>
+<text x="215" y="198" font-size="19">ℓ</text><text x="301" y="278" font-size="17">CoM, m</text>
+<line x1="290" y1="283" x2="290" y2="371" stroke="#a65b08" stroke-width="3" marker-end="url(#weight)"/><text x="305" y="349" font-size="18" fill="#a65b08">mg</text>
+<path d="M116 115 A50 50 0 0 0 166 155" fill="none" stroke="#176f91" stroke-width="3" marker-end="url(#arrow)"/><text x="35" y="150" font-size="18" fill="#176f91">+τ, +q</text>
+<text x="35" y="385" font-size="14" fill="#59665f">q = 0 points down; J is inertia about the pivot.</text>
+<rect x="393" y="93" width="340" height="253" rx="10" fill="#f1f5f1" stroke="#ced8d0"/>
+<text x="414" y="126" font-size="18" font-weight="700">Moment balance about the pivot</text>
+<text x="414" y="163" font-size="17">J q̈ = τ − b q̇ − mgℓ sin(q)</text>
+<text x="414" y="202" font-size="15">τ: applied actuator torque</text><text x="414" y="231" font-size="15">b q̇: viscous resistance</text><text x="414" y="260" font-size="15">mgℓ sin(q): restoring gravity term</text>
+<text x="414" y="297" font-size="14" fill="#59665f">No contact, no other joint.</text><text x="414" y="324" font-size="14" fill="#59665f">Conceptual visibility; no fitting run.</text>
+</g></svg>

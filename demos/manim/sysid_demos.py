@@ -22,6 +22,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from synthetic.l0_inertia_damping import Params, run_l0, score, simulate
 from synthetic.l1_servo_loaded_pendulum import run_l1
+from synthetic.l1_friction import run_l1_f, reversal_indices
 
 
 # ManimGL's default frame is 14.22 x 8.0, so x stays inside about +/-7.1 and y
@@ -164,6 +165,214 @@ def _role_legend(roles):
         row.move_to(origin + RIGHT * index * spacing)
         legend.add(row)
     return legend
+
+
+def _numeric_axes(title, bounds, x_range, y_range, *, x_label, y_label):
+    """Shared numerical axes for evidence clips; labels stay inside 720p frame."""
+    left, right, bottom, top = bounds
+    group = VGroup(Rectangle(width=right-left, height=top-bottom, color=GREY_B,
+                             stroke_width=1).move_to([(left+right)/2, (bottom+top)/2, 0]))
+    group.add(Text(title, font_size=21, color=GREY_B).move_to([(left+right)/2, top+0.35, 0]))
+    for value in np.linspace(x_range[0], x_range[1], 5):
+        x = left + (value-x_range[0])/(x_range[1]-x_range[0])*(right-left)
+        group.add(Line([x, bottom, 0], [x, bottom-0.10, 0], color=GREY_B))
+        group.add(Text(f"{value:g}", font_size=17, color=GREY_B).move_to([x, bottom-0.27, 0]))
+    for value in np.linspace(y_range[0], y_range[1], 3):
+        y = bottom + (value-y_range[0])/(y_range[1]-y_range[0])*(top-bottom)
+        group.add(Line([left, y, 0], [right, y, 0], color=GREY_D, stroke_width=0.6))
+        group.add(Text(f"{value:.2g}", font_size=17, color=GREY_B).move_to([left-0.36, y, 0]))
+    group.add(Text(x_label, font_size=19, color=GREY_B).move_to([(left+right)/2, bottom-0.64, 0]))
+    group.add(Text(y_label, font_size=19, color=GREY_B).move_to([left+0.75, top+0.35, 0]))
+    return group
+
+
+def _evidence_legend(labels, *, y=2.1):
+    group = VGroup(*[
+        VGroup(Line(ORIGIN, RIGHT*0.3, color=color, stroke_width=4),
+               Text(label, font_size=19, color=color)).arrange(RIGHT, buff=0.12)
+        for label, color in labels
+    ]).arrange(RIGHT, buff=0.55)
+    group.move_to([0, y, 0])
+    return group
+
+
+class L0HeldOutDemo(Scene):
+    """A frozen fit is challenged by the independently prepared multisine.
+
+    Timeline (s): 0-6 input split; 6-10 held-out curves; 10-16 metrics and
+    sweep; 16-21 conclusion. Every play duration is explicit for VTT alignment.
+    """
+
+    def construct(self):
+        run = run_l0()
+        fit, held = run.data.fit, run.data.validation
+        title = Text("L0 · can a frozen fit predict a new motion?", font_size=34).to_edge(UP, buff=0.3)
+        contract = Text("Fit: chirp → estimate J, b     |     Held out: multisine → evaluate once",
+                        font_size=21, color=GREY_B).move_to([0, 2.7, 0])
+        self.play(FadeIn(title), FadeIn(contract), run_time=1)
+        input_group = VGroup()
+        limit = float(max(np.abs(fit.u).max(), np.abs(held.u).max())) * 1.05
+        for obs, label, left, right, color in (
+            (fit, "fitting input", -5.9, -0.7, ORANGE),
+            (held, "reserved input", 0.9, 6.1, BLUE),
+        ):
+            bounds = (left, right, -1.5, 1.5)
+            input_group.add(_numeric_axes(label, bounds, (float(obs.t[0]), float(obs.t[-1])),
+                (-limit, limit), x_label="time (s)", y_label="u (N m)"))
+            input_group.add(_plot_curve(obs.t, obs.u, left=left, right=right, bottom=-1.5,
+                                      top=1.5, color=color, scale=(-limit, limit)))
+        self.play(FadeIn(input_group), run_time=1)
+        self.wait(3)
+        self.play(FadeOut(input_group), FadeOut(contract), run_time=1)
+        traces = {"oracle": held.q}
+        for role, params in (("initial", run.config.nominal), ("identified", run.fit.params)):
+            traces[role], _ = simulate(params, held.t, held.u, q0=run.config.q0, qd0=run.config.qd0)
+        lo, hi = min(float(x.min()) for x in traces.values()), max(float(x.max()) for x in traces.values())
+        pad = 0.08 * (hi-lo)
+        bounds = (-5.9, 6.1, -1.6, 1.45)
+        axis = _numeric_axes("held-out position", bounds, (float(held.t[0]), float(held.t[-1])),
+                             (lo-pad, hi+pad), x_label="time (s)", y_label="q (rad)")
+        legend = _evidence_legend([(ROLE_LABELS[r], ROLE_COLORS[r]) for r in traces], y=2.55)
+        self.play(FadeIn(axis), FadeIn(legend), run_time=1)
+        for role, values in traces.items():
+            self.play(ShowCreation(_plot_curve(held.t, values, left=bounds[0], right=bounds[1],
+                bottom=bounds[2], top=bounds[3], color=ROLE_COLORS[role],
+                width=5 if role == "oracle" else 2.7, scale=(lo-pad, hi+pad))), run_time=1)
+        metrics = Text(
+            f"Held-out RMSE: q {run.nominal_validation_metrics.q_rmse:.3f} → {run.identified_validation_metrics.q_rmse:.2e} rad"
+            f"   |   qd {run.nominal_validation_metrics.qd_rmse:.3f} → {run.identified_validation_metrics.qd_rmse:.2e} rad/s",
+            font_size=19).move_to([0, -2.75, 0])
+        self.play(FadeIn(metrics), run_time=1)
+        marker = Line([bounds[0], bounds[2], 0], [bounds[0], bounds[3], 0], color=GREY_B)
+        self.add(marker)
+        self.play(marker.animate.shift(RIGHT*(bounds[1]-bounds[0])), run_time=5, rate_func=linear)
+        note = Text("Blue overlaps truth. Matching equations + ideal observations explain the tiny error.",
+                    font_size=20, color=GREY_B).move_to([0, 2.1, 0])
+        self.play(FadeIn(note), run_time=1)
+        self.wait(4)
+
+
+class L1FrictionDemo(Scene):
+    """Compare the existing frozen friction Students without changing the fit.
+
+    Resistance is an evaluator-only diagnostic; held-out observations are
+    displayed only after the two models have been fitted on the fit split.
+    Timeline (s): 0-9 resistance; 9-10 transition; 10-15 held-out residuals;
+    15-23 metrics and reversals. Explicit timings define the subtitle cues.
+    """
+
+    def construct(self):
+        run = run_l1_f()
+        title = Text("L1 · can viscous damping explain friction?", font_size=34).to_edge(UP, buff=0.3)
+        boundary = Text("Known applied torque → rotary load    |    fixed J; no delay or gravity",
+                        font_size=21, color=GREY_B).move_to([0, 2.75, 0])
+        self.play(FadeIn(title), FadeIn(boundary), run_time=1)
+        colors = {"oracle": WHITE, "viscous": ORANGE, "friction": BLUE}
+        labels = [("True system (Oracle)", WHITE), ("Viscous-only fit", ORANGE), ("Friction fit", BLUE)]
+        legend = _evidence_legend(labels, y=2.15)
+        bounds = (-5.9, 6.1, -1.5, 1.3)
+        speed_max = float(np.abs(run.data.fit.qd).max())
+        velocity = np.linspace(-speed_max, speed_max, 241)
+        params = {"oracle": run.config.truth, "viscous": run.viscous_fit.params, "friction": run.friction_fit.params}
+        resistance = {role: p.damping*velocity + p.coulomb*np.tanh(velocity/run.config.model.v_eps)
+                      for role, p in params.items()}
+        ymax = float(max(np.abs(values).max() for values in resistance.values())) * 1.08
+        first = VGroup(_numeric_axes("resistance: evaluator diagnostic", bounds, (-speed_max, speed_max),
+            (-ymax, ymax), x_label="velocity qd (rad/s)", y_label="torque (N m)"))
+        self.play(FadeIn(legend), FadeIn(first), run_time=1)
+        for role, values in resistance.items():
+            curve = _plot_curve(velocity, values, left=bounds[0], right=bounds[1], bottom=bounds[2],
+                top=bounds[3], color=colors[role], width=5 if role == "oracle" else 2.7, scale=(-ymax, ymax))
+            self.play(ShowCreation(curve), run_time=1)
+            first.add(curve)
+        note = Text(f"Viscous-only b = {run.viscous_fit.params.damping:.4f}; friction fit b = {run.friction_fit.params.damping:.4f}, tau_c = {run.friction_fit.params.coulomb:.3f}",
+                    font_size=21).move_to([0, -2.75, 0])
+        self.play(FadeIn(note), run_time=1)
+        self.wait(3)
+        self.play(FadeOut(first), FadeOut(note), run_time=1)
+        observed = run.data.validation
+        residual = {role: run.trajectories["validation"][role].q-observed.q for role in ("viscous", "friction")}
+        radius = float(max(np.abs(values).max() for values in residual.values())) * 1.12
+        second = _numeric_axes("held-out position residual", bounds, (float(observed.t[0]), float(observed.t[-1])),
+            (-radius, radius), x_label="time (s)", y_label="error (rad)")
+        self.play(FadeIn(second), run_time=1)
+        zero = _plot_curve(observed.t, np.zeros_like(observed.t), left=bounds[0], right=bounds[1],
+            bottom=bounds[2], top=bounds[3], color=WHITE, width=5, scale=(-radius, radius))
+        self.play(ShowCreation(zero), run_time=1)
+        for role, values in residual.items():
+            self.play(ShowCreation(_plot_curve(observed.t, values, left=bounds[0], right=bounds[1],
+                bottom=bounds[2], top=bounds[3], color=colors[role], width=2.7, scale=(-radius, radius))), run_time=1)
+        metric = Text(
+            f"Held-out q RMSE: viscous {run.metrics['validation']['viscous'].q_rmse:.4f} rad"
+            f"   |   friction {run.metrics['validation']['friction'].q_rmse:.2e} rad",
+            font_size=21).move_to([0, -2.75, 0])
+        self.play(FadeIn(metric), run_time=1)
+        marks = VGroup()
+        for index in reversal_indices(observed.qd):
+            x = bounds[0] + observed.t[index]/observed.t[-1]*(bounds[1]-bounds[0])
+            marks.add(DashedLine([x,bounds[2],0], [x,bounds[3],0], color=GREY_B, stroke_width=1))
+        self.play(FadeIn(marks), run_time=1)
+        reversals = Text("Dashed lines: true velocity reversals. Both Students were frozen before this input.",
+                         font_size=19, color=GREY_B).move_to([0, 2.75, 0])
+        self.play(FadeOut(boundary), FadeIn(reversals), run_time=1)
+        self.wait(6)
+
+
+class L0ExcitationDemo(Scene):
+    """Teach why richer excitation improves separation without promising magic.
+
+    All values are read from the frozen ``reports/l0_excitation/metrics.json``;
+    no held-out score is used to choose the comparison.
+    """
+
+    def construct(self):
+        report = json.loads((REPO_ROOT / "reports" / "l0_excitation" / "metrics.json").read_text())
+        slow, broad = report["cases"]["slow_narrow"], report["cases"]["broad"]
+        title = Text("L0-E · what does richer excitation buy?", font_size=34).to_edge(UP, buff=0.3)
+        contract = Text("Fit-only comparison: slow/narrow versus broad frequency coverage",
+                        font_size=21, color=GREY_B).move_to([0, 2.75, 0])
+        self.play(FadeIn(title), FadeIn(contract), run_time=1)
+        colors = {"slow": ORANGE, "broad": BLUE}
+        cases = ((slow, "slow/narrow", colors["slow"], -5.9, -0.7),
+                 (broad, "broad", colors["broad"], 0.9, 6.1))
+        panels = VGroup()
+        for case, label, color, left, right in cases:
+            trajectory = case["trajectory"]
+            t, u = np.asarray(trajectory["t"]), np.asarray(trajectory["u"])
+            umax = max(abs(float(u.min())), abs(float(u.max())), 1e-6) * 1.1
+            panels.add(_numeric_axes(label, (left, right, -1.4, 1.25),
+                (float(t[0]), float(t[-1])), (-umax, umax), x_label="time (s)", y_label="u (N m)"))
+            panels.add(_plot_curve(t, u, left=left, right=right, bottom=-1.4, top=1.25,
+                                   color=color, scale=(-umax, umax)))
+        self.play(FadeIn(panels), run_time=1)
+        self.wait(4)
+        self.play(FadeOut(panels), FadeOut(contract), run_time=1)
+        metric = Text(
+            f"Smallest sensitivity σ: {slow['sensitivity']['singular_values'][-1]:.3f} → {broad['sensitivity']['singular_values'][-1]:.3f}"
+            f"    |    condition number: {slow['sensitivity']['condition_number']:.2f} → {broad['sensitivity']['condition_number']:.2f}",
+            font_size=20).move_to([0, 2.65, 0])
+        self.play(FadeIn(metric), run_time=1)
+        bounds = (-5.9, 6.1, -1.4, 1.3)
+        times = np.asarray(broad["trajectory"]["t"])
+        low = min(float(slow["coverage"]["qd_min"]), float(broad["coverage"]["qd_min"])) - 0.5
+        high = max(float(slow["coverage"]["qd_max"]), float(broad["coverage"]["qd_max"])) + 0.5
+        axis = _numeric_axes("recorded fit velocity", bounds, (float(times[0]), float(times[-1])),
+                             (low, high), x_label="time (s)", y_label="qd (rad/s)")
+        legend = _evidence_legend([("slow/narrow", ORANGE), ("broad", BLUE)], y=2.1)
+        self.play(FadeIn(axis), FadeIn(legend), run_time=1)
+        for case, color in ((slow, ORANGE), (broad, BLUE)):
+            self.play(ShowCreation(_plot_curve(np.asarray(case["trajectory"]["t"]),
+                np.asarray(case["trajectory"]["qd"]), left=bounds[0], right=bounds[1],
+                bottom=bounds[2], top=bounds[3], color=color, scale=(low, high))), run_time=1)
+        note = Text(
+            f"Acceleration RMS (rad/s²): slow {slow['coverage']['qdd_rms']:.2f}  |  broad {broad['coverage']['qdd_rms']:.2f}",
+            font_size=21).move_to([0, -2.6, 0])
+        self.play(FadeIn(note), run_time=1)
+        self.wait(4)
+        conclusion = Text("Both recover from 9/9 starts. More speed alone does not imply better separation.",
+                          font_size=20, color=GREY_B).move_to([0, -3.15, 0])
+        self.play(FadeIn(conclusion), run_time=1)
+        self.wait(4)
 
 
 def _compact_iterates(iterates: list[dict], tolerance: float = 1e-9) -> list[tuple[float, float]]:

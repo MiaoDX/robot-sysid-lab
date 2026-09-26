@@ -1,0 +1,12 @@
+{
+  "architecture": "x86_64",
+  "budget_mib": 512,
+  "budget_seconds": 60,
+  "gpu_required": false,
+  "numpy": "2.4.0",
+  "peak_rss_mib": 143.31640625,
+  "python": "3.13.2",
+  "scipy": "1.17.0",
+  "scope": "full fit, diagnostics, figures and bilingual report; Linux process peak RSS",
+  "wall_seconds": 8.596363878808916
+}

@@ -20,10 +20,11 @@ Open the [course homepage](docs/course/index.html), then follow
 [L0: inertia and damping](docs/lessons/l0/index.html).
 Each lesson is a continuous reading page with examples and exercises.
 [L1: command delay](docs/lessons/l1/index.html) continues the experimental path.
-Formal reading pages for K0–K8 and the synthetic L track are available in the
-course directory. Numerical reports and simulator evidence for the newly added
-experiment pages will be added as their local implementations are completed;
-hardware lessons remain outside this rollout.
+Formal pages for K0–K8 and the synthetic L track are classified in the course
+directory as Reading, Concept, Runnable, or Design draft. Numerical reports and simulator
+evidence are linked only where they exist; hardware lessons remain outside this
+rollout. The [19-lesson evidence/media matrix](docs/course/status.md) lists each
+lesson's available clips, planned media, and reasons for using static explanations.
 
 The website is available in [English](docs/course/index.html) and
 [中文](docs/course/index.zh-CN.html). Use the language switch at the top right
@@ -55,9 +56,8 @@ The first guided course is the [interactive L0 Marimo app](apps/l0_inertia_dampi
 a continuous lesson from motivation through experiment evidence and limits,
 introduced by the [L0 lesson set](docs/lessons/l0/README.md). The
 next guided lab is the [interactive L1 servo-loaded-pendulum app](apps/l1_servo_loaded_pendulum.py),
-introduced by the [L1 lesson set](docs/lessons/l1/README.md). The static lesson
-pages and teaching videos are the primary learning path; Marimo is the bounded
-interactive adapter, and longer or heavier experiments should use the local
+introduced by the [L1 lesson set](docs/lessons/l1/README.md). The static lesson pages are the primary learning path; available teaching clips
+support named questions. Marimo is the bounded interactive adapter; longer or heavier experiments use the local
 CPU/GPU commands documented with each lesson. See the [lesson delivery policy](docs/lesson_delivery_policy.md)
 for the split used by future levels. The
 [Jupyter notebook](notebooks/l0_inertia_damping.ipynb) remains available for
