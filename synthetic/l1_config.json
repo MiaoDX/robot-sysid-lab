@@ -1,0 +1,54 @@
+{
+  "version": "l1-servo-loaded-pendulum-v2",
+  "dt": 0.005,
+  "duration_s": 8.0,
+  "initial_state": {
+    "q": 0.0,
+    "qd": 0.0
+  },
+  "plant": {
+    "arm_mass": 1.2,
+    "payload_mass": 0.35,
+    "arm_length": 0.6,
+    "gravity": 9.81
+  },
+  "controller": {
+    "kp": 8.0,
+    "kd": 4.0
+  },
+  "integration_substeps": 1,
+  "truth": {
+    "delay_s": 0.08
+  },
+  "initial_model": {
+    "delay_s": 0.0
+  },
+  "optimizer_start": {
+    "delay_s": 0.03
+  },
+  "bounds": {
+    "lower": {
+      "delay_s": 0.0
+    },
+    "upper": {
+      "delay_s": 0.2
+    }
+  },
+  "fit_excitation": {
+    "amplitude_rad": 0.35,
+    "f0_hz": 0.08,
+    "f1_hz": 1.0
+  },
+  "validation_excitation": {
+    "amplitude_rad": 0.3,
+    "frequency_hz": 0.63,
+    "modulation_cycles": 0.11,
+    "modulation_hz": 0.17,
+    "phase_rad": 0.4,
+    "edge_gain": 3.0
+  },
+  "metadata": {
+    "seed": 7,
+    "timestamp_utc": "2026-01-01T00:00:00Z"
+  }
+}

@@ -171,6 +171,7 @@
         <a href="#tracks">Course map</a>
         <a href="#method">Method</a>
         <a id="nav-l0-link" href="http://127.0.0.1:2718">Open L0</a>
+        <a id="nav-l1-link" href="http://127.0.0.1:2719">Open L1</a>
       </nav>
     </div>
   </header>
@@ -183,6 +184,7 @@
         <p class="intro-copy">Build the vocabulary, run controlled synthetic experiments, then carry the same evidence discipline onto actuators, legs, and complete robots. Each lab adds only enough complexity to answer one new question.</p>
         <div class="intro-actions">
           <a class="action primary" id="hero-l0-link" href="http://127.0.0.1:2718">Open the interactive L0 lesson <span aria-hidden="true">-&gt;</span></a>
+          <a class="action" id="hero-l1-link" href="http://127.0.0.1:2719">Open the interactive L1 lesson <span aria-hidden="true">-&gt;</span></a>
           <a class="action" href="../lessons/l0/README.md">Read the L0 notes</a>
           <a class="action" href="../../reports/l0_inertia_damping/report.md">Inspect the fixed report</a>
         </div>
@@ -221,8 +223,8 @@
             <h3>Synthetic labs</h3>
             <p>Runnable experiments where Oracle truth is known but hidden from the estimator.</p>
             <ol class="level-list">
-              <li class="level"><span class="level-code">L0</span><span><a class="level-link" id="map-l0-link" href="http://127.0.0.1:2718"><strong>1-DoF foundations</strong></a><small>Now: inertia and damping. Next: delay mismatch.</small></span><span class="status live">interactive</span></li>
-              <li class="level"><span class="level-code">L1</span><span><strong>Synthetic actuator</strong><small>Friction, saturation, compliance, richer observations</small></span><span class="status planned">planned</span></li>
+              <li class="level"><span class="level-code">L0</span><span><a class="level-link" id="map-l0-link" href="http://127.0.0.1:2718"><strong>1-DoF foundations</strong></a><small>Inertia and damping with declared fit and validation.</small></span><span class="status live">interactive</span></li>
+              <li class="level"><span class="level-code">L1</span><span><a class="level-link" id="map-l1-link" href="http://127.0.0.1:2719"><strong>Servo-loaded pendulum</strong></a><small>Command delay, phase residuals, and held-out prediction. <a href="../lessons/l1/README.md">Read L1 notes</a></small></span><span class="status live">interactive</span></li>
               <li class="level"><span class="level-code">L2</span><span><strong>Fixed-base leg</strong><small>Coupling, gravity, parameter compensation</small></span><span class="status planned">planned</span></li>
               <li class="level"><span class="level-code">L3</span><span><strong>Leg with contact</strong><small>Ground and sole uncertainty</small></span><span class="status planned">planned</span></li>
               <li class="level"><span class="level-code">L4</span><span><strong>Whole Microduck</strong><small>Component-first versus global fitting</small></span><span class="status planned">planned</span></li>
@@ -290,6 +292,10 @@
     const l0Url = `${window.location.protocol}//${window.location.hostname}:2718`;
     for (const id of ["nav-l0-link", "hero-l0-link", "map-l0-link"]) {
       document.getElementById(id).href = l0Url;
+    }
+    const l1Url = `${window.location.protocol}//${window.location.hostname}:2719`;
+    for (const id of ["nav-l1-link", "hero-l1-link", "map-l1-link"]) {
+      document.getElementById(id).href = l1Url;
     }
   </script>
 </body>

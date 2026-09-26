@@ -1,0 +1,173 @@
+{
+  "config_version": "l1-servo-loaded-pendulum-v2",
+  "metadata": {
+    "config_version": "l1-servo-loaded-pendulum-v2",
+    "config_hash": "5849930293204112",
+    "seed": 7,
+    "timestamp_utc": "2026-01-01T00:00:00Z",
+    "units": {
+      "t": "s",
+      "q": "rad",
+      "qd": "rad/s",
+      "torque": "N m"
+    },
+    "observations": [
+      "t",
+      "q_des",
+      "q",
+      "qd"
+    ],
+    "public_observations": [
+      "t",
+      "q_des",
+      "q",
+      "qd"
+    ],
+    "oracle_only": [
+      "true_torque",
+      "delayed_command_state",
+      "raw_integration_velocity"
+    ],
+    "delay_semantics": "effective command delay after fixed PD law; fractional linear interpolation; zero prehistory",
+    "sensor_velocity": "qd from q: forward difference at initial sample, centered interior, backward final sample",
+    "fit_excitation": {
+      "kind": "linear chirp",
+      "amplitude_rad": 0.35,
+      "f0_hz": 0.08,
+      "f1_hz": 1.0,
+      "phase_rad": 0.0,
+      "duration_s": 8.0
+    },
+    "validation_excitation": {
+      "kind": "phase-modulated clipped-sine reversal",
+      "amplitude_rad": 0.3,
+      "frequency_hz": 0.63,
+      "modulation_cycles": 0.11,
+      "modulation_hz": 0.17,
+      "phase_rad": 0.4,
+      "edge_gain": 3.0
+    },
+    "controller": {
+      "kp": 8.0,
+      "kd": 4.0,
+      "sample_period_s": 0.005,
+      "velocity_feedback": "fixed internal integration velocity",
+      "filtering": "none",
+      "rate_limits": "none"
+    },
+    "model": {
+      "dt": 0.005,
+      "duration_s": 8.0,
+      "q0": 0.0,
+      "qd0": 0.0,
+      "arm_mass": 1.2,
+      "payload_mass": 0.35,
+      "arm_length": 0.6,
+      "gravity": 9.81,
+      "kp": 8.0,
+      "kd": 4.0,
+      "integration_substeps": 1
+    },
+    "reset_state": {
+      "q": 0.0,
+      "qd": 0.0
+    },
+    "numerical": {
+      "dt": 0.005,
+      "integrator": "RK4 held torque",
+      "substeps": 1
+    }
+  },
+  "truth": {
+    "delay_s": 0.08
+  },
+  "initial": {
+    "delay_s": 0.0
+  },
+  "identified": {
+    "delay_s": 0.07999999999999993
+  },
+  "fit_result": {
+    "params": {
+      "delay_s": 0.07999999999999993
+    },
+    "success": true,
+    "message": "`gtol` termination condition is satisfied.",
+    "cost": 2.758863857697799e-29,
+    "nfev": 8
+  },
+  "fit": {
+    "initial": {
+      "q_mae": 0.003600964724997477,
+      "qd_mae": 0.01353578462693425,
+      "q_rmse": 0.004421413636814524,
+      "qd_rmse": 0.01773973057671394
+    },
+    "identified": {
+      "q_mae": 3.1248333950360476e-18,
+      "qd_mae": 2.3671281432053235e-17,
+      "q_rmse": 9.451399339150374e-18,
+      "qd_rmse": 1.8540477100243925e-16
+    }
+  },
+  "validation": {
+    "initial": {
+      "q_mae": 0.025416143637003952,
+      "qd_mae": 0.39967249576917074,
+      "q_rmse": 0.030854650412831405,
+      "qd_rmse": 0.4900686979951283
+    },
+    "identified": {
+      "q_mae": 3.571100643311781e-17,
+      "qd_mae": 4.974159945661325e-16,
+      "q_rmse": 6.006526891921517e-17,
+      "qd_rmse": 1.101392785228945e-15
+    }
+  },
+  "effective_delay_note": "identified delay is boundary and sampling dependent",
+  "local_loss_slice": [
+    {
+      "delay_s": 0.05999999999999993,
+      "fit_q_rmse": 0.001144940682297843
+    },
+    {
+      "delay_s": 0.06499999999999993,
+      "fit_q_rmse": 0.0008702130858406766
+    },
+    {
+      "delay_s": 0.06999999999999992,
+      "fit_q_rmse": 0.0005947952042319491
+    },
+    {
+      "delay_s": 0.07499999999999993,
+      "fit_q_rmse": 0.00031434441819385307
+    },
+    {
+      "delay_s": 0.07999999999999993,
+      "fit_q_rmse": 9.451399339150374e-18
+    },
+    {
+      "delay_s": 0.08499999999999994,
+      "fit_q_rmse": 0.0005389953948251038
+    },
+    {
+      "delay_s": 0.08999999999999994,
+      "fit_q_rmse": 0.005244609610202585
+    },
+    {
+      "delay_s": 0.09499999999999993,
+      "fit_q_rmse": 0.08971343361426001
+    },
+    {
+      "delay_s": 0.09999999999999994,
+      "fit_q_rmse": 0.9177877918535824
+    }
+  ],
+  "acceptance": {
+    "delay_tolerance_s": 0.001,
+    "minimum_validation_rmse_improvement": 0.9,
+    "delay_error_s": 6.938893903907228e-17,
+    "validation_q_improvement": 0.999999999999998,
+    "validation_qd_improvement": 0.9999999999999978
+  }
+}

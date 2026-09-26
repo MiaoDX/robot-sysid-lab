@@ -16,14 +16,16 @@ The Oracle knows its full state and parameters; the estimator receives only the 
 
 Open the [rendered course overview](docs/course/index.html) first. It explains
 why the project uses `K`, `L`, and `H` tracks, shows every planned level, and
-links directly to the interactive L0 lesson, notes, and fixed report.
+links to the interactive L0 and L1 lessons, notes, and fixed reports.
 
 To review the HTML and interactive lesson over a LAN, run these commands from
 the repository root in separate terminals:
 
 ```bash
+python -m pip install -r requirements-interactive.txt
 python -m http.server 2720 --bind 0.0.0.0
-marimo run apps/l0_inertia_damping.py --host 0.0.0.0 --port 2718
+python -m marimo run apps/l0_inertia_damping.py --host 0.0.0.0 --port 2718
+python -m marimo run apps/l1_servo_loaded_pendulum.py --host 0.0.0.0 --port 2719
 ```
 
 ## Explore the source
@@ -38,6 +40,8 @@ marimo run apps/l0_inertia_damping.py --host 0.0.0.0 --port 2718
 The first guided course is the [interactive L0 Marimo app](apps/l0_inertia_damping.py),
 a continuous lesson from motivation through experiment evidence and limits,
 introduced by the [L0 lesson set](docs/lessons/l0/README.md). The
+next guided lab is the [interactive L1 servo-loaded-pendulum app](apps/l1_servo_loaded_pendulum.py),
+introduced by the [L1 lesson set](docs/lessons/l1/README.md). The
 [Jupyter notebook](notebooks/l0_inertia_damping.ipynb) remains available for
 cell-by-cell inspection.
 Its headless equivalent is `python -m synthetic.l0_inertia_damping --output-dir reports/l0_inertia_damping`.
