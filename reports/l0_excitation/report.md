@@ -1,0 +1,43 @@
+# L0-E · Excitation and parameter separation
+
+The frozen noise-free comparison **recovers both parameters from both inputs**. The broad input improves local separation (condition 11.81 → 1.90); the weak direction does not make the slow fit fail. Oracle J = 0.065 kg m², b = 0.055 N m s/rad are evaluation-only.
+
+## Contract and reproducibility
+
+Install dependencies with `python -m pip install -r requirements.txt`, then run `python -m synthetic.l0_excitation --output-dir reports/l0_excitation` from the repository root. This command publishes only the reviewed frozen experiment; custom configurations require a revised lesson/report. The frozen config is [l0_excitation_config.json](../../synthetic/l0_excitation_config.json); [metrics.json](metrics.json) records full trajectories, loss grids, sensitivity columns and every start/result. Both records have 800 samples at 0.01 s over an 8 s budget, q(0)=qd(0)=0, and exactly 0.8 N m sampled peak torque. The 0.005–0.015 Hz chirp is a slowly increasing partial cycle; the 0.15–3 Hz chirp includes reversals. Each sampled waveform is divided by its own peak, then multiplied by 0.8. Equal peak and duration do not mean equal RMS torque, frequency content or motion range. Large angles here are acceptable only because this ideal rotor has no joint limits or gravity.
+
+We reuse L0's exact zero-order-hold simulator and bounded TRF least-squares settings. The shared bounds are J ∈ [0.01, 0.15], b ∈ [0.000001, 0.2], and the shared initial model is (0.095, 0.018). Unlike L0's per-record standard deviations, L0-E fixes public output scales at 1 rad and 1 rad/s for **both** fits. The cost is one half the sum of squared scaled q/qd residuals. No noise or model mismatch is added.
+
+The frequency presets and scales were frozen using training-only coverage and sensitivity. No final score selected them. Every fit and diagnostic completes before held-out observations are generated. The reserved L0 multisine uses frequencies [0.35, 1.3, 2.7] Hz, amplitudes [0.45, 0.22, 0.1] N m and phases [0, 0.3, 1] rad. There is no adaptive development or final-result tuning in the runner. Any future tuning on this final record requires a fresh final evaluation.
+
+## Coverage and local sensitivity
+
+![Input, coverage and scaled sensitivity columns](slow_narrow_vs_broad.png)
+
+Read each column top to bottom: torque, velocity/acceleration coverage, then output sensitivities. Purple means J; green means b; solid lines are position and dashed lines velocity. Acceleration is an Oracle evaluation diagnostic, never a fitting input. Both sensitivity columns are evaluated at the fitted parameters using central differences. Parameter scales are public initial-model values (0.095, 0.018); output scales are (1, 1). Singular values come from the scaled output Jacobian divided by sqrt(2N), keeping sample count out of the comparison. The plot shows the samplewise columns before that final division. This is a local conditioning diagnostic, not a statistical uncertainty estimate.
+
+| Input / 输入 | velocity / 速度 (rad/s) | accel RMS / 加速度 (rad/s²) | σ min | κ | J, b | held-out q RMSE / 留出 (rad) |
+|---|---:|---:|---:|---:|---:|---:|
+| Slow / narrow | 0.000 … 11.763 | 1.609 | 0.494 | 11.81 | 0.06500000, 0.05500000 | 2.37e-14 |
+| Broad / reversing | -0.953 … 6.324 | 8.470 | 1.218 | 1.90 | 0.06500000, 0.05500000 | 2.39e-14 |
+
+
+## The objective and multiple starts
+
+![Actual loss contours with shared levels and axes](excitation_loss_contours.png)
+
+The plotted value is sqrt(mean(scaled residual²)); the machine-readable grid also contains log10 of the optimizer cost. Both axes are offsets from each fitted point divided by the same public parameter scales, so aspect ratio has meaning. Compare equal contour levels. A long valley is weaker local separation; it is not an exactly flat, unidentifiable direction.
+
+![Nine starts converge for both inputs](multistart_estimates.png)
+
+Hollow circles are nine declared starts, black stars are Oracle parameters shown for evaluation. Straight segments connect starts to final estimates; they are **not** optimizer paths. All 18 starts converge and recover J and b within 1e-8 relative error. This supports this finite test, not universal convergence.
+
+## Final held-out prediction
+
+![Shared held-out predictions and residuals](heldout_predictions.png)
+
+Both held-out position RMSEs are below 1e-9 rad. Their tiny difference is numerical, and cannot justify declaring one input a better predictor. Noisy or mismatched systems may behave differently; those are separate experiments. Inspect the sensitivity and coverage when deciding the next data collection, rather than claiming a failed slow fit that did not occur.
+
+## Resources
+
+CPU only; no download or GPU. [runtime.json](runtime.json) records measured wall time and peak process RSS for a full report run, plus Python/NumPy/SciPy versions and the machine architecture. Budget 60 seconds and 512 MiB for this small local experiment; the measured run is machine-specific. Independent learner acceptance and hardware transfer remain untested.
