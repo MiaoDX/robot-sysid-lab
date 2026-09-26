@@ -26,6 +26,12 @@
 
 估计器只能得到拟合观测。最终评估观测在模型和超参数选择期间保持不可见。如果一次验证运行改变了决策，就应把它改标为开发数据，并另留一次运行。
 
+这段视频复用 L0 已完成的运行：扫频用于拟合 $J,b$，多正弦用于最终留出评估，模型和数据划分都在评估前固定。先预测：若把多正弦结果用于选择参数边界，它还能算最终评估吗？
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-heldout.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-heldout.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l0-heldout.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l0-heldout.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>固定的拟合能否预测新运动？</figcaption><details><summary>阅读视频说明</summary><p>啁啾用于估计 J 和 b；留出的多正弦只在拟合后评估。</p><p>在留出位置曲线上，橙色是初始模型，蓝色是辨识后模型。</p><p>辨识后轨迹与真实系统重合，支持在声明边界和理想观测下进行预测。</p></details></figure>
+
+[固定报告](../../../reports/l0_inertia_damping/report.zh-CN.md)同时列出拟合与留出指标。视频展示留出位置曲线，报告第四行的两幅残差图则来自拟合数据；不能因为它们都出现在同一页，就把拟合残差当作留出证据。这里的微小误差来自匹配方程和理想观测，只支持声明条件下的预测。
+
 ## 把残差当线索，而不是判决 {#evidence}
 
 这里的划分与残差示例是阅读契约。最终结论必须使用已完成且未用于选择的运行及其实测指标。
@@ -63,4 +69,4 @@
 
 一次成功的留出运行支持一个有范围的预测结论。它不能证明物理参数真实、对所有条件都能泛化，或控制效果已经改善。残差模式是提出假设的工具，不是单独的诊断。
 
-从 L1 到后续课程都要使用 K6。[L0-E](../course-design.zh-CN.html#l0-e)把这些原则用于激励；L2 把它们用于姿态与耦合。需要执行器和关节课程的动力学词汇时，继续阅读 [K2 · 从运动偏差定位动力学项](../course-design.zh-CN.md#k2)。
+从 L1 到后续课程都要使用 K6。[L0-E](../course-design.zh-CN.html#l0-e)把这些原则用于激励；L2 把它们用于姿态与耦合。需要执行器和关节课程的动力学词汇时，继续阅读 [K2 · 从运动偏差定位动力学项](../k2/index.zh-CN.md)。

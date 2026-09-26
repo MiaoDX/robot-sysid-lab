@@ -1,10 +1,13 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.367
-Fit delay on a chirp; these reversal motions are withheld from fitting.
+00:00:00.000 --> 00:00:05.000
+The delay was fitted on a chirp. These reversal observations were withheld; read the frozen delay and held-out RMSE.
 
-00:00:04.367 --> 00:00:08.733
-Compare Initial and Identified position RMSE. The blue trace nearly overlaps truth.
+00:00:05.000 --> 00:00:07.100
+The Oracle, initial model, and identified model are drawn in order on the same position axis.
 
-00:00:08.733 --> 00:00:13.100
-Better held-out prediction supports this model under known mechanics, fixed PD, and ideal observations.
+00:00:07.100 --> 00:00:10.100
+White is the Oracle, orange the initial model, blue the identified model. The axes show radians and seconds.
+
+00:00:10.100 --> 00:00:13.100
+The blue trace overlaps truth. This supports prediction under known mechanics, fixed PD, and ideal observations.

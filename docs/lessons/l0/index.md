@@ -89,6 +89,12 @@ The identified model also improves substantially on validation. This answers our
 
 A **residual** in this report is the model prediction minus the observation. The fourth-row position and velocity residuals stay near zero, consistent with the fitting errors in the table. Errors around $10^{-14}$ are possible because this example uses matching equations and ideal observations, leaving only tiny numerical differences after fitting. Real measurements usually do not behave this way.
 
+
+
+The report is static; this short clip walks through the split before showing the held-out response. The multisine is reserved before fitting, and the blue trace is evaluated once without changing parameters.
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-heldout.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-heldout.mp4" type="video/mp4"/><track default="" kind="subtitles" label="English" src="../../site/subtitles/l0-heldout.en.vtt" srclang="en"/><track kind="subtitles" label="中文" src="../../site/subtitles/l0-heldout.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>Can a frozen fit predict a new motion?</figcaption><details><summary>Read the video explanation</summary><p>The chirp estimates J and b; the reserved multisine is evaluated only after fitting.</p><p>On held-out position, orange is the initial model and blue the identified model.</p><p>The identified trace overlaps the Oracle. This supports prediction for the declared boundary and ideal observations.</p></details></figure>
+
 ## Think it through, then check the evidence {#exercise}
 
 1. With speed and damping unchanged, does greater inertia give faster or slower acceleration under the same net torque?

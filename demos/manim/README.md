@@ -49,7 +49,7 @@ xvfb-run -a -s "-screen 0 1280x720x24" \
 ```
 
 Use `-m` for 720p or `-l` for 480p; `-s` writes a single final frame instead of
-a movie. Rendering the seven clips takes a few minutes on CPU at 720p; invoke
+a movie. Rendering the ten clips takes a few minutes on CPU at 720p; invoke
 each scene by name as shown in the table below.
 
 ## Scenes
@@ -68,6 +68,9 @@ the same run cannot disagree about the numbers or the axis.
 | `L1BoundaryDemo` | `rendered/l1-boundary.mp4` | Where does the delay hide? |
 | `L1PhaseDemo` | `rendered/l1-phase.mp4` | Why does a chirp make it visible? |
 | `L1HeldOutDemo` | `rendered/l1-heldout.mp4` | Did the fit predict held-out motion? |
+| `L0HeldOutDemo` | `rendered/l0-heldout.mp4` | Can a frozen fit predict a new motion? |
+| `L1FrictionDemo` | `rendered/l1-friction.mp4` | Can viscous damping explain friction? |
+| `L0ExcitationDemo` | `rendered/l0-excitation.mp4` | What does richer excitation buy? |
 
 `L0FitWalkDemo` reads `reports/l0_inertia_damping/fitting_paths.json` and
 `fitting_landscape.png` rather than re-running the optimizer, so the route it
@@ -107,3 +110,30 @@ disappears silently.
 `tests/test_manim_demos.py` validates the scene source without importing
 ManimGL, so the core suite still runs without a graphics stack. It also asserts
 that the rendered clips and their course-map embed are present.
+
+## New evidence clips and subtitle verification
+
+`L0HeldOutDemo` uses `run_l0()` and its frozen identified parameters on the reserved multisine. `L1FrictionDemo` uses `run_l1_f()` and both fitted Students on the reserved friction input. The resistance-versus-speed chart is explicitly evaluator-only. The fit APIs and numerical configurations remain unchanged.
+
+`L0ExcitationDemo` reads `reports/l0_excitation/metrics.json`, generated with `python -m synthetic.l0_excitation --output-dir reports/l0_excitation`. It compares fit inputs, scaled local sensitivity, and recorded velocity on shared axes. The slow input reaches greater speed; broad input has greater acceleration RMS and better parameter separation. Both noiseless cases recover from nine starts. Tiny held-out differences are not ranked.
+
+The checked-in new clips are silent, 1280×720, 30 fps. Rename ManimGL's class-name output to the table's filename; extract the poster from a fully visible frame, not the opening fade:
+
+```bash
+ffmpeg -y -ss 20 -i demos/manim/rendered/l1-friction.mp4 -frames:v 1 demos/manim/rendered/l1-friction.png
+```
+
+Bilingual WebVTT lives in `docs/site/subtitles/`. Timings follow scene events:
+
+| Clip | Duration | Main cue boundaries (s) | Visual evidence |
+|---|---:|---|---|
+| L0 held-out | 21.000 s | 0, 6, 10, 16, 21 | split at 3 s; three position traces at 10 s; metrics/conclusion at 20 s |
+| L1 friction | 23.000 s | 0, 10, 14, 17, 23 | resistance at 7 s; residuals at 14 s; reversal lines at 20 s |
+| L0 excitation | 21.000 s | 0, 7, 11, 16, 21 | inputs at 3 s; velocity/sensitivity at 12 s; acceleration and recovery at 19 s |
+| L1 boundary | 17.767 s | 0, 6.6, 9.5, 14.5, 17.767 | machine remains at 5.5 s; controller chain at 8 s; buffer readback at 10.5 s |
+
+The existing seven clips were inspected at subtitle transitions. Demonstrated early-blue descriptions were corrected in L0 fit-lands (blue begins 5.4 s) and L1 held-out (curves finish at 7.1 s); L1 boundary no longer starts its PD cue at 4.442 s while the machine is still visible. The existing walk, multistart, phase, and mismatch cues retain their explanatory timing.
+
+For the new clips, shared-axis evidence comes directly from the source arrays: L0 held-out uses the reserved observation `q` plus initial and identified `simulate()` predictions to select one vertical extent for all three traces. L1 friction uses one symmetric resistance range for the three laws, then one symmetric error range from both held-out `prediction.q - observed.q` arrays, with the Oracle reference at zero. L0-E uses one velocity extent spanning both frozen `trajectory.qd` arrays, without normalizing each trace separately.
+
+The L0 held-out captions use buildup wording during 6–10 s (axes 6–7, Oracle 7–8, initial 8–9, identified 9–10), and compare curves only after 10 s. Friction captions use buildup wording during 10–14 s (axes 10–11, zero 11–12, viscous 12–13, friction 13–14), compare completed residuals during 14–17 s, and discuss the reversal markers after 17 s.

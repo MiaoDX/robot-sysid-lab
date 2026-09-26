@@ -2,7 +2,7 @@
 
 [中文版](course-design.zh-CN.md) · [Editorial principles](course-editorial-principles.md) · [Course map](../course/index.html) · [Existing lessons](README.md)
 
-**Status: formal K/L reading pages completed; numerical implementations and individual lesson reviews remain, 2026-09-25.** This document records the agreed scope and tradeoffs from the batch discussion and defines the shared content contract. It owns the K/L teaching sequence and this rollout's scope; the [long-term roadmap](../03_synthetic_lab_roadmap.md) retains research directions. Numerical values, algorithm settings, asset versions, runtime budgets, and media scripts are frozen after individual reviews. The formal pages claim no numerical results that have not been produced and verified.
+**Status: K/L reading and contract pages published; L0, L0-E and L1 have local numerical evidence, 2026-09-26.** This document records the agreed scope and tradeoffs from the batch discussion and defines the shared content contract. It owns the K/L teaching sequence and this rollout's scope; the [long-term roadmap](../03_synthetic_lab_roadmap.md) retains research directions. Numerical values, algorithm settings, asset versions, runtime budgets, and media scripts are frozen after individual reviews. The formal pages claim no numerical results that have not been produced and verified.
 
 K0, K1, L0, and L1 already have lesson pages; both L1 delay and friction experiments are delivered. Independent learner acceptance for L0/L1 remains open. Formal pages now cover **K2–K8, L0-E, L1-O, elective L1-S, and L2–L6**. Hardware H lessons are outside this round; D06 retains the earlier draft for future discussion.
 
@@ -192,7 +192,7 @@ K0/K1 are delivered and retained: K0 motivates identification; K1 separates inpu
 <a id="d05"></a>
 ## D05 · Synthetic lab cards
 
-All new cards are designs awaiting implementation. Every lab follows D03's visibility levels, data splits, and minimum evidence package; cards specify the new teaching emphasis. Freeze numerical truth, bounds, sampling/integration, tolerances, seeds, and budgets at individual review.
+L0, L0-E and L1 have checked local evidence. L1-O, L1-S and L2–L6 remain designs awaiting implementation. The [course matrix](../course/status.md#evidence-media-matrix) records exact evidence and media availability. Every lab follows D03's visibility levels, data splits, and minimum evidence package; cards specify the new teaching emphasis. Freeze numerical truth, bounds, sampling/integration, tolerances, seeds, and budgets at individual review.
 
 [L0](#l0) · [L0-E](#l0-e) · [L1 delay](#l1) · [L1 friction](#l1-friction) · [L1-O](#l1-o) · [L1-S](#l1-s) · [L2](#l2) · [L3](#l3) · [L4](#l4) · [L5](#l5) · [L6](#l6)
 
@@ -205,6 +205,8 @@ Learners change initial inertia or damping, distinguish previews from completed 
 
 <a id="l0-e"></a>
 ### L0-E · When input hides a parameter's effect
+
+**Local evidence available:** the [frozen report](../../reports/l0_excitation/report.md) and [lesson](l0-e/index.md) now implement this card.
 
 - **Core question / role:** Why can many slow-motion samples still weakly constrain inertia? Core bridge lesson.
 - **Necessary prerequisites:** L0 and the core of K4–K6.
@@ -345,16 +347,16 @@ These are procedure and interpretation designs. Hardware, instrumentation, and o
 <a id="d07"></a>
 ## D07 · Delivery and bilingual review
 
-Follow the [delivery policy](../lesson_delivery_policy.md) and [lesson pipeline](../lesson_pipeline.md): the static explanation/video is the primary learning surface, the local experiment supplies the numerical evidence, and bounded WASM is optional. Build and verify the local numerical path before producing its static evidence and deciding on browser interaction. The present L0/L1 Marimo apps run through a local Python server; a self-contained WASM release is still backlog work.
+Follow the [delivery policy](../lesson_delivery_policy.md) and [lesson pipeline](../lesson_pipeline.md): the static explanation is the primary learning surface; local experiments supply numerical evidence when the lesson is Runnable, and bounded WASM is optional. Clips are named support surfaces rather than a universal completion requirement. Build and verify the local numerical path before producing its static evidence and deciding on browser interaction. The present L0/L1 Marimo apps run through a local Python server; a self-contained WASM release is still backlog work.
 
 | Surface | Review requirement |
 |---|---|
-| Static lesson | Question, boundary, evidence, exercise answer guide, limits, and local instructions are readable without running an app. Include captions or surrounding text that carry each video's lesson. |
+| Static lesson | Question, boundary, evidence, exercise answer guide, limits, and local instructions are readable without running an app. Available clips sit beside their named question; planned and unnecessary clips are labelled. |
 | Browser interaction, if delivered | Declare dependencies and measured cold-start/run/memory budgets; check the worst allowed control setting. State whether it fits, previews, or only replays. |
 | Local experiment | One implementation/configuration produces the report and lesson evidence. Document dependencies, runtime/resources, outputs, and reproduction command once available. |
 | English and Chinese | Keep lesson IDs, equations, units, numbers, observation boundaries, and status aligned. Use the same report/data/assets; update both narratives when a contract changes. |
 
-The static website provides English and Chinese course pages, lesson notes, report explanations, and curriculum design, with a language switch on each page. Teaching videos have both subtitle tracks and matching written explanations; the source footage and numerical data are shared. The local Python app and implementation records remain separate research tools. Maintain both languages when adding a lesson or changing its contract.
+The static website provides English and Chinese course pages, lesson notes, report explanations, and curriculum design, with a language switch on each page. Available teaching videos have both subtitle tracks and matching written explanations; the source footage and numerical data are shared. The local Python app and implementation records remain separate research tools. Maintain both languages when adding a lesson or changing its contract.
 
 
 The agreed curriculum now has formal reading pages for every row below. The table records the remaining numerical and evidence work; a static page does not claim that its local experiment has already run:
@@ -362,12 +364,13 @@ The agreed curriculum now has formal reading pages for every row below. The tabl
 | Lessons | Main reading and presentation | Full computation |
 |---|---|---|
 | K2–K8 | Static knowledge pages, illustrations, and cited fixed lab evidence | No independent fitting requirement |
-| L0-E, L1-O, L1-S | Static comparisons; optional bounded interaction after budget checks | Local CPU |
+| L0-E | Static comparison, checked report and teaching clip | Local CPU available |
+| L1-O, L1-S | Design drafts; static comparisons planned | Local CPU planned |
 | L2/L3 | Static, video, and precomputed replay | Local native simulation and fitting |
 | L4/L5 | Static lessons, report summaries, and precomputed replay | Local CPU/GPU or scheduled work with actual requirements declared |
 | L6 | Static evidence and replay for both cases | Local reproduction with both backends |
 
-K and L pages share the explanatory structure; only computational labs require full numerical artifacts. The formal static pages are complete, while local reports, simulator replays, and performance evidence remain per-lesson implementation work. Large experiments are accepted in their declared CPU/GPU environment rather than requiring CPU for every lesson. Static reading still requires no compute setup. A planned visual becomes a course result only after an actual run produces and verifies it.
+K and L pages share the explanatory structure; only computational labs require full numerical artifacts. Published pages remain classified individually: K reading/concepts, L0/L0-E/L1 runnable evidence, and the remaining L design drafts. Local reports, simulator replays, and performance evidence for drafts remain implementation work. Large experiments are accepted in their declared CPU/GPU environment rather than requiring CPU for every lesson. Static reading still requires no compute setup. A planned visual becomes a course result only after an actual run produces and verifies it.
 
 Shared terminology for future lesson translations:
 

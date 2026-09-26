@@ -2,7 +2,9 @@
 
 This is the implementation backlog for the delivery policy. Tasks are ordered
 by dependency. A later level should not start its browser packaging before its
-static lesson and local numerical path are complete.
+static explanation and local numerical path are complete. Page publication does
+not certify a runnable experiment or video; each lesson records usable evidence
+and media status separately.
 
 ## Track A: close the current lessons
 
@@ -56,7 +58,7 @@ static lesson and local numerical path are complete.
 
 ### B1. Choose one bounded mismatch question
 
-L1 friction is delivered. Use the [unified curriculum design](../lessons/course-design.md#d08) to review L0-E and L1-O as core bridges; L1-S is elective. Explain the new question beyond the delivered L0/L1 cases, then freeze its numerical contract and execution budget. This backlog does not make optional WASM packaging a prerequisite for designing or delivering the next static/local lesson.
+L1 friction and L0-E are delivered locally. Use the [unified curriculum design](../lessons/course-design.md#d08) to review L1-O as the next core bridge; L1-S is elective. Explain the new question beyond the delivered L0/L1 cases, then freeze its numerical contract and execution budget. This backlog does not make optional WASM packaging a prerequisite for designing or delivering the next static/local lesson.
 
 ### B2. Local benchmark and report
 
@@ -68,7 +70,7 @@ L1 friction is delivered. Use the [unified curriculum design](../lessons/course-
 ### B3. Static narrative and video
 
 - Explain the new boundary and omitted effects in HTML.
-- Produce videos for the failure mechanism and the validation evidence.
+- Produce or explicitly defer clips for named teaching questions; mark each clip available, planned, or not needed with a reason.
 - Make the static page sufficient for a learner to understand the result.
 
 ### B4. Browser decision
@@ -123,10 +125,13 @@ L1 friction is delivered. Use the [unified curriculum design](../lessons/course-
 
 For every lesson, retain three independent checks:
 
-1. Static page and video links work with only an HTTP server.
+1. The static page, evidence links, and available video links work with only an
+   HTTP server. Planned or unnecessary clips retain their declared status.
 2. The declared browser surface passes its cold-load and bounded interaction
    check, or the lesson explicitly has no WASM surface.
-3. The local command reproduces the checked-in report and metrics.
+3. For a computational lab, the local command reproduces the checked-in report
+   and metrics. A knowledge/concept lesson records this check as not applicable
+   unless it supplies an independent numerical implementation.
 
 The task is complete only when all three outcomes are recorded in the lesson's
 verification document.

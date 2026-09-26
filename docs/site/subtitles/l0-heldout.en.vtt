@@ -1,0 +1,13 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.000
+The chirp estimates J and b; the reserved multisine is used only for evaluation.
+
+00:00:06.000 --> 00:00:10.000
+Keep the fitted parameters frozen as the held-out position axes appear and the three traces are drawn in order.
+
+00:00:10.000 --> 00:00:16.000
+All three traces are now visible. Orange is the initial model; the blue identified model overlaps the white Oracle.
+
+00:00:16.000 --> 00:00:21.000
+The low held-out error supports prediction under this boundary and ideal observations, not a universal guarantee.

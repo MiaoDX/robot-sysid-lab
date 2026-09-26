@@ -89,6 +89,12 @@ $q$ 是角位置，单位为 rad；$\dot q$ 是角速度，单位为 rad/s；$\d
 
 报告中的**残差**是“模型预测减去观测”。第四行的位置与速度残差都接近零，与拟合误差表中的结果一致。误差达到约 $10^{-14}$ 的量级，是因为本例使用相同方程和理想观测，拟合后只剩极小的数值误差。真实测量通常达不到这种结果。
 
+
+
+报告是静态图；这段短片先展示数据划分，再展示留出的响应。多正弦输入在拟合前就已保留，蓝色曲线只在最后评估一次，参数没有再调整。
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l0-heldout.png" preload="metadata"><source src="../../../demos/manim/rendered/l0-heldout.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l0-heldout.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l0-heldout.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>固定的拟合能否预测新运动？</figcaption><details><summary>阅读视频说明</summary><p>啁啾用于估计 J 和 b；留出的多正弦只在拟合后评估。</p><p>在留出位置曲线上，橙色是初始模型，蓝色是辨识后模型。</p><p>辨识后轨迹与真实系统重合，支持在声明边界和理想观测下进行预测。</p></details></figure>
+
 ## 想一想，再对照结果 {#exercise}
 
 1. 相同速度、相同阻尼下，如果惯量变大，同样的净力矩会使关节加速得更快还是更慢？

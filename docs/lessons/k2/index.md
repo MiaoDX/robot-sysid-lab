@@ -22,6 +22,18 @@ $$
 
 Here $M$ describes inertia, $C\dot q$ collects velocity-dependent coupling, $g$ is gravity, $\tau_f$ represents friction or other dissipation, and $J_c^T\lambda$ is the generalized force from contact. The applied actuator torque $\tau$ is on the input side only if the actuator boundary makes it observable or known.
 
+![Illustrative single-joint pendulum boundary: angle, gravity, applied torque, and moment balance. This conceptual diagram is not experiment evidence.](assets/pendulum-boundary.svg)
+
+For the one-joint sketch, the gravity term follows from the height $h=\ell(1-\cos q)$: $U=mgh$ and $\partial U/\partial q=mg\ell\sin q$. With viscous dissipation $\tau_f=b\dot q$, the balance is
+
+$$J\ddot q=\tau-b\dot q-mg\ell\sin q.$$
+
+The units provide a quick check: $J$ is kg·m², $\ddot q$ is rad/s², and every term on both sides is N·m (radians are dimensionless). Define a torque residual as $\varepsilon=\tau_{\mathrm{model}}-\tau_{\mathrm{reference}}$, evaluated along the same declared motion. This is a torque-balance diagnostic, unlike the trajectory residuals in L0. The decomposition is illustrative here; no observations or fitted result are being claimed.
+
+The following plot uses $q(t)=0.45\sin(1.3t)$ rad, $J=0.8$ kg·m², $b=0.12$ N·m·s/rad and $mg\ell=1.4$ N·m. Derivatives are analytic. The dashed residual is a declared placeholder $0.18\sin(0.9t+0.4)|\dot q|/0.585$ N·m; it was chosen for reading practice and is not attributed to a physical cause. Reproduce the illustration with `python docs/lessons/k2/assets/generate_concept_figures.py`. It is **illustrative, not a recorded experiment**.
+
+![Illustrative analytic torque decomposition and residual. The trajectory and placeholder residual are generated from the equation above; no simulator or report produced these curves.](assets/torque-residual-illustrative.png)
+
 The terms have different dependencies:
 
 | Candidate term | Strongest clues | Useful change |
@@ -58,12 +70,18 @@ Term decompositions explain a simulated truth. They are not observations the Stu
 
 ## Think it through {#exercise}
 
-A two-joint leg has a residual on joint 2 that grows when joint 1 accelerates. The same residual is small when joint 1 moves slowly. Which candidate would you test first, and what follow-up motion would distinguish coupling from an actuator delay?
+First read the supplied figure: near $t=1.2$ s, the angle reaches a turning point. Which torque term is near zero, and why can the other two remain large? Can the dashed curve prove a missing coupling term?
+
+Then consider a two-joint leg that has a residual on joint 2 that grows when joint 1 accelerates. The same residual is small when joint 1 moves slowly. Which candidate would you test first, and what follow-up motion would distinguish coupling from an actuator delay?
+
+Use the conceptual figure above as a check: the coloured curves show how terms have different phase but the same torque units, but they do not identify a hidden cause by themselves. In the sketch, the exercise answer should name the signal that changes, the term it makes plausible, and the one controlled comparison that would make the alternatives disagree.
 
 <details markdown="1">
 <summary>Read a suggested answer</summary>
 
-Test a coupling or acceleration-dependent hypothesis first, because the residual follows the other joint's acceleration. Repeat the motion with the same command timing but different joint-1 acceleration profiles, and compare a synchronized phase or frequency view. If the residual follows timing relative to the command even when acceleration is changed, delay remains plausible. If it follows the coupled motion across timing changes, coupling is better supported.
+At the turning point, velocity is zero, so viscous resistance $b\dot q$ is near zero. Acceleration and the nonzero angle leave inertia and gravity appreciable. The dashed curve was chosen analytically, so it proves no missing physics.
+
+For the two-joint scenario, test a coupling or acceleration-dependent hypothesis first, because the residual follows the other joint's acceleration. Repeat the motion with the same command timing but different joint-1 acceleration profiles, and compare a synchronized phase or frequency view. If the residual follows timing relative to the command even when acceleration is changed, delay remains plausible. If it follows the coupled motion across timing changes, coupling is better supported.
 </details>
 
 If you cannot decide, first align the residual with joint 1 acceleration and then repeat the comparison after changing only its acceleration profile. Continue when you can state which observation would make delay and coupling disagree; a lower residual on one run is not enough.

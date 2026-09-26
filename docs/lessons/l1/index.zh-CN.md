@@ -123,6 +123,12 @@ $$
 
 本扩展使用平滑的 `tanh` 摩擦，不覆盖静止黏着、Stribeck、方向不对称、回差、传感器噪声或硬件迁移。可以查看[摩擦实验报告](../../../reports/l1_friction/report.zh-CN.md)和 [Notebook](../../../notebooks/l1_friction.ipynb) 复现本地运行。
 
+
+
+静态报告给出数值；这段短片把模型比较和留出残差放在一起。阻力曲线是评估者诊断，残差图只使用声明的观测。
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l1-friction.png" preload="metadata"><source src="../../../demos/manim/rendered/l1-friction.mp4" type="video/mp4"/><track kind="subtitles" label="English" src="../../site/subtitles/l1-friction.en.vtt" srclang="en"/><track default="" kind="subtitles" label="中文" src="../../site/subtitles/l1-friction.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>黏性阻尼能解释摩擦吗？</figcaption><details><summary>阅读视频说明</summary><p>真实系统包含黏性和光滑库仑型阻力；诊断图中的隐藏信号没有泄漏到拟合。</p><p>在留出运动上，只有黏性模型的残差在换向附近仍有结构，摩擦模型跟随真实系统。</p><p>与速度相关的位置残差提示缺失效应，但不能单独证明摩擦。</p></details></figure>
+
 ## 想一想 {#exercise}
 
 1. 为什么图纸上的臂长和质量都正确，预测仍可能不准？

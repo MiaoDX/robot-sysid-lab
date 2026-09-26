@@ -1,105 +1,80 @@
 # Lesson Delivery Policy
 
-The learner-facing explanation should remain useful without running Python. Each
-lesson therefore has a static core, an optional browser experiment, and a local
-full experiment. The three surfaces share one experiment contract and one source
-of numerical truth.
+This policy separates a published reading page from a delivered experiment.
+Every lesson must give the reader a static explanation and usable evidence for
+the question it asks. A page existing in the repository is not, by itself, a
+claim that the lesson has a runnable experiment or a teaching video.
 
-## Three surfaces
+## Delivery classes
 
-| Surface | Purpose | Required for every lesson | Execution boundary |
-|---|---|---:|---|
-| HTML and video | Explain the question, model boundary, experiment design, evidence, and limits | Yes | Static files on GitHub Pages |
-| Marimo WASM | Give a small number of safe, immediate experiments | Optional | Python runs in the learner's browser |
-| Local CPU/GPU experiment | Support long runs, large data, unsupported packages, and deeper exercises | Yes for computational labs | Learner's machine or a server |
+| Class | Static explanation | Usable evidence | Local execution | Video rule |
+|---|---|---|---|---|
+| Knowledge / concept (K) | Required: question, boundary, derivation, exercise and limits | Required: a labelled conceptual figure or a cited/replayed lab result that lets the exercise be answered | Not required | Available when a clip answers a named question; otherwise mark planned or not needed with the reason |
+| Runnable experiment (L) | Required: same contract plus fit/development/final split and local command | Required: checked report, metrics or plots from the declared run | Required for computational labs | Mark each named question available, planned, or not needed; a clip cannot replace the report |
+| Experiment-design draft | Required: frozen question, boundary, observations, controls and acceptance criteria | Pending until a local run or accepted conceptual evidence exists | Planned | Planned only when a future clip has a named teaching question |
+| Hardware proposal | Required: procedure, safety boundary and evidence plan | Pending until the hardware run is reviewed | Hardware service/local machine | Planned or not needed; do not imply hardware evidence |
 
-The HTML and video carry the main narrative. A learner should be able to
-understand the plant boundary, read the fit/validation evidence, and know what
-to try next without opening Marimo. WASM adds a short feedback loop where it is
-useful; it is not the canonical execution environment for the whole lab ladder.
+The course map uses these classes as **Reading**, **Concept**, **Runnable**,
+**Design draft**, and **Planned**. Each badge describes the available learning
+surface; it does not mean that every delivery surface is complete.
 
-## Task split for a new lesson
+## Shared evidence contract
 
-Every new lesson is split into these tasks, in this order:
+The static page must stand on its own. It names the learning question, plant
+boundary, signals visible to the fitter, the controlled comparison, the evidence
+status, an exercise with an answer guide, and the limit or next experiment.
+Each figure or number is labelled **recorded (simulated or hardware, explicitly stated)**, **replayed**, **conceptual**,
+**planned**, or **diagnostic**. A conceptual figure can support a reading
+exercise, but it cannot be described as a simulator result.
 
-### 1. Freeze the lesson contract
+Computational labs additionally declare the Oracle/Student boundary, fit and
+final held-out split, configuration, resource budget, reproducible command, and
+the output path of the checked report. Evaluation-only and Oracle diagnostic
+signals cannot enter fitting or model selection. A browser replay or video is a
+view of evidence; it never silently reruns fitting and never replaces the
+report.
 
-Write down the learning question, plant boundary, hidden Oracle effects,
-observations, Student model, fit/validation split, learner controls, evidence,
-and omitted effects. Add an execution budget before writing UI code.
+## Video status
 
-The budget records:
+Video is an explanation surface, not a universal completion checkbox. For each
+lesson, record every proposed clip beside the question it answers and choose
+one status:
 
-- expected input and dataset size;
-- package and backend requirements;
-- default CPU runtime;
-- worst-case learner-controlled runtime;
-- peak memory estimate;
-- whether the operation is replay, instant, interactive, or a job.
+- **Available:** the checked MP4, subtitle tracks, and written explanation are
+  present and the clip agrees with the report or clearly labelled concept.
+- **Planned:** a clip is useful for a named question, but its source run or
+  render is not complete. The page must remain understandable without it.
+- **Not needed:** a clip would duplicate a static derivation or a compact
+  figure; state that reason explicitly.
 
-### 2. Build the local numerical path
+The map and [course status](course/status.md) keep this status for all 19 K/L
+lesson IDs. Existing footage may be reused by another lesson only when the
+reused clip's question and boundary are stated on that lesson page.
 
-Implement the importable CPU/GPU model, frozen configuration, dataset
-generation, estimator, validation, report generation, and focused tests. The
-local path is the reference implementation even when a browser version exists.
+## Production order
 
-Long computation must be exposed as an explicit command or job-style workflow.
-Presentation controls should read a completed run instead of silently fitting
-again.
+1. Freeze the lesson contract: question, boundary, observations, Student,
+   split, controls, evidence, omitted effects, and resource budget.
+2. Build and verify the local numerical path for a runnable experiment. Keep
+   the generated report and machine-readable metrics under `reports/<lesson>`.
+3. Write the static page and its answerable exercise. Add a conceptual figure
+   for a K lesson when no run is needed; label it clearly.
+4. Decide whether a bounded browser surface is useful. WASM is optional and
+   may only replay a completed result or run a bounded operation within the
+   declared package, memory, and time budget.
+5. Produce or reuse clips for named questions, then check both subtitle tracks,
+   poster frames, links, and timing against the source scene.
+6. Build paired English/Chinese HTML and run the static link, asset, and
+   numerical checks. Human learner acceptance remains a separate gate.
 
-### 3. Produce the static lesson and video
+## Browser and local boundaries
 
-Write the HTML lesson and render the teaching clips before adding optional
-interaction. The static package must show:
-
-- the physical or algorithmic setup;
-- the model boundary and observations;
-- what was fitted and what was held out;
-- baseline versus identified behavior;
-- the main residual or failure evidence;
-- the limits of the result;
-- the local command for the full experiment.
-
-The generated report records one fixed run. It supports the lesson but does not
-replace its explanation.
-
-### 4. Classify the browser experiment
-
-Add a Marimo WASM surface only when all of these are true:
-
-- required packages have a Pyodide/WASM build;
-- local modules and data can be bundled or fetched as public static assets;
-- the control is useful as a short learner experiment;
-- the default and worst-case run fit the browser execution budget;
-- the experiment does not require GPU, native processes, shared memory, or
-  hardware access;
-- the result is still understandable if the browser run is unavailable.
-
-The first WASM version should prefer replay, parameter previews, short
-simulations, and small fits. It should not expose an unbounded optimizer or a
-large dataset just because the local implementation supports it.
-
-### 5. Add the local deep-dive path
-
-Document the full experiment beside the lesson. This path may use a notebook,
-the CPU/GPU command, a larger dataset, a native simulator, or a queued job. It
-must state expected runtime, dependencies, output location, and how to reproduce
-the report.
-
-The local path is the extension point when a lesson grows beyond the browser
-budget. It should reuse the same contract and configuration vocabulary as the
-static and WASM surfaces.
-
-### 6. Verify each surface independently
-
-The release check has three parts:
-
-1. Open the static HTML and confirm that the narrative, videos, links, and
-   report evidence work without a Python process.
-2. If a WASM surface exists, test a cold browser load, one learner control, one
-   completed interaction, and console/network errors on supported browsers.
-3. Run the local command in a clean environment and compare its result with the
-   checked-in report and metrics.
+The static page and clips carry the explanation. A local CPU/GPU experiment is
+the reference path for long fitting, native simulators, large data, and
+hardware. A browser surface is an optional bounded adapter: controls that only
+change a view read a completed run, while a fitting control must show its
+runtime and completion state. Never promise a browser experiment merely because
+Marimo or a WASM export is available.
 
 ## Execution gates
 
@@ -109,7 +84,7 @@ These are engineering guidelines, not hard platform limits:
 |---|---|
 | Small pure-Python computation, short arrays, supported packages, interaction usually under a few seconds | Add WASM as a learner enhancement |
 | Browser replay is useful but fitting is slow or data is sizeable | WASM shows precomputed results; local mode performs the fit |
-| Native/GPU dependency, large memory use, long optimization, multiprocessing, or hardware access | Keep the full computation local/server-side; provide HTML/video and optionally a WASM replay |
+| Native/GPU dependency, large memory use, long optimization, multiprocessing, or hardware access | Keep the full computation local/server-side; provide static explanation and available clips and optionally a WASM replay |
 
 Marimo documents a roughly 2 GB WASM memory ceiling and states that its browser
 concurrency adapters do not provide true CPU parallelism. These make the second
@@ -124,30 +99,49 @@ results without an independent numerical implementation requirement. The table
 describes delivery targets; H retains its earlier arrangements outside this
 design round.
 
-| Level | Static HTML/video | WASM role | Full experiment |
+| Level | Static static explanation and available clips | WASM role | Full experiment |
 |---|---|---|---|
 | L0 inertia and damping | Core lesson and fixed report | Small fit and safe controls | Local CPU runner and notebook |
 | L1 delayed servo and pendulum | Core lesson, machine explanation, and report | Small fit, replay, and residual views after packaging dependencies | Local CPU runner and notebook |
 | L0-E/L1-O; elective L1-S | Isolated excitation, observation, or saturation comparisons | Optional bounded interaction after budget checks | Local CPU |
-| L2 fixed-base leg | Core lesson and videos explain coupling | Precomputed replay or tiny previews; no whole fit by default | Local simulator and fitting workflow |
-| L3 contact | Core lesson and contact-failure videos | Static evidence or replay only unless a bounded toy contact case qualifies | Local simulator with contact experiments |
-| L4 Microduck | Core lesson, videos, and report summaries | Summary/replay surface | Local or scheduled whole-robot fitting |
-| L5 Microban | Core lesson, videos, and scaling evidence | Optional result explorer | Local/GPU workflow |
+| L2 fixed-base leg | Core explanation; coupling clips planned after the run | Precomputed replay or tiny previews; no whole fit by default | Local simulator and fitting workflow |
+| L3 contact | Core explanation; contact-failure clips planned after the run | Static evidence or replay only unless a bounded toy contact case qualifies | Local simulator with contact experiments |
+| L4 Microduck | Core explanation, report summaries and clips where useful | Summary/replay surface | Local or scheduled whole-robot fitting |
+| L5 Microban | Core explanation and scaling evidence | Optional result explorer | Local/GPU workflow |
 | L6 structural and cross-engine mismatch | Both single-engine structural mismatch and a genuine cross-engine case | Fixed results or replay | Local reproduction with both backends |
-| H hardware track | Safety and experiment procedure in HTML/video | No hardware execution in WASM | Local machine and hardware services |
+| H hardware track | Safety and experiment procedure | No hardware execution in WASM | Local machine and hardware services |
 
 This keeps the course readable and deployable while allowing the computational
 work to grow without forcing every learner to download or execute the largest
 experiment in a browser tab.
 
+## Browser eligibility and surface verification
+
+Add Marimo WASM only when all of these hold:
+
+- required packages have Pyodide/WASM builds;
+- local modules and public data can be bundled or fetched as static assets;
+- a control answers a short learning question;
+- measured default and worst-case runtime and memory fit the browser budget;
+- the operation needs no GPU, native processes, shared memory or hardware;
+- the explanation and result remain understandable if browser execution fails.
+
+Prefer replay, parameter previews, short simulations and small fits. Declare
+input/data size, backend packages, default and maximum runtime, peak memory, and
+whether an operation is replay, instant, interactive or a job. Document the
+local fallback command, dependencies, expected resources and report output.
+
+Verify each delivered surface independently: open the static page with only an
+HTTP server and check its evidence and clip links; for WASM, test a cold load,
+one learner control, a completed interaction and console/network errors; for a
+computational lab, reproduce the local report in the declared environment and
+compare metrics. These engineering checks do not supply independent learner
+acceptance.
+
 ## Definition of done
 
-A lesson is ready to publish when:
-
-- its static package answers the learning question by itself;
-- its report and video use the same frozen configuration as the numerical path;
-- its local experiment is reproducible and documents resource expectations;
-- its WASM surface, when present, is explicitly marked as an optional bounded
-  interaction;
-- the lesson names the point at which learners should switch from WASM to local
-  execution.
+A lesson may be called **Runnable** only when its static package answers the
+question, its declared evidence is usable and reproducible, and its limits are
+visible. A clip may be **Available**, **Planned**, or **Not needed** independently
+of that status. Independent learner acceptance, hardware validation, and future
+WASM packaging remain explicit separate gates.

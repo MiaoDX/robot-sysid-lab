@@ -123,6 +123,12 @@ These results show why the experiments are separated: L1 first isolates timing i
 
 This extension uses smooth `tanh` friction. It does not cover static sticking, Stribeck behavior, asymmetric friction, backlash, sensor noise, or hardware transfer. See the [friction experiment report](../../../reports/l1_friction/report.md) and [Notebook](../../../notebooks/l1_friction.ipynb) for the reproducible local run.
 
+
+
+The static report gives the numbers; this clip puts the model comparison beside the held-out residual. The resistance curve is an evaluator diagnostic, while the residual plot uses only the declared observations.
+
+<figure class="clip"><video controls="" playsinline="" poster="../../../demos/manim/rendered/l1-friction.png" preload="metadata"><source src="../../../demos/manim/rendered/l1-friction.mp4" type="video/mp4"/><track default="" kind="subtitles" label="English" src="../../site/subtitles/l1-friction.en.vtt" srclang="en"/><track kind="subtitles" label="中文" src="../../site/subtitles/l1-friction.zh-CN.vtt" srclang="zh-CN"/></video><figcaption>Can viscous damping explain friction?</figcaption><details><summary>Read the video explanation</summary><p>The Oracle has viscous and smooth Coulomb-like resistance; this diagnostic does not leak hidden signals into fitting.</p><p>On held-out motion, the viscous-only residual remains structured around reversals while the friction fit follows the Oracle.</p><p>A velocity-correlated position residual suggests a missing effect, but cannot alone prove friction.</p></details></figure>
+
 ## Think it through {#exercise}
 
 1. Why could predictions be inaccurate even with correct arm length and masses?
