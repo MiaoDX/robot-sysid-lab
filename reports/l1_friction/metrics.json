@@ -1,0 +1,142 @@
+{
+  "acceptance": {
+    "fit_observations": [
+      "t",
+      "u",
+      "q",
+      "qd"
+    ],
+    "model_mismatch": "viscous-only omits smooth Coulomb-like resistance",
+    "validation_hidden_from_fitter": true
+  },
+  "config_version": "l1-friction-v1",
+  "friction_fit": {
+    "cost": 2.2815456615948453e-28,
+    "message": "`xtol` termination condition is satisfied.",
+    "nfev": 8,
+    "params": {
+      "coulomb": 0.05999999999999999,
+      "damping": 0.05500000000000001
+    },
+    "structure": "friction",
+    "success": true
+  },
+  "gates": {
+    "friction_parameters_within_tolerance": true,
+    "reversal_ratio": 1.2174903387597793e-19,
+    "validation_q_ratio": 1.1771559317621438e-18,
+    "validation_qd_ratio": 2.6731034383955063e-17
+  },
+  "metadata": {
+    "config_hash": "0b5ad9a7b1de8571",
+    "config_version": "l1-friction-v1",
+    "friction_model": "b*qd + tau_c*tanh(qd/v_eps)",
+    "model_boundary": "known applied torque -> rotary load; no delay, gravity, or saturation",
+    "observations": [
+      "t",
+      "u",
+      "q",
+      "qd"
+    ],
+    "oracle_only": [
+      "truth parameters",
+      "true resistance decomposition"
+    ],
+    "public_observations": [
+      "t",
+      "u",
+      "q",
+      "qd"
+    ],
+    "seed": 7,
+    "timestamp_utc": "2026-01-01T00:00:00Z",
+    "units": {
+      "q": "rad",
+      "qd": "rad/s",
+      "t": "s",
+      "u": "N m"
+    },
+    "velocity_coverage": {
+      "fit_abs_max": 3.084169542876126,
+      "fit_abs_p95": 2.8824163122992092,
+      "validation_abs_max": 2.5779178844406716,
+      "validation_abs_p95": 2.3161502855228076
+    }
+  },
+  "metrics": {
+    "fit": {
+      "friction": {
+        "q_mae": 7.053330603376308e-16,
+        "q_rmse": 7.809475240219308e-16,
+        "qd_mae": 3.1651551278317455e-17,
+        "qd_rmse": 1.0901257497160848e-16
+      },
+      "oracle": {
+        "q_mae": 0.0,
+        "q_rmse": 0.0,
+        "qd_mae": 0.0,
+        "qd_rmse": 0.0
+      },
+      "viscous": {
+        "q_mae": 0.2002436403806341,
+        "q_rmse": 0.2276603650997491,
+        "qd_mae": 0.16211066899571916,
+        "qd_rmse": 0.19596209403746115
+      }
+    },
+    "validation": {
+      "friction": {
+        "q_mae": 1.0233817357731117e-20,
+        "q_rmse": 1.1236681980864212e-19,
+        "qd_mae": 3.6844451638687806e-19,
+        "qd_rmse": 2.9422933215530787e-18
+      },
+      "oracle": {
+        "q_mae": 0.0,
+        "q_rmse": 0.0,
+        "qd_mae": 0.0,
+        "qd_rmse": 0.0
+      },
+      "viscous": {
+        "q_mae": 0.0870804225564124,
+        "q_rmse": 0.0954561895979529,
+        "qd_mae": 0.09451313069095182,
+        "qd_rmse": 0.11007031300364306
+      }
+    }
+  },
+  "reversal_residual_rmse": {
+    "fit": {
+      "friction": 8.881784197001252e-16,
+      "viscous": 0.23656951377586702
+    },
+    "validation": {
+      "friction": 9.769180526747724e-21,
+      "viscous": 0.08024031251614935
+    }
+  },
+  "sensitivity": {
+    "condition_number": 15.236442545119457,
+    "smallest_singular_value": 153.67689234949114
+  },
+  "thresholds": {
+    "parameter_abs_tolerance": 0.002,
+    "reversal_ratio_max": 0.4,
+    "validation_error_ratio_max": 0.25
+  },
+  "truth": {
+    "coulomb": 0.06,
+    "damping": 0.055
+  },
+  "viscous_fit": {
+    "cost": 33.25252729958637,
+    "message": "`ftol` termination condition is satisfied.",
+    "nfev": 6,
+    "params": {
+      "coulomb": 0.0,
+      "damping": 0.0972915773957152
+    },
+    "structure": "viscous",
+    "success": true
+  }
+}

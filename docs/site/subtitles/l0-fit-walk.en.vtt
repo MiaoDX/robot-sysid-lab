@@ -1,0 +1,13 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.200
+Left: loss across J and b. Right: the corresponding model position trace.
+
+00:00:05.200 --> 00:00:10.400
+Arrows connect accepted optimizer iterates; color represents loss.
+
+00:00:10.400 --> 00:00:15.600
+As parameters move, compare the current model with the recorded truth.
+
+00:00:15.600 --> 00:00:20.800
+The final model approaches truth. This path explains one fit, not universal convergence.

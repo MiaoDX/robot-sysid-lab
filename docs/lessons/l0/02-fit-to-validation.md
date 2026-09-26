@@ -1,4 +1,4 @@
-# 3. From fit to held-out validation
+# L0 · From fit to held-out validation
 
 Fitting minimizes an error on the observations given to the estimator. That
 error alone is not enough: a flexible or badly structured model can match one
@@ -19,10 +19,9 @@ the estimator sees the acceleration-sensitive and velocity-sensitive parts of
 the equation.
 
 The **held-out multisine** is a separate signal made by adding several fixed
-frequency sinusoids. It is not a second fitting method: it is a new motion kept
-away from the estimator until scoring. Good validation performance means the
-fitted model predicts this different combination of frequencies, rather than
-only replaying the chirp it already saw.
+frequency sinusoids. This motion is reserved in advance and never used to estimate or adjust the
+parameters. Good validation performance means the model predicts this different
+combination of frequencies.
 
 The report gives mean absolute error (MAE) for both position `q` and velocity
 `qd`. Compare the Initial-model rows with the Identified-model rows. The important

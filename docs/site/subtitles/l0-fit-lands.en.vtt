@@ -1,0 +1,10 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.033
+Fit inertia J and damping b from observations, then compare position error.
+
+00:00:04.033 --> 00:00:08.067
+Orange is the Initial model; blue is the Identified model. Curves share an axis.
+
+00:00:08.067 --> 00:00:12.100
+The identified trace overlaps truth, supporting this fit. Held-out validation is still needed.

@@ -891,7 +891,7 @@ def write_report(r: Run, out: str | Path) -> Path:
     text = f"""# L1: Servo-driven loaded pendulum
 
 This fixed run comes from `{r.config.version}`. For the guided explanation and exercise,
-start with the [L1 lesson](../../docs/lessons/l1/README.md).
+start with the [L1 lesson](../../docs/lessons/l1/index.md).
 
 ## The machine and its boundary
 

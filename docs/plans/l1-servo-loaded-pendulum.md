@@ -15,7 +15,7 @@ Default delay is recovered at 0.080 s; held-out q and qd RMSE improve by at leas
 90%. The measured default run is 0.176 s, so Job mode is unnecessary.
 
 Acceptance gates 1–6 and 8 pass. **Gate 7 remains open:** no independent
-reader feedback has been received. The [learner walkthrough](../lessons/l1/README.md#learner-acceptance-walkthrough)
+reader feedback has been received. The [learner walkthrough](../reports/l1_servo_loaded_pendulum/verification.md#learner-acceptance-walkthrough)
 is ready; do not mark this full plan complete until actual results are recorded.
 Scope and parked alternatives below are unchanged; hardware validation remains
 out of scope, not an outstanding L1 engineering gate.

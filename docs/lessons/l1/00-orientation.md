@@ -1,4 +1,4 @@
-# 1. Meet the machine and the question
+# L1 · Meet the machine and the question
 
 System identification asks whether a model learned from one controlled
 experiment can predict observations from another. L1 uses a small machine so
@@ -13,13 +13,9 @@ position command q_des
         -> encoder position q and derived velocity qd
 ```
 
-The physical teaching setup has a fixed base, one rotary servo axis, a rigid
-arm of known length, a known point payload at its end, and gravity. The arm
-angle `q` is measured from the downward vertical in radians; positive velocity
-`qd` follows the positive rotation direction shown in the machine schematic.
-The geometry and trajectory playback use the same recorded state array, so a
-frame at timeline index `i` uses exactly `q[i]` and `qd[i]` from the selected
-run.
+The simulated setup has a fixed base, one rotary servo axis, a rigid arm of
+known length, a known point payload, and gravity. Angle `q` is measured from
+the downward vertical in radians. Positive velocity follows increasing angle.
 
 The plant is intentionally analytical. Its gravity term is
 
@@ -31,17 +27,17 @@ $$
 where `m_a` is the uniform arm mass, `m_p` is the point payload mass, and `ell`
 is the arm length. The arm contributes distributed inertia and a gravity load
 at its midpoint; the payload contributes at the tip. These values and the PD
-law are fixed and known. Only the effective delay is hidden from the Student.
+law are fixed and known. Only the effective delay needs to be estimated.
 
 | Role | What it means in the experiment |
 | --- | --- |
 | Oracle | Uses the configured non-zero command delay to generate observations. |
 | Initial model | Uses the visible zero-delay assumption before identification. |
-| Identified Student | Fits delay from public fit observations within stated bounds. |
+| Identified Student | Estimates delay from the fitting observations within the chosen bounds. |
 
-The Oracle's true torque and delayed-command state may appear in diagnostics,
-but they are privileged signals. The fitting API receives `t`, `q_des`, `q`,
-and `qd` only.
+Torque and delayed-command traces help explain the motion in diagnostic
+figures. Fitting uses time, target position, recorded position, and derived
+velocity, named `t`, `q_des`, `q`, and `qd` in code.
 
 ## Checkpoint
 

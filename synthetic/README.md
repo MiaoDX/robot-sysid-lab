@@ -51,6 +51,15 @@ whole-robot dynamics; it does not establish hardware transfer.
 
 The synthetic track is a first-class part of this repository, not just a preliminary sanity check before hardware.
 
+## Optional Manim teaching clips
+
+The repository also contains two offline ManimGL scenes that explain the
+physical intuition behind the delivered lessons. They read the same numerical
+implementations as the reports and are optional media artifacts, so Manim is
+not included in the core requirements. See [`demos/manim/README.md`](../demos/manim/README.md)
+for installation and render commands, and the [integration plan](../docs/plans/manim-integration.md)
+for the scope and acceptance gates.
+
 Its purpose is to create controlled robot-identification problems where the complete hidden ground truth is available to the lab author while the identification pipeline only receives realistic commands and observations.
 
 ## Teacher / student setup

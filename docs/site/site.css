@@ -1,0 +1,40 @@
+/* Hallmark · editorial · existing course palette · paired reading pages
+ * Pre-emit critique: Philosophy 4, Hierarchy 4, Execution 4, Specificity 5, Restraint 5, Variety 3.
+ */
+html, body { overflow-x: clip; }
+main[id], main [id] { scroll-margin-top: 100px; }
+:root {
+  --font-zh-body: ui-sans-serif, system-ui, -apple-system, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  --font-zh-display: "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
+}
+html[lang="zh-CN"] body { font-family: var(--font-zh-body); }
+html[lang="zh-CN"] h1, html[lang="zh-CN"] h2, html[lang="zh-CN"] h3 { font-family: var(--font-zh-display); line-height: 1.4; }
+h1, h2, h3 { min-width: 0; overflow-wrap: anywhere; font-style: normal; }
+html[lang="zh-CN"] .intro h1 { max-width: 15em; }
+.language-switch { display: inline-flex; flex-shrink: 0; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 6px; background: transparent; white-space: nowrap; }
+header .language-switch a { display: inline-flex; align-items: center; justify-content: center; min-width: 42px; min-height: 34px; padding: 4px 8px; border-radius: 3px; color: var(--muted); font: 600 13px/1.4 var(--font-zh-body); text-decoration: none; }
+header .language-switch a[aria-current="page"] { background: var(--ink); color: var(--paper, var(--bg)); }
+header .language-switch a:hover { box-shadow: inset 0 0 0 1px var(--muted); }
+header .language-switch a:active { opacity: .75; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--accent, var(--blue)); outline-offset: 3px; }
+.button, .action, header nav > a, footer a { white-space: nowrap; }
+.header-actions { display: flex; align-items: center; justify-content: flex-end; gap: 24px; }
+header .shell { min-width: 0; }
+body > header { position: sticky; top: 0; z-index: 20; background: var(--paper, var(--bg)); }
+header .brand { white-space: nowrap; }
+video { aspect-ratio: 16 / 9; }
+.local-command { max-width: 100%; overflow-x: auto; padding: 20px; background: var(--panel, var(--soft)); border: 1px solid var(--line); font-size: .85rem; }
+.clip details { margin-top: 12px; max-width: 780px; }
+.clip summary { cursor: pointer; color: var(--accent, var(--blue)); }
+.clip details p { color: var(--ink); }
+video::cue { font-family: sans-serif; }
+@media (max-width: 850px) {
+  header nav { display: none !important; }
+  header .shell { display: flex !important; align-items: center; justify-content: space-between; gap: 8px; }
+  .header-actions { gap: 0; }
+}
+@media (max-width: 420px) {
+  header .brand { font-size: 14px; }
+  .button, .action { font-size: .85rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
