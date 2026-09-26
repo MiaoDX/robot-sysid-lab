@@ -97,6 +97,8 @@ def render(source: Path, pairs: dict[Path, Path]) -> str:
     css = relative(ROOT / "docs/site/reading.css", page)
     shared_css = relative(ROOT / "docs/site/site.css", page)
     script = relative(ROOT / "docs/site/language.js", page)
+    subtitles_script = relative(ROOT / "docs/site/subtitles.js", page)
+    video_script = f'<script defer src="{subtitles_script}"></script>' if soup.select_one("video") else ""
     katex = relative(ROOT / "docs/site/vendor/katex/katex.min.css", page)
     katex_js = relative(ROOT / "docs/site/vendor/katex/katex.min.js", page)
     math_js = relative(ROOT / "docs/site/math.js", page)
@@ -109,7 +111,7 @@ def render(source: Path, pairs: dict[Path, Path]) -> str:
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)} · Robot SysID Lab</title>
 <link rel="stylesheet" href="{css}"><link rel="stylesheet" href="{shared_css}"><link rel="stylesheet" href="{katex}">
-<script defer src="{katex_js}"></script><script defer src="{math_js}"></script><script defer src="{script}"></script>
+<script defer src="{katex_js}"></script><script defer src="{math_js}"></script><script defer src="{script}"></script>{video_script}
 </head><body{body_class}>
 <header><div class="shell"><a class="brand" href="{course}">Robot SysID Lab</a><div class="header-actions">
 <nav aria-label="{labels[2]}"><a href="{course}#tracks">{labels[0]}</a><a href="{start}">{"从头开始" if chinese else "Start here"}</a></nav>

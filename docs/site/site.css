@@ -23,6 +23,22 @@ header .shell { min-width: 0; }
 body > header { position: sticky; top: 0; z-index: 20; background: var(--paper, var(--bg)); }
 header .brand { white-space: nowrap; }
 video { aspect-ratio: 16 / 9; }
+.clip-subtitles {
+  min-height: 3.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0;
+  padding: 10px 16px;
+  border: 1px solid #202a31;
+  border-top: 0;
+  background: #101417;
+  color: #f7f8f6;
+  font: 500 .95rem/1.55 ui-sans-serif, system-ui, -apple-system, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  text-align: center;
+  white-space: pre-line;
+}
+.clip-subtitles:not(.is-active) { color: transparent; }
 .local-command { max-width: 100%; overflow-x: auto; padding: 20px; background: var(--panel, var(--soft)); border: 1px solid var(--line); font-size: .85rem; }
 .clip details { margin-top: 12px; max-width: 780px; }
 .clip summary { cursor: pointer; color: var(--accent, var(--blue)); }
