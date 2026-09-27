@@ -6,6 +6,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 STANDALONE_SITE_PAGES = {
+    ROOT / "docs/index.html",
     ROOT / "docs/course/lesson-visual-styles.html",
 }
 
