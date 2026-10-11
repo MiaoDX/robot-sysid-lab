@@ -2,33 +2,24 @@
 
 ## Direction
 
-The course uses one visual mother system with restrained chapter variants. Content stays continuous across lessons; variation signals the job of a chapter rather than changing the product identity.
+The course uses one visual system and one interface accent across lessons. Lesson numbers, headings, and content structure identify each chapter.
 
-The visual reference is the coherent combination prototype in `docs/course/lesson-visual-styles.html?mix=1`.
+The exploratory styles in `docs/course/lesson-visual-styles.html` are not the production palette.
 
 ## Stable Foundations
 
-- **Canvas:** `#f7f8f6` paper, white content surfaces, `#eef3f5` soft fields.
+- **Canvas:** `#f7f8f6` paper, white content surfaces, `#f1f1f1` soft fields.
 - **Ink:** `#1f2937`; muted copy `#65717d`; rules `#d6ddd8`.
 - **Typography:** system sans for body and display, CJK-safe fallbacks, monospace only for codes, lesson IDs, and technical values.
 - **Geometry:** 8px maximum radius, 1px rules, restrained 0-3px shadows, no decorative card stacks.
 - **Layout:** reading pages use a stable content column and a compact sticky contents rail; diagrams, tables, and callouts use the same spacing and border language.
-- **Interaction:** links and controls use a single visible accent per chapter; focus rings remain high contrast; no motion is required to understand content.
+- **Interaction:** links and controls use one shared blue accent; focus rings remain high contrast; no motion is required to understand content.
 
-## Chapter Variants
+## Shared Accent
 
-Each lesson inherits the stable foundation and may change only `--page-accent` and `--page-soft`:
+All course navigation, links, section markers, tables, and callouts use the shared ink black `#1f2937` with neutral `#f1f1f1` soft fields. Chapters and delivery states must be identified in text, not by a hue change.
 
-| Chapter role | Accent | Typical lessons |
-| --- | --- | --- |
-| Orientation and boundaries | `#285f86` blue | K0, K1, K3 |
-| Dynamics and prediction | `#1f7f83` teal | K2, K6, L2, L3 |
-| Parameter meaning and comparison | `#6b6597` violet | K5, K7, L4, L6 |
-| Experiment design and records | `#ad7435` amber | K4, L0, L0-E |
-| Failure modes and diagnostics | `#c45c4d` coral | L1, L1-O, L1-S |
-| Control, transfer, and review | `#27866d` green | K8, L5 |
-
-Variants are accents, not new fonts, shadows, border radii, or page structures. The same rule applies to future hardware lessons.
+Plots and video may retain distinct colors when those colors encode data roles such as observations and competing models. They do not set the page chrome color.
 
 ## Content Components
 

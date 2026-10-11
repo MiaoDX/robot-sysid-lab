@@ -1,4 +1,4 @@
-/* Hallmark · editorial · course guide · existing green palette */
+/* Hallmark · editorial · course guide · shared black accent */
 
     :root {
       color-scheme: light;
@@ -7,12 +7,8 @@
       --paper: #fbfcfa;
       --soft: #f1f5f1;
       --line: #ced8d0;
-      --green: #26734a;
-      --green-soft: #dceee3;
-      --blue: #176f91;
-      --blue-soft: #dceef4;
-      --amber: #a65b08;
-      --amber-soft: #f7e8d2;
+      --blue: #1f2937;
+      --blue-soft: #f1f1f1;
       --font-display: Charter, "Bitstream Charter", Georgia, serif;
       --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -69,16 +65,16 @@
       padding: 4rem 0 2.5rem;
       border-bottom: 1px solid var(--line);
       background-color: var(--paper);
-      background-image: repeating-linear-gradient(115deg, transparent 0, transparent 7px, rgba(38, 115, 74, .045) 8px);
+      background-image: repeating-linear-gradient(115deg, transparent 0, transparent 7px, rgba(31, 41, 55, .045) 8px);
     }
-    .eyebrow { color: var(--green); font: 750 .78rem/1.2 var(--font-mono); text-transform: uppercase; }
+    .eyebrow { color: var(--blue); font: 750 .78rem/1.2 var(--font-mono); text-transform: uppercase; }
     h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0; }
     h1 { max-width: 16ch; margin: .8rem 0 1rem; font-size: 4rem; line-height: 1.02; }
     .intro-copy { max-width: 68ch; margin: 0; color: var(--muted); font-size: 1.1rem; }
     .intro-followup { margin-top: 1rem; }
     .reading-path { list-style: none; padding: 0; margin: 2rem 0; }
     .reading-path li { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 1rem; padding: 1.5rem 0; border-top: 1px solid var(--line); }
-    .reading-path .level-code { padding-top: .4rem; color: var(--green); }
+    .reading-path .level-code { padding-top: .4rem; color: var(--blue); }
     .reading-path h3 { margin: 0 0 .4rem; font-size: 1.3rem; }
     .reading-path h3 a { color: var(--ink); }
     .reading-path p { margin: 0; color: var(--muted); }
@@ -97,9 +93,9 @@
       font-weight: 700;
       text-decoration: none;
     }
-    .action.primary { border-color: var(--green); background: var(--green); color: white; }
+    .action.primary { border-color: var(--blue); background: var(--blue); color: white; }
     .intro-note { margin: 2.25rem 0 0; color: var(--muted); font-size: .84rem; }
-    .downlink { display: inline-block; margin-top: 1.5rem; color: var(--green); font-weight: 700; text-decoration: none; }
+    .downlink { display: inline-block; margin-top: 1.5rem; color: var(--blue); font-weight: 700; text-decoration: none; }
 
     .section { padding: 4rem 0; border-bottom: 1px solid var(--line); }
     .section-head { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 2rem; align-items: end; margin-bottom: 2rem; }
@@ -110,9 +106,7 @@
     .track { min-width: 0; padding: 1.4rem 1.2rem 0 0; }
     .track + .track { border-left: 1px solid var(--line); padding-left: 1.2rem; }
     .track-tag { display: inline-block; padding: .28rem .48rem; border-radius: 4px; font: 750 .76rem/1 var(--font-mono); }
-    .knowledge .track-tag { color: var(--green); background: var(--green-soft); }
-    .labs .track-tag { color: var(--blue); background: var(--blue-soft); }
-    .hardware .track-tag { color: var(--amber); background: var(--amber-soft); }
+    .track .track-tag { color: var(--blue); background: var(--blue-soft); }
     .track h3 { margin: .8rem 0 .35rem; font-size: 1.4rem; }
     .track > p { min-height: 4.7rem; margin: 0 0 1.2rem; color: var(--muted); font-size: .92rem; }
     .level-list { list-style: none; margin: 0; padding: 0; }
@@ -129,7 +123,7 @@
     .level strong { display: block; line-height: 1.25; }
     .level small { display: block; margin-top: .2rem; color: var(--muted); line-height: 1.35; }
     .status { font: 700 .7rem/1.4 var(--font-mono); text-transform: uppercase; white-space: nowrap; }
-    .status.live { color: var(--green); }
+    .status.live { color: var(--blue); }
     .status.planned { color: var(--muted); }
     .level-link { color: inherit; text-decoration: none; }
     .level-link:hover strong { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
@@ -142,10 +136,10 @@
     .legend-row { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: .75rem; align-items: baseline; }
     .legend-row code { color: var(--ink); font: 750 .85rem/1 var(--font-mono); }
 
-    .workflow { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); margin-top: 2rem; border-top: 2px solid var(--green); }
+    .workflow { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); margin-top: 2rem; border-top: 2px solid var(--blue); }
     .step { min-width: 0; padding: 1rem .75rem 0 0; }
     .step + .step { border-left: 1px solid var(--line); padding-left: .75rem; }
-    .step code { color: var(--green); font: 750 .76rem/1 var(--font-mono); }
+    .step code { color: var(--blue); font: 750 .76rem/1 var(--font-mono); }
     .step strong { display: block; margin-top: .45rem; font-size: .9rem; }
     .step small { color: var(--muted); }
 
@@ -189,24 +183,20 @@
       footer .shell { display: block; }
     }
 
-/* Course visual system: stable layout, restrained texture, chapter accents. */
+/* Course visual system: stable layout and one shared black accent. */
 :root {
   --ink: #1f2937;
   --muted: #65717d;
   --paper: #f7f8f6;
-  --soft: #eef3f5;
+  --soft: #f1f1f1;
   --line: #d6ddd8;
-  --green: #27866d;
-  --green-soft: #edf6f0;
-  --blue: #285f86;
-  --blue-soft: #eef3f5;
-  --amber: #ad7435;
-  --amber-soft: #f8f2e9;
+  --blue: #1f2937;
+  --blue-soft: #f1f1f1;
   --font-display: ui-sans-serif, system-ui, -apple-system, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
   --font-body: ui-sans-serif, system-ui, -apple-system, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
 }
 body { background: var(--paper); color: var(--ink); }
-body .intro { background-color: var(--paper); background-image: repeating-linear-gradient(0deg, rgba(40,95,134,.035) 0, rgba(40,95,134,.035) 1px, transparent 1px, transparent 32px); }
+body .intro { background-color: var(--paper); background-image: repeating-linear-gradient(0deg, rgba(31,41,55,.035) 0, rgba(31,41,55,.035) 1px, transparent 1px, transparent 32px); }
 body .eyebrow,
 body .reading-path .level-code,
 body .downlink { color: var(--blue); }
@@ -215,9 +205,7 @@ body .workflow { border-top-color: var(--blue); }
 body .step code { color: var(--blue); }
 body .language-switch a[aria-current="page"] { background: var(--blue); }
 body .track-tag { border-radius: 4px; }
-body .knowledge .track-tag { color: var(--blue); background: var(--blue-soft); }
-body .labs .track-tag { color: #1f7f83; background: #edf6f3; }
-body .hardware .track-tag { color: var(--amber); background: var(--amber-soft); }
+body .track .track-tag { color: var(--blue); background: var(--blue-soft); }
 body .level-link:hover strong { color: var(--blue); }
 body .intro h1,
 body .section h2,
@@ -225,6 +213,6 @@ body .meaning-copy h2 { letter-spacing: -.025em; }
 body .section,
 body .reading-path li,
 body .tracks { border-color: var(--line); }
-.status.concept { background: var(--blue-soft); color: var(--blue); }
-.status.runnable { background: var(--green-soft); color: var(--green); }
-.status.draft { background: var(--amber-soft); color: var(--amber); }
+.status.concept,
+.status.runnable,
+.status.draft { background: var(--blue-soft); color: var(--blue); }

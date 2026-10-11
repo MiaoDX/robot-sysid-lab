@@ -17,6 +17,30 @@
       panel.setAttribute("aria-live", "polite");
       video.insertAdjacentElement("afterend", panel);
 
+      // Reserve the tallest cue so subtitle changes do not move the article.
+      const reserveSpace = () => {
+        const measure = panel.cloneNode(false);
+        measure.removeAttribute("aria-live");
+        measure.setAttribute("aria-hidden", "true");
+        measure.style.minHeight = "";
+        measure.style.width = `${panel.getBoundingClientRect().width}px`;
+        measure.style.position = "absolute";
+        measure.style.visibility = "hidden";
+        measure.style.pointerEvents = "none";
+        panel.parentElement.append(measure);
+        let height = measure.getBoundingClientRect().height;
+        for (const cue of selected.cues || []) {
+          measure.textContent = cue.text;
+          height = Math.max(height, measure.getBoundingClientRect().height);
+        }
+        measure.remove();
+        panel.style.minHeight = `${Math.ceil(height)}px`;
+      };
+      const trackElement = [...video.querySelectorAll("track")].find((track) => track.track === selected);
+      trackElement?.addEventListener("load", reserveSpace);
+      new ResizeObserver(reserveSpace).observe(video);
+      reserveSpace();
+
       const render = () => {
         const cues = selected.activeCues ? [...selected.activeCues] : [];
         panel.textContent = cues.map((cue) => cue.text).join("\n").trim();

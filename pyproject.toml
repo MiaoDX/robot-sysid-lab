@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robot-sysid-lab"
+version = "0.1.0"
+requires-python = ">=3.11,<3.13"
+dependencies = ["numpy==2.4.0", "scipy==1.17.0", "matplotlib==3.10.8"]
+
+[project.optional-dependencies]
+interactive = ["marimo>=0.24,<1"]
+docs = ["Markdown>=3.7,<4", "beautifulsoup4>=4.12,<5"]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+sysid-lab = "sysid_lab.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["sysid_lab*", "synthetic*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

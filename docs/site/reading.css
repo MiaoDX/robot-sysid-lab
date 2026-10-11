@@ -10,9 +10,9 @@ header .shell { display: flex; min-height: 64px; align-items: center; justify-co
 nav { display: flex; gap: 24px; font-size: .9rem; }
 nav a { text-decoration: none; }
 .reading-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 56px; padding-block: 48px 80px; }
-aside { position: sticky; top: 96px; align-self: start; max-height: calc(100svh - 120px); overflow-y: auto; font-size: .85rem; }
-aside summary { color: var(--muted); margin-bottom: 12px; }
-aside a { display: block; padding: 7px 0; text-decoration: none; line-height: 1.5; }
+.reading-layout > aside { position: sticky; top: 96px; align-self: start; max-height: calc(100svh - 120px); overflow-y: auto; font-size: .85rem; }
+.reading-layout > aside summary { color: var(--muted); margin-bottom: 12px; }
+.reading-layout > aside a { display: block; padding: 7px 0; text-decoration: none; line-height: 1.5; }
 main { min-width: 0; }
 main > p, main > ul, main > ol { max-width: 76ch; }
 .article-context { margin-top: 0; font-size: .9rem; }
@@ -41,7 +41,7 @@ th,td { text-align: start; padding: 12px; border-bottom: 1px solid var(--line); 
 th { background: var(--soft); }
 footer { border-top: 1px solid var(--line); padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: .9rem; }
 .katex-display { overflow-x: auto; overflow-y: clip; padding-block: 8px; }
-@media(max-width: 900px) { .reading-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-top: 24px; } aside { position: static; max-height: 160px; } aside details { border-bottom: 1px solid var(--line); padding-bottom: 12px; } aside a { display: inline-block; margin-right: 20px; } }
+@media(max-width: 900px) { .reading-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-top: 24px; } .reading-layout > aside { position: static; max-height: 160px; } .reading-layout > aside details { border-bottom: 1px solid var(--line); padding-bottom: 12px; } .reading-layout > aside a { display: inline-block; margin-right: 20px; } }
 @media(max-width: 420px) { .shell { width: calc(100% - 24px); } body { font-size: 15px; } th,td { padding: 8px; } }
 
 /* L0 reading treatment: carry the reference's paper, evidence, and boundary language into the document flow. */

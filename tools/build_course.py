@@ -6,6 +6,7 @@ import hashlib
 import html
 import os
 import re
+import shutil
 import struct
 from pathlib import Path
 from urllib.parse import unquote, urlsplit, urlunsplit
@@ -147,7 +148,133 @@ def build(check: bool = False) -> int:
     return len(pairs)
 
 
+def build_shadow(source_root: Path, output_dir: Path, check: bool = False) -> int:
+    """Build a self-contained preview while preserving the legacy builder."""
+    source_root = source_root.resolve()
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and not check:
+        shutil.rmtree(output_dir)
+    sources = sorted(source_root.rglob("*.md"))
+    pairs: dict[Path, Path] = {}
+    for source in sources:
+        if ".zh-CN." in source.name:
+            peer = source.with_name(source.name.replace(".zh-CN.md", ".md"))
+        else:
+            peer = source.with_name(source.stem + ".zh-CN.md")
+        if peer.exists():
+            pairs[source] = peer
+
+    copied: set[Path] = set()
+
+    def output_path(path: Path) -> Path:
+        relative_path = path.relative_to(ROOT)
+        if path.suffix == ".md" and path in pairs:
+            relative_path = relative_path.with_suffix(".html")
+        return output_dir / relative_path
+
+    def copy_asset(path: Path) -> Path:
+        target = output_path(path)
+        if path.suffix == ".md" and path.with_suffix(".html").exists() and path not in pairs:
+            target = output_dir / path.relative_to(ROOT).with_suffix(".html")
+            path = path.with_suffix(".html")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if path.is_file():
+            if check:
+                if not target.exists() or target.read_bytes() != path.read_bytes():
+                    raise SystemExit(f"Stale shadow asset: {target}")
+            else:
+                shutil.copy2(path, target)
+            copied.add(target)
+        return target
+
+    def rewrite_links(source: Path, page: Path, soup: BeautifulSoup) -> None:
+        for tag in soup.select("a[href],img[src],video[poster],source[src],track[src]"):
+            attr = "href" if tag.name == "a" else ("poster" if tag.name == "video" else "src")
+            url = urlsplit(tag[attr])
+            if url.scheme or url.netloc or not url.path:
+                continue
+            target = (source.parent / unquote(url.path)).resolve()
+            if not target.exists():
+                course_relative = target.relative_to(source_root) if target.is_relative_to(source_root) else None
+                if course_relative is not None and course_relative.parts[:1] == ("lessons",):
+                    target = ROOT / "docs" / course_relative
+                if not target.exists():
+                    raise ValueError(f"Missing shadow resource {url.path} referenced by {source.relative_to(ROOT)}")
+            rendered = output_path(target)
+            if target.suffix == ".md" and target not in pairs and target.with_suffix(".html").exists():
+                rendered = output_dir / target.relative_to(ROOT).with_suffix(".html")
+                copy_asset(target)
+            elif target.suffix == ".md" and target in pairs:
+                rendered = output_path(target)
+            else:
+                copy_asset(target)
+            tag[attr] = urlunsplit(("", "", relative(rendered, page), url.query, url.fragment))
+
+    for source in sources:
+        chinese = ".zh-CN." in source.name
+        text = source.read_text(encoding="utf-8").replace("\\[", "$$").replace("\\]", "$$")
+        soup = BeautifulSoup(markdown.markdown(text, extensions=MARKDOWN_EXTENSIONS), "html.parser")
+        english_source = pairs[source] if chinese and source in pairs else source
+        english = BeautifulSoup(markdown.markdown(english_source.read_text(encoding="utf-8"), extensions=MARKDOWN_EXTENSIONS), "html.parser")
+        headings = soup.select("h1,h2,h3,h4,h5,h6")
+        english_headings = english.select("h1,h2,h3,h4,h5,h6")
+        if len(headings) != len(english_headings):
+            raise ValueError(f"Heading count differs: {source.relative_to(ROOT)}")
+        for heading, original in zip(headings, english_headings):
+            heading["id"] = original.get("id", heading.get("id", ""))
+        page = output_path(source)
+        rewrite_links(source, page, soup)
+        css = relative(output_dir / "docs/site/reading.css", page)
+        shared_css = relative(output_dir / "docs/site/site.css", page)
+        subtitles_script = relative(output_dir / "docs/site/subtitles.js", page)
+        video_script = f'<script defer src="{subtitles_script}"></script>' if soup.select_one("video") else ""
+        katex = relative(output_dir / "docs/site/vendor/katex/katex.min.css", page)
+        katex_js = relative(output_dir / "docs/site/vendor/katex/katex.min.js", page)
+        math_js = relative(output_dir / "docs/site/math.js", page)
+        title = headings[0].get_text(" ", strip=True) if headings else source.stem
+        suffix = ".zh-CN" if chinese else ""
+        peer = pairs.get(source)
+        language_links = ""
+        if peer is not None:
+            peer_page = output_path(peer)
+            current_label = "中文" if chinese else "EN"
+            peer_label = "EN" if chinese else "中文"
+            current_lang = "zh-CN" if chinese else "en"
+            peer_lang = "en" if chinese else "zh-CN"
+            language_links = f'<nav class="language-switch" aria-label="Language"><a href="{relative(page, page)}" lang="{current_lang}" aria-current="page">{current_label}</a> <a href="{relative(peer_page, page)}" lang="{peer_lang}">{peer_label}</a></nav>'
+        body_class = "reading-page lesson-l0"
+        toc = "".join(f'<a href="#{h["id"]}">{html.escape(h.get_text(" ", strip=True))}</a>' for h in soup.select("h2"))
+        content = f'''<!doctype html>
+<html lang="{'zh-CN' if chinese else 'en'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{html.escape(title)} · Robot SysID Lab</title>
+<link rel="stylesheet" href="{css}"><link rel="stylesheet" href="{shared_css}"><link rel="stylesheet" href="{katex}">
+<script defer src="{katex_js}"></script><script defer src="{math_js}"></script>{video_script}
+</head><body class="{body_class}"><header><div class="shell"><a class="brand" href="{relative(output_path(source.parent / 'index.md'), page)}">Robot SysID Lab</a>{language_links}</div></header><div class="reading-layout shell"><aside><details open><summary>{"本页内容" if chinese else "On this page"}</summary>{toc}</details></aside><main id="content">{soup}</main></div></body></html>
+'''
+        if check:
+            if not page.exists() or page.read_text(encoding="utf-8") != content:
+                raise SystemExit(f"Rebuild shadow course page: {page}")
+        else:
+            page.parent.mkdir(parents=True, exist_ok=True)
+            page.write_text(content, encoding="utf-8")
+        copied.add(page)
+
+    static_root = ROOT / "docs/site"
+    for asset in static_root.rglob("*"):
+        if asset.is_file():
+            copy_asset(asset)
+    return len(sources)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
-    build(parser.parse_args().check)
+    parser.add_argument("--source-root", type=Path, default=None)
+    parser.add_argument("--output-dir", type=Path, default=None)
+    args = parser.parse_args()
+    if args.source_root is not None:
+        if args.output_dir is None:
+            parser.error("--output-dir is required with --source-root")
+        print(f"{'Checked' if args.check else 'Rendered'} {build_shadow(args.source_root, args.output_dir, args.check)} shadow pages.")
+    else:
+        build(args.check)
