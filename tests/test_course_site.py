@@ -114,6 +114,14 @@ def test_video_pages_select_subtitles_for_the_page_language():
             assert cue_times[0] == cue_times[1], (path, "translations must follow the same scenes")
 
 
+def test_reading_sidebar_sticky_rule_does_not_capture_content_asides():
+    css = (ROOT / "docs/site/reading.css").read_text()
+    assert ".reading-layout > aside { position: sticky;" in css
+    assert "\naside { position: sticky;" not in css
+    assert "\n@media(max-width: 900px)" in css
+    assert ".reading-layout > aside { position: static;" in css
+
+
 def test_translated_report_tables_keep_the_recorded_numbers():
     def numbers(path):
         table = "\n".join(line for line in path.read_text().splitlines() if line.startswith("|"))

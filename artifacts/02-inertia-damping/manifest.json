@@ -1,0 +1,55 @@
+{
+  "command": "sysid-lab run 02",
+  "config_path": "synthetic/l0_config.json",
+  "config_sha256": "a538b8c3e3b5981edebab0199bada82d21e5d7f0cbfa16b44526d6f3e70da143",
+  "dependencies": {
+    "numpy": "2.4.0",
+    "scipy": "1.17.0"
+  },
+  "files": [
+    {
+      "path": "config.json",
+      "role": "public",
+      "sha256": "a538b8c3e3b5981edebab0199bada82d21e5d7f0cbfa16b44526d6f3e70da143"
+    },
+    {
+      "path": "metrics.json",
+      "role": "evaluation",
+      "sha256": "c133e54e5f5010067df2b66815c6a42ce3d7fd380d26bc39622cb8e2e94d9f98"
+    },
+    {
+      "path": "trajectory.json",
+      "role": "public",
+      "sha256": "ce7ffb1b8cd396b170619a3db2658fcd54cc693e0b051dea449d64bc169d7e75"
+    },
+    {
+      "path": "report.md",
+      "role": "public",
+      "sha256": "6ca5b2df743340a15cc9ec74f86bae89ac425c14630aaaf41dc289d5ed91eb49"
+    },
+    {
+      "path": "report.png",
+      "role": "public",
+      "sha256": "4a7aa721fe451923af21d6d38b06aa73c10f4644e5a2ed9a21d0e8259a015898"
+    },
+    {
+      "path": "fitting_paths.json",
+      "role": "evaluation",
+      "sha256": "ea944f3d588ecf03bd590d98f315e07e6249f0abfc0e7edd670210176e6d0d3b"
+    },
+    {
+      "path": "fitting_landscape.png",
+      "role": "evaluation",
+      "sha256": "e0ec40429b7668e221e77faefe04fa5e7d2b0f005085f4ae35b76d63b3d2ad02"
+    }
+  ],
+  "generated_at": "2026-09-28T10:14:53.536167+00:00",
+  "git_commit": "d6195751a432ba9db1f1bf0a5c2aedce77aec4bf",
+  "lesson": {
+    "number": 2,
+    "slug": "02-inertia-damping"
+  },
+  "python": "3.12.12",
+  "random_seed": null,
+  "schema_version": "1.0"
+}

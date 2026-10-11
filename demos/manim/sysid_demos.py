@@ -98,17 +98,61 @@ def _driven_arm(pivot_point: np.ndarray, length: float, values: np.ndarray, trac
 
 
 def _joint_torque(pivot_point: np.ndarray, radius: float = 0.74, color=YELLOW):
-    """A curved arrow wrapping the pivot.
+    """A direction-neutral ring marking the joint torque input."""
+    marker = Circle(radius=radius, stroke_color=color, stroke_width=3)
+    marker.move_to(pivot_point)
+    return marker
 
-    A straight arrow reads as a force pushing on a point, which leaves it open
-    whether the torque acts at the joint axis or at the arm tip. Torque acts
-    about the axis, so it is drawn curling around it.
-    """
 
-    # Counter-clockwise, matching the sign convention of `q`.
-    start = pivot_point + radius * np.array([np.cos(0.59), np.sin(0.59), 0.0])
-    end = pivot_point + radius * np.array([np.cos(2.55), np.sin(2.55), 0.0])
-    return CurvedArrow(start, end, angle=2.0, color=color, stroke_width=5)
+def _torque_waveform(
+    times: np.ndarray,
+    values: np.ndarray,
+    tracker,
+    *,
+    center: tuple[float, float, float] = (0.0, 1.95, 0.0),
+    width: float = 3.8,
+    height: float = 0.56,
+    color=YELLOW,
+):
+    """Show the signed input without making high-frequency reversals flicker."""
+    times = np.asarray(times, dtype=float)
+    values = np.asarray(values, dtype=float)
+    left = center[0] - width / 2
+    right = center[0] + width / 2
+    bottom = center[1] - height / 2
+    top = center[1] + height / 2
+    max_abs = max(float(np.max(np.abs(values))), 1e-9)
+
+    frame = Rectangle(width=width, height=height, stroke_color=GREY_D, stroke_width=1.5)
+    frame.move_to(np.array(center))
+    zero_y = bottom + height / 2
+    zero = Line([left, zero_y, 0.0], [right, zero_y, 0.0], color=GREY_D, stroke_width=1)
+    curve = _plot_curve(
+        times, values, left=left, right=right, bottom=bottom, top=top,
+        color=color, width=2.5, scale=(-max_abs, max_abs),
+    )
+    playhead = Line([left, bottom, 0.0], [left, top, 0.0], color=GREY_B, stroke_width=2)
+    dot = Dot([left, zero_y, 0.0], radius=0.055, color=color)
+    labels = VGroup(
+        Text("+", font_size=14, color=GREY_B).move_to([left - 0.18, top, 0.0]),
+        Text("0", font_size=14, color=GREY_B).move_to([left - 0.14, zero_y, 0.0]),
+        Text("-", font_size=14, color=GREY_B).move_to([left - 0.18, bottom, 0.0]),
+    )
+    group = VGroup(frame, zero, curve, playhead, dot, labels)
+    grid = np.linspace(0.0, 1.0, len(values))
+
+    def update(mob):
+        fraction = float(np.clip(tracker.get_value(), 0.0, 1.0))
+        current = float(np.interp(fraction, grid, values))
+        x = left + fraction * width
+        y = bottom + (current + max_abs) / (2.0 * max_abs) * height
+        mob[3].put_start_and_end_on(
+            np.array([x, bottom, 0.0]), np.array([x, top, 0.0]),
+        )
+        mob[4].move_to([x, y, 0.0])
+
+    group.add_updater(update)
+    return group
 
 
 def _velocity_meter(pivot_point: np.ndarray, values: np.ndarray, tracker, color, max_value: float,
@@ -421,8 +465,8 @@ def _l0_lesson_data() -> SimpleNamespace:
 class L0MismatchDemo(Scene):
     """Block question: what does the mismatch actually look like?
 
-    The same recorded torque drives the true machine and the assumed one side by
-    side, with persistent model labels and a shared velocity scale.
+    The same recorded open-loop chirp torque drives the true machine and the
+    assumed one side by side, with a signed input trace and shared velocity scale.
     """
 
     def construct(self):
@@ -442,20 +486,24 @@ class L0MismatchDemo(Scene):
         equation.next_to(title, DOWN, buff=0.16)
         self.play(Write(title), Write(equation))
 
-        # --- one machine, under torque --------------------------------------
+        # --- one machine, under an explicit open-loop input -----------------
         left_dot = Dot(left_pivot, color=GREEN)
         left_torque = _joint_torque(left_pivot)
-        torque_label = Text("applied joint torque u", font_size=19, color=YELLOW)
-        # Above the sweep circle (radius L0_ARM_LENGTH), so the arm never
-        # crosses the label as it turns.
-        torque_label.move_to([0.0, 2.35, 0.0])
-        truth_label = Text("True system", font_size=24, color=ROLE_COLORS["oracle"]).move_to([-3.3, 1.9, 0])
-        assumed_label = Text("Initial model", font_size=24, color=ROLE_COLORS["initial"]).move_to([3.3, 1.9, 0])
-        self.play(FadeIn(left_dot), ShowCreation(left_torque), FadeIn(torque_label), FadeIn(truth_label))
+        torque_title = Text(
+            "open-loop chirp torque u(t) · direction reverses · no target angle",
+            font_size=16, color=YELLOW,
+        ).move_to([0.0, 2.48, 0.0])
+        truth_label = Text("True system", font_size=24, color=ROLE_COLORS["oracle"]).move_to([-3.3, 1.7, 0])
+        assumed_label = Text("Initial model", font_size=24, color=ROLE_COLORS["initial"]).move_to([3.3, 1.7, 0])
+        tracker = ValueTracker(0.0)
+        torque_trace = _torque_waveform(t, fit.u, tracker)
+        self.play(
+            FadeIn(left_dot), ShowCreation(left_torque), FadeIn(torque_title),
+            FadeIn(torque_trace), FadeIn(truth_label),
+        )
 
         # --- the same torque, two machines ----------------------------------
         right_dot = Dot(right_pivot, color=GREEN)
-        tracker = ValueTracker(0.0)
         truth_arm = _driven_arm(left_pivot, length, truth_q, tracker, ROLE_COLORS["oracle"], width=9)
         initial_arm = _driven_arm(right_pivot, length, initial_q, tracker, ROLE_COLORS["initial"], width=7)
         truth_qd = np.asarray(fit.qd, dtype=float)  # recorded True-system velocity
@@ -467,8 +515,7 @@ class L0MismatchDemo(Scene):
         same_push.move_to([0.0, -3.7, 0])
         meter_note = Text("joint velocity qd (rad/s) · shared scale", font_size=20, color=GREY_B).move_to([0.0, -3.35, 0])
 
-        # The right joint gets its own torque marker: the caption claims the same
-        # torque drives both, so both have to show one.
+        # Both joints get a neutral marker: the waveform carries torque sign.
         right_torque = _joint_torque(right_pivot)
         self.play(
             FadeIn(right_dot), ShowCreation(right_torque),
